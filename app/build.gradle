@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def appVersionCode = 4
+def appVersionName = "1.0.1.$appVersionCode"
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -8,8 +11,8 @@ android {
         applicationId "com.densvr.androidsfr"
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 3
-        versionName "AndroidSFR_2016_10_15"
+        versionCode appVersionCode
+        versionName appVersionName
     }
     buildTypes {
         release {
@@ -20,6 +23,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'androidx.appcompat:appcompat:1.1.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
