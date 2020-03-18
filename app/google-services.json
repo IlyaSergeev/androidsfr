@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "724643008032",
+    "firebase_url": "https://densvr-a5f75.firebaseio.com",
+    "project_id": "densvr-a5f75",
+    "storage_bucket": "densvr-a5f75.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724643008032:android:4cff252e9ae7780301f645",
+        "android_client_info": {
+          "package_name": "com.densvr.androidsfr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "724643008032-68vbsnf8rg5af0rupc7d152lfih6e3ck.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbFh_caH83OI9EaEaZivR5eBnsZl4ga8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "724643008032-68vbsnf8rg5af0rupc7d152lfih6e3ck.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724643008032:android:6e98195124e35a5c01f645",
+        "android_client_info": {
+          "package_name": "com.densvr.androidsfr2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "724643008032-68vbsnf8rg5af0rupc7d152lfih6e3ck.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbFh_caH83OI9EaEaZivR5eBnsZl4ga8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "724643008032-68vbsnf8rg5af0rupc7d152lfih6e3ck.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
