@@ -2,15 +2,10 @@ package com.densvr.activities;
 
 import java.util.LinkedList;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
-import com.densvr.nfcreader.ChipData;
-import com.densvr.nfcreader.Globals;
-import com.densvr.androidsfr.R;
-import com.densvr.table.TableFixHeaders;
-import com.densvr.table.csv.CSV;
+import com.densvr.nfcreader.OldChipData;
+import com.densvr.nfcreader.OldGlobals;
 import com.densvr.table.csv.MatrixTableAdapter;
 import com.densvr.table.csv.Table;
 import com.densvr.table.csv.TableActivity;
@@ -19,7 +14,7 @@ import com.densvr.table.csv.MatrixTableAdapter.EditTableOption;
 public class TableDistsActivity extends TableActivity {
 
 	public TableDistsActivity() {
-		super(Globals.CSV_DISTS);
+		super(OldGlobals.CSV_DISTS);
 		
 	}
 
@@ -51,7 +46,7 @@ public class TableDistsActivity extends TableActivity {
 	}
 	
 	
-	public static ChipData getDistByName(Table data, String name) {
+	public static OldChipData getDistByName(Table data, String name) {
 		for(int i = 0; i < data.get(0).size(); i++) {
 			if (data.get(0).get(i).equals(name)) {
 				LinkedList<String> distCps = new LinkedList<String>();
@@ -63,7 +58,7 @@ public class TableDistsActivity extends TableActivity {
 						break;
 					}
 				}
-				return ChipData.parseDistsResultsLine(distCps);
+				return OldChipData.parseDistsResultsLine(distCps);
 			}
 		}
 		return null;

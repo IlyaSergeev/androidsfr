@@ -1,7 +1,5 @@
 package com.densvr.activities;
 
-import java.util.LinkedList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,16 +7,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.densvr.nfcreader.ChipData;
-import com.densvr.nfcreader.ConfirmDialog;
-import com.densvr.nfcreader.Globals;
+import com.densvr.nfcreader.OldConfirmDialog;
+import com.densvr.nfcreader.OldGlobals;
 import com.densvr.androidsfr.R;
 import com.densvr.table.TableFixHeaders;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.MatrixTableAdapter;
 import com.densvr.table.csv.MatrixTableAdapter.OnViewPostCreationWizard;
 import com.densvr.table.csv.Table;
-import com.densvr.table.csv.TableActivity;
 
 public class TableResultsActivity extends Activity {
 
@@ -39,7 +35,7 @@ public class TableResultsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_table_results);
-		adress = Globals.CSV_RESULTS;
+		adress = OldGlobals.CSV_RESULTS;
 		
 		tableFixHeaders = (TableFixHeaders) findViewById(R.id.table_results_table);
 		matrixTableAdapter = new MatrixTableAdapter(tableFixHeaders, this, table);
@@ -130,8 +126,8 @@ public class TableResultsActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				ConfirmDialog.showDialog(TableResultsActivity.this, "Удалить все результаты?", "",
-					new ConfirmDialog.OnClickListener() {
+				OldConfirmDialog.showDialog(TableResultsActivity.this, "Удалить все результаты?", "",
+					new OldConfirmDialog.OnClickListener() {
 						
 						@Override
 						public void onClick(boolean bResult) {

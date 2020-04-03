@@ -1,7 +1,7 @@
 package com.densvr.nfcreader;
 
 @Deprecated
-public class Globals {
+public class OldGlobals {
 	
 	//philips
 	//public static String CSV_ADDRESS = "/sdcard/AndroidSFR/";
@@ -19,7 +19,7 @@ public class Globals {
 	/**
 	 * stores intermediate results (in current chip)
 	 */
-	public static ChipData chipData;
+	public static OldChipData chipData;
 	
 	
 	

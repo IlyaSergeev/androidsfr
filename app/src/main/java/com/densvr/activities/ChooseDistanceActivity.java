@@ -1,7 +1,7 @@
 package com.densvr.activities;
 
-import com.densvr.nfcreader.ChipData;
-import com.densvr.nfcreader.Globals;
+import com.densvr.nfcreader.OldChipData;
+import com.densvr.nfcreader.OldGlobals;
 import com.densvr.androidsfr.R;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.Table;
@@ -9,7 +9,6 @@ import com.densvr.table.csv.Table;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,7 +21,7 @@ public class ChooseDistanceActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_choose_dist);
-		Table dists = CSV.read(Globals.CSV_DISTS);
+		Table dists = CSV.read(OldGlobals.CSV_DISTS);
 		B b[] = new B[dists.cols()];
 		for(int i = 0; i < dists.cols(); i++) {
 			b[i] = new B(dists.get(0).get(i), EditUserNameActivity.class);
@@ -33,7 +32,7 @@ public class ChooseDistanceActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		String distName = ((B) l.getItemAtPosition(position)).string;
-		ChipData chipData = Globals.chipData;
+		OldChipData chipData = OldGlobals.chipData;
 		chipData.setDistName(distName);
 		//Intent intent = new Intent(this, ((B) l.getItemAtPosition(position)).class1);
 		//intent.putExtra("dist_name", ((B) l.getItemAtPosition(position)).string);

@@ -1,8 +1,7 @@
 package com.densvr.activities;
 
-import com.densvr.nfcreader.ChipData;
-import com.densvr.nfcreader.Globals;
-import com.densvr.nfcreader.ResultsProtocol;
+import com.densvr.nfcreader.OldChipData;
+import com.densvr.nfcreader.OldGlobals;
 import com.densvr.androidsfr.R;
 
 import android.app.Activity;
@@ -35,7 +34,7 @@ public class EditUserNameActivity extends Activity {
 		buttonBack = (Button)findViewById(R.id.button_back);
 		buttonOk = (Button)findViewById(R.id.button_ok);
 		
-		editText.setText(Globals.chipData.getUserName());
+		editText.setText(OldGlobals.chipData.getUserName());
 		editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -48,7 +47,7 @@ public class EditUserNameActivity extends Activity {
 		});
 
 		
-		startUserName = new String(Globals.chipData.getUserName()); 
+		startUserName = new String(OldGlobals.chipData.getUserName());
 		
 		buttonBack.setOnClickListener(new OnClickListener() {
 			
@@ -68,7 +67,7 @@ public class EditUserNameActivity extends Activity {
 	}
 
 	private void editName() {
-		ChipData chipData = Globals.chipData;
+		OldChipData chipData = OldGlobals.chipData;
 		String newUserName = editText.getText().toString();
 		chipData.setUserName(newUserName);
 		if (!newUserName.equals(startUserName)) {

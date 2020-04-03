@@ -4,18 +4,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.densvr.activities.MainActivity;
-import com.densvr.nfcreader.ChipData.ResultsComparison;
+import com.densvr.nfcreader.OldChipData.ResultsComparison;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.Table;
 
 @Deprecated
 public class ResultsProtocol {
 
-	private List<ChipData> results;
+	private List<OldChipData> results;
 	
 	
 	public ResultsProtocol() {
-		results = new LinkedList<ChipData>();
+		results = new LinkedList<OldChipData>();
 	}
 	
 	/**
@@ -24,8 +24,8 @@ public class ResultsProtocol {
 	 */
 	public static ResultsProtocol readFromDatabase() {
 		ResultsProtocol r = new ResultsProtocol();
-		List<ChipData> results = r.results;
-		Table tableResults = CSV.read(Globals.CSV_RESULTS);
+		List<OldChipData> results = r.results;
+		Table tableResults = CSV.read(OldGlobals.CSV_RESULTS);
 		if (tableResults == null) {
 			return r;
 		}
@@ -40,7 +40,7 @@ public class ResultsProtocol {
 			} else if (firstCellVal.equals("попытка")) {
 				curAttempt = Integer.parseInt(tableResults.getValue(row, 1));
 			} else {
-				ChipData curResult = ChipData.parseCSVResultsLine(tableResults.get(row));
+				OldChipData curResult = OldChipData.parseCSVResultsLine(tableResults.get(row));
 				if (curResult == null) {
 					return null;
 				}
@@ -68,7 +68,7 @@ public class ResultsProtocol {
 		int attempt = -1;
 		for(int resultNum = 0; resultNum < results.size(); resultNum++) {
 			LinkedList<String> line = null;
-			ChipData cd = get(resultNum);
+			OldChipData cd = get(resultNum);
 			String curDistName = cd.getDistName();
 			int curAttempt = cd.getAttempt();
 			if (!curDistName.equals(distName)) {
@@ -92,7 +92,7 @@ public class ResultsProtocol {
 			line = cd.toResultsProtocolLine();
 			tResults.add(line);
 		}
-		CSV.write(tResults, Globals.CSV_RESULTS);
+		CSV.write(tResults, OldGlobals.CSV_RESULTS);
 	}
 	
 	/**
@@ -116,12 +116,12 @@ public class ResultsProtocol {
 	 * and updates place and attemptPlace of each user
 	 * @param cd
 	 */
-	public void addChipData(ChipData cd) {
+	public void addChipData(OldChipData cd) {
 		int resultNum = 0;
 		boolean bFoundDist = false;
 		boolean bFoundAttempt = false;
 		for(; resultNum < results.size(); resultNum++) {
-			ChipData curCd = get(resultNum);
+			OldChipData curCd = get(resultNum);
 			if (curCd.getDistName().equals( cd.getDistName() )) {
 				bFoundDist = true;
 				if (curCd.getAttempt() == cd.getAttempt()) {
@@ -150,7 +150,7 @@ public class ResultsProtocol {
 			if (curResultNum == resultNum) {
 				continue;
 			}
-			ChipData curCd = get(curResultNum);
+			OldChipData curCd = get(curResultNum);
 			if (!curCd.getDistName().equals( cd.getDistName() )) {
 				continue;
 			}
@@ -205,7 +205,7 @@ public class ResultsProtocol {
 	 * updates all places of current distance
 	 * @param cd
 	 */
-	public void overwriteChipData(ChipData cd) {
+	public void overwriteChipData(OldChipData cd) {
 		
 		int attempt = cd.getAttempt() - 1;
 		if (attempt == 0) {
@@ -220,7 +220,7 @@ public class ResultsProtocol {
 		
 		int resultNum = 0;
 		for(;resultNum < results.size(); resultNum++) {
-			ChipData curCd = results.get(resultNum);
+			OldChipData curCd = results.get(resultNum);
 			if (curCd.getDistName().equals(distName)) {
 				if (curCd.getAttempt() == attempt) {
 					if (curCd.getUserName().equals(userName)) {
@@ -273,14 +273,14 @@ public class ResultsProtocol {
 		int startNum = -1, endNum = -1;
 		int resultNum = 0;
 		for(; resultNum < results.size(); resultNum++) {
-			ChipData curCd = results.get(resultNum);
+			OldChipData curCd = results.get(resultNum);
 			if (curCd.getDistName().equals(distName)) {
 				break;
 			}
 		}
 		startNum = resultNum;
 		for(; resultNum < results.size(); resultNum++) {
-			ChipData curCd = results.get(resultNum);
+			OldChipData curCd = results.get(resultNum);
 			if (!curCd.getDistName().equals(distName)) {
 				break;
 			}
@@ -319,7 +319,7 @@ public class ResultsProtocol {
 	 * @param row
 	 * @return
 	 */
-	public ChipData get(int num) {
+	public OldChipData get(int num) {
 		return results.get(num);
 	}
 	
@@ -330,11 +330,11 @@ public class ResultsProtocol {
 	 * @param bDisqualified
 	 * @return
 	 */
-	public int getTheoreticalPlace(ChipData chipData) {
+	public int getTheoreticalPlace(OldChipData chipData) {
 		int cnt = 0;
 		int resultsWorseCnt = 0;
 		for(int i = 0; i < results.size(); i++) {
-			ChipData curResult = results.get(i);
+			OldChipData curResult = results.get(i);
 			if (curResult.getDistName().equals(chipData.getDistName())) {
 				cnt++;
 				if (chipData.isTheoreticalBetterThen(curResult) != ResultsComparison.RESULT_WORSE) {
@@ -351,11 +351,11 @@ public class ResultsProtocol {
 	 * @param results
 	 * @return
 	 */
-	public int getTheoreticalAttemptPlace(ChipData chipData) {
+	public int getTheoreticalAttemptPlace(OldChipData chipData) {
 		int cnt = 0;
 		int resultsWorseCnt = 0;
 		for(int i = 0; i < results.size(); i++) {
-			ChipData curResult = results.get(i);
+			OldChipData curResult = results.get(i);
 			if (curResult.getDistName().equals(chipData.getDistName()) && curResult.getAttempt() == chipData.getAttempt()) {
 				cnt++;
 				if (chipData.isTheoreticalBetterThen(curResult) != ResultsComparison.RESULT_WORSE) {
@@ -378,7 +378,7 @@ public class ResultsProtocol {
 		}*/
 		int attempt = 1;
 		for(int i = 0; i < results.size(); i++) {
-			ChipData curResult = results.get(i);
+			OldChipData curResult = results.get(i);
 			if (curResult.getDistName().equals(distName)) {
 				if (curResult.getUserName().equals(userName) && curResult.getDistName().equals(distName)) {
 					attempt++;
@@ -397,7 +397,7 @@ public class ResultsProtocol {
 
 	public String toString() {
 		String s = "results";
-		for(ChipData r : results) {
+		for(OldChipData r : results) {
 			s += "\n" + r.toString();
 		}
 		return s;

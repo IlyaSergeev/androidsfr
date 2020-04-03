@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.widget.TextView;
 
 @Deprecated
-public class ConfirmDialog extends AlertDialog.Builder {
+public class OldConfirmDialog extends AlertDialog.Builder {
 
 	private TextView view;
 	OnClickListener onClickListener;
@@ -21,7 +21,7 @@ public class ConfirmDialog extends AlertDialog.Builder {
 		public void onClick(boolean bResult);
 	}
 	
-	protected ConfirmDialog(Context context, String title, String text, OnClickListener ocl) {
+	protected OldConfirmDialog(Context context, String title, String text, OnClickListener ocl) {
 		super(context);
 		this.setTitle(title);
 		if (!text.isEmpty()) {
@@ -55,7 +55,7 @@ public class ConfirmDialog extends AlertDialog.Builder {
 	
 	
 	public static void showDialog(Context context, String title, String text, OnClickListener onClickListener) {
-		ConfirmDialog d = new ConfirmDialog(context, title, text, onClickListener);
+		OldConfirmDialog d = new OldConfirmDialog(context, title, text, onClickListener);
 		d.show(); 
 	}
 	

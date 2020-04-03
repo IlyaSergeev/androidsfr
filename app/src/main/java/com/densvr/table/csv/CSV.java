@@ -3,20 +3,12 @@ package com.densvr.table.csv;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.LinkedList;
-import java.util.List;
 
-import com.densvr.activities.MainActivity;
-import com.densvr.nfcreader.Globals;
-
-import android.app.Activity;
-import android.content.Context;
+import com.densvr.nfcreader.OldGlobals;
 
 public class CSV {
 	
@@ -25,7 +17,7 @@ public class CSV {
 		LinkedList<LinkedList<String>> data1 = new LinkedList<LinkedList<String>>();
 		int cols = 0;
 		try {
-			File myFile = new File(Globals.CSV_ADDRESS + name);
+			File myFile = new File(OldGlobals.CSV_ADDRESS + name);
 			//if (!myFile.exists()) {
 			//	if (!myFile.createNewFile()) {
 			//		return null;
@@ -71,7 +63,7 @@ public class CSV {
 	public static void write(Table data, String name) {
 		data.expand();
 		try {
-			File myFile = new File(Globals.CSV_ADDRESS + name);
+			File myFile = new File(OldGlobals.CSV_ADDRESS + name);
 			myFile.createNewFile();
 			FileOutputStream fOut = new FileOutputStream(myFile);
 			OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
@@ -157,7 +149,7 @@ public class CSV {
 	}
 	
 	public static void createNamesAndDists() {
-		saveArr(dists, Globals.CSV_DISTS);
-		saveArr(names, Globals.CSV_NAMES);
+		saveArr(dists, OldGlobals.CSV_DISTS);
+		saveArr(names, OldGlobals.CSV_NAMES);
 	}
 }

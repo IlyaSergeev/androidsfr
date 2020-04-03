@@ -11,7 +11,7 @@ import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.Table;
 
 @Deprecated
-public class ChipData {
+public class OldChipData {
 
 
     private static final String TAG = "ChipData";
@@ -97,7 +97,7 @@ public class ChipData {
 //====================================
 
 
-    public ChipData() {
+    public OldChipData() {
         cps = new LinkedList<CP>();
         distName = new String();
         userName = new String();
@@ -115,10 +115,10 @@ public class ChipData {
      *
      * @return
      */
-    public static ChipData parseChipArray(byte[] bytes) {
-        ChipData chipData = new ChipData();
+    public static OldChipData parseChipArray(byte[] bytes) {
+        OldChipData chipData = new OldChipData();
         chipData.userId = parseUserId(bytes);
-        Table tNames = CSV.read(Globals.CSV_NAMES);
+        Table tNames = CSV.read(OldGlobals.CSV_NAMES);
         chipData.userName = TableNamesActivity.getUserById(tNames, chipData.getUserId());
         if (chipData.userName == null) {
             chipData.userName = String.valueOf(chipData.getUserId());
@@ -156,8 +156,8 @@ public class ChipData {
      *
      * @return can return null
      */
-    public static ChipData parseCSVResultsLine(List<String> line) {
-        ChipData chipData = new ChipData();
+    public static OldChipData parseCSVResultsLine(List<String> line) {
+        OldChipData chipData = new OldChipData();
         int iter = 0;
         chipData.userName = line.get(iter++);
         try {
@@ -217,8 +217,8 @@ public class ChipData {
      *
      * @return
      */
-    public static ChipData parseDistsResultsLine(List<String> line) {
-        ChipData chipData = new ChipData();
+    public static OldChipData parseDistsResultsLine(List<String> line) {
+        OldChipData chipData = new OldChipData();
         for (int i = 0; i < line.size(); i++) {
             String s = line.get(i);
             try {
@@ -466,7 +466,7 @@ public class ChipData {
      *
      * @return
      */
-    public ResultsComparison isBetterThen(ChipData cd) {
+    public ResultsComparison isBetterThen(OldChipData cd) {
         if (!this.isFinallyDisqualified() && cd.isFinallyDisqualified()) {
             return ResultsComparison.RESULT_BETTER;
         }
@@ -490,7 +490,7 @@ public class ChipData {
      *
      * @return
      */
-    public ResultsComparison isTheoreticalBetterThen(ChipData cd) {
+    public ResultsComparison isTheoreticalBetterThen(OldChipData cd) {
         if (cd.isFinallyDisqualified()) {
             return ResultsComparison.RESULT_BETTER;
         }
@@ -604,17 +604,17 @@ public class ChipData {
         return (int) d % cnt;
     }
 
-    public static ChipData genChipDataForImitation() {
+    public static OldChipData genChipDataForImitation() {
         return genChipDataForImitationRandom();
         //return presetChipData();
     }
 
 
-    private static ChipData genChipDataForImitationRandom() {
+    private static OldChipData genChipDataForImitationRandom() {
 
         //random dist
-        DistsProtocol dists = DistsProtocol.readFromDatabase();
-        ChipData chipData = dists.getDistByNumber(randInt(dists.getCnt()));
+        OldDistsProtocol dists = OldDistsProtocol.readFromDatabase();
+        OldChipData chipData = dists.getDistByNumber(randInt(dists.getCnt()));
         //ChipData chipData = dists.getDistByNumber(0);
 
         MainActivity.makeText("дистанция " + chipData.getDistName());
@@ -623,7 +623,7 @@ public class ChipData {
 
         //generate random user
         chipData.userId = randInt(10);
-        Table tNames = CSV.read(Globals.CSV_NAMES);
+        Table tNames = CSV.read(OldGlobals.CSV_NAMES);
         chipData.userName = TableNamesActivity.getUserById(tNames, chipData.userId);
         //chipData.userName = "Иванов Петя";
 
@@ -690,10 +690,10 @@ public class ChipData {
         return chipData;
     }
 
-    private static ChipData presetChipData() {
+    private static OldChipData presetChipData() {
 
 
-        ChipData chipData = new ChipData();
+        OldChipData chipData = new OldChipData();
         chipData.cps.add(new CP(35, Time.parseString("0:00"), Time.parseString("0:00")));
         chipData.cps.add(new CP(38, Time.parseString("0:12"), Time.parseString("0:12")));
         chipData.cps.add(new CP(43, Time.parseString("0:17"), Time.parseString("0:05")));
@@ -706,7 +706,7 @@ public class ChipData {
 
         //generate random user
         chipData.userId = randInt(10);
-        Table tNames = CSV.read(Globals.CSV_NAMES);
+        Table tNames = CSV.read(OldGlobals.CSV_NAMES);
         chipData.userName = TableNamesActivity.getUserById(tNames, chipData.userId);
 
         return chipData;

@@ -1,7 +1,6 @@
 package com.densvr.activities;
 
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -9,8 +8,6 @@ import java.util.Set;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ListFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,18 +15,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 
-import com.densvr.nfcreader.ChipData;
-import com.densvr.nfcreader.DistsProtocol;
-import com.densvr.nfcreader.Globals;
+import com.densvr.nfcreader.OldChipData;
+import com.densvr.nfcreader.OldDistsProtocol;
+import com.densvr.nfcreader.OldGlobals;
 import com.densvr.nfcreader.ResultsProtocol;
-import com.densvr.nfcreader.ChipData.CP;
+import com.densvr.nfcreader.OldChipData.CP;
 import com.densvr.androidsfr.R;
 import com.densvr.nfcreader.Time;
 import com.densvr.table.TableFixHeaders;
@@ -62,7 +58,7 @@ public class TableIntermediateActivity extends Activity {
 	/**
 	 * link to Globals.chipData
 	 */
-	private ChipData chipData; 
+	private OldChipData chipData;
 
 	/**
 	 * index wrong cp
@@ -83,7 +79,7 @@ public class TableIntermediateActivity extends Activity {
 		setContentView(R.layout.activity_intermediate_results);
 		//setContentView(R.layout.table);
 
-		chipData = Globals.chipData;
+		chipData = OldGlobals.chipData;
 		
 		//inites disqCpNum
 		disqCPNum = -1;
@@ -187,8 +183,8 @@ public class TableIntermediateActivity extends Activity {
 	private boolean createIntermediateResultsTable() {
 		
 		//init distance 
-		DistsProtocol distsProtocol = DistsProtocol.readFromDatabase();
-		ChipData distData = null;
+		OldDistsProtocol distsProtocol = OldDistsProtocol.readFromDatabase();
+		OldChipData distData = null;
 		if (chipData.getDistName().isEmpty()) {
 			//TODO predict distance
 			distData = distsProtocol.predictDistance(chipData);
@@ -360,10 +356,10 @@ public class TableIntermediateActivity extends Activity {
 		//Log.i("android SFR", rp.toString());
 		if (checkBoxOverwriteAttempt.isChecked()) {
 			//overwrite
-			rp.overwriteChipData(Globals.chipData);
+			rp.overwriteChipData(OldGlobals.chipData);
 		} else {
 			//insert 
-			rp.addChipData(Globals.chipData);
+			rp.addChipData(OldGlobals.chipData);
 		}
 		rp.writeToDatabase();
 		//Log.i("android SFR", rp.toString());
@@ -429,12 +425,12 @@ public class TableIntermediateActivity extends Activity {
 	 * @return
 	 */
 	private boolean switchToBackwardDistance() {
-		DistsProtocol distsProtocol = DistsProtocol.readFromDatabase();
-		ChipData distance = distsProtocol.getDistByName(chipData.getDistName());
+		OldDistsProtocol distsProtocol = OldDistsProtocol.readFromDatabase();
+		OldChipData distance = distsProtocol.getDistByName(chipData.getDistName());
 		if (distance == null) {
 			return false;
 		}
-		ChipData backwardDistance = distsProtocol.addBackwardDist(distance, getString(R.string.backward_distance_postfix));
+		OldChipData backwardDistance = distsProtocol.addBackwardDist(distance, getString(R.string.backward_distance_postfix));
 		if (backwardDistance == null) {
 			return false;
 		}

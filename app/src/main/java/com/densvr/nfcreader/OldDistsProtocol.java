@@ -7,24 +7,24 @@ import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.Table;
 
 @Deprecated
-public class DistsProtocol {
+public class OldDistsProtocol {
 
-	private List<ChipData> dists;
+	private List<OldChipData> dists;
 	
 	
 	
-	private DistsProtocol() {
-		dists = new LinkedList<ChipData>();
+	private OldDistsProtocol() {
+		dists = new LinkedList<OldChipData>();
 	}
 	
 	/**
 	 * reads dists from Globals.CSV_DISTS
 	 * @return can return null
 	 */
-	public static DistsProtocol readFromDatabase() {
-		DistsProtocol distsProtocol = new DistsProtocol();
-		List<ChipData> dists = distsProtocol.dists;
-		Table tDists = CSV.read(Globals.CSV_DISTS);
+	public static OldDistsProtocol readFromDatabase() {
+		OldDistsProtocol distsProtocol = new OldDistsProtocol();
+		List<OldChipData> dists = distsProtocol.dists;
+		Table tDists = CSV.read(OldGlobals.CSV_DISTS);
 		
 		if (tDists == null) {
 			return distsProtocol; 
@@ -47,7 +47,7 @@ public class DistsProtocol {
 					break;
 				}
 			}
-			ChipData cd = ChipData.parseDistsResultsLine(distCps);
+			OldChipData cd = OldChipData.parseDistsResultsLine(distCps);
 			if (cd == null) {
 				return null;
 			}
@@ -63,12 +63,12 @@ public class DistsProtocol {
 	public void writeToDatabase() {
 		Table tDists = new Table();
 		for(int distsNum = 0; distsNum < dists.size(); distsNum++) {
-			ChipData distance = dists.get(distsNum);
+			OldChipData distance = dists.get(distsNum);
 			tDists.setValue(0, distsNum, distance.getDistName());
 			int selectingScope = 0;
 			int cellCnt = 1;
 			for(int cpNum = 0; cpNum < distance.getCPs().size(); cpNum++) {
-				ChipData.CP cp = distance.getCPs().get(cpNum);
+				OldChipData.CP cp = distance.getCPs().get(cpNum);
 				if (cp.number == -1) {
 					selectingScope++;
 				} else if (selectingScope > 0) {
@@ -80,7 +80,7 @@ public class DistsProtocol {
 				}
 			}
 		}
-		CSV.write(tDists, Globals.CSV_DISTS);
+		CSV.write(tDists, OldGlobals.CSV_DISTS);
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class DistsProtocol {
 	 * @return true - if no dists, false - if exists
 	 */
 	public static boolean isThereAreNoDists() {
-		Table tDists = CSV.read(Globals.CSV_DISTS);
+		Table tDists = CSV.read(OldGlobals.CSV_DISTS);
 		if (tDists == null) {
 			return true; 
 		} else if (tDists.isEmpty()) {
@@ -113,9 +113,9 @@ public class DistsProtocol {
 	 * @param name
 	 * @return null if not found
 	 */
-	public ChipData getDistByName(String name) {
+	public OldChipData getDistByName(String name) {
 		for(int i = 0; i < dists.size(); i++) {
-			ChipData cd = dists.get(i);
+			OldChipData cd = dists.get(i);
 			if (cd.getDistName().equals(name)) {
 				return cd;
 			}
@@ -128,7 +128,7 @@ public class DistsProtocol {
 	 * @param distance
 	 * @return backward distance
 	 */
-	public ChipData addBackwardDist(ChipData distance, String backwardPostfixStr) {
+	public OldChipData addBackwardDist(OldChipData distance, String backwardPostfixStr) {
 		int idx = dists.indexOf(distance);
 		if (idx == -1) {
 			return null;
@@ -140,18 +140,18 @@ public class DistsProtocol {
         } else {
             backwardDistanceName = distance.getDistName() + backwardPostfixStr;
         }
-        ChipData backwardDistance = getDistByName(backwardDistanceName);
+        OldChipData backwardDistance = getDistByName(backwardDistanceName);
         if (backwardDistance != null) {
             return backwardDistance;
         }
-		backwardDistance = new ChipData();
+		backwardDistance = new OldChipData();
 		backwardDistance.setDistName(backwardDistanceName);
 		for(int i = 0; i < distance.getCPs().size(); i++) {
-			ChipData.CP cp = new ChipData.CP();
+			OldChipData.CP cp = new OldChipData.CP();
 			cp.number = distance.getCPs().get(i).number;
 			backwardDistance.getCPs().add(0, cp);
 		}
-        ChipData.CP cp = backwardDistance.getCPs().get(0);
+        OldChipData.CP cp = backwardDistance.getCPs().get(0);
         backwardDistance.getCPs().set(0, backwardDistance.getCPs().get(backwardDistance.getCPs().size() - 1));
         backwardDistance.getCPs().set(backwardDistance.getCPs().size() - 1, cp);
 		dists.add(idx + 1, backwardDistance);
@@ -164,7 +164,7 @@ public class DistsProtocol {
 	 * @return 
 	 */
 	
-	public ChipData predictDistance(ChipData cd) {
+	public OldChipData predictDistance(OldChipData cd) {
 		if (dists.size() == 0) {
 			return null;
 		} 
@@ -181,7 +181,7 @@ public class DistsProtocol {
 		return dists.get(bestIdx);
 	}
 	
-	public ChipData getDistByNumber(int num) {
+	public OldChipData getDistByNumber(int num) {
 		return dists.get(num);
 	}
 	

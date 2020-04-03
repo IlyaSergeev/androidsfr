@@ -2,14 +2,9 @@ package com.densvr.activities;
 
 import java.util.LinkedList;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.densvr.nfcreader.Globals;
-import com.densvr.androidsfr.R;
-import com.densvr.table.TableFixHeaders;
+import com.densvr.nfcreader.OldGlobals;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.MatrixTableAdapter;
 import com.densvr.table.csv.MatrixTableAdapter.EditTableOption;
@@ -19,7 +14,7 @@ import com.densvr.table.csv.TableActivity;
 public class TableNamesActivity extends TableActivity {
 	
 	public TableNamesActivity() {
-		super(Globals.CSV_NAMES);
+		super(OldGlobals.CSV_NAMES);
 	}
 
 	@Override
@@ -112,7 +107,7 @@ public class TableNamesActivity extends TableActivity {
 	 * @return
 	 */
 	public static void writeUserToCSV(int userId, String userName) {
-		Table tUsers = CSV.read(Globals.CSV_NAMES);
+		Table tUsers = CSV.read(OldGlobals.CSV_NAMES);
 		if (tUsers == null) {
 			tUsers = new Table();
 			tUsers.setValue(0, 0, "Чип");
@@ -129,7 +124,7 @@ public class TableNamesActivity extends TableActivity {
 		}
 		tUsers.setValue(row, 0, sUserId);
 		tUsers.setValue(row, 1, userName);
-		CSV.write(tUsers, Globals.CSV_NAMES);
+		CSV.write(tUsers, OldGlobals.CSV_NAMES);
 	}
 	
 }

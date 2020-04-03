@@ -2,10 +2,10 @@ package com.densvr.activities;
 
 import java.io.File;
 
-import com.densvr.nfcreader.ChipData;
-import com.densvr.nfcreader.DistsProtocol;
-import com.densvr.nfcreader.Globals;
-import com.densvr.nfcreader.NfcVReaderTask;
+import com.densvr.nfcreader.OldChipData;
+import com.densvr.nfcreader.OldDistsProtocol;
+import com.densvr.nfcreader.OldGlobals;
+import com.densvr.nfcreader.OldNfcVReaderTask;
 import com.densvr.androidsfr.R;
 
 import android.content.Context;
@@ -67,9 +67,9 @@ public class MainActivity extends ListActivity {
 		//CSV.createNamesAndDists();
 	
 		//Globals.CSV_ADDRESS = getApplicationContext().getFilesDir().getAbsolutePath() + "/AndroidSFR/";
-		Globals.CSV_ADDRESS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+		OldGlobals.CSV_ADDRESS = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 				.getAbsolutePath() + "/AndroidSFR/";
-		File dataDir = new File(Globals.CSV_ADDRESS);
+		File dataDir = new File(OldGlobals.CSV_ADDRESS);
 		if (!dataDir.canWrite()) {
 			dataDir.mkdirs();
 		}
@@ -149,11 +149,11 @@ public class MainActivity extends ListActivity {
 		LinearLayout layout = (LinearLayout)v;
 		TextView textView = (TextView)layout.findViewById(R.id.item_textView);
 		if (textView.getText().equals("chip imitation")) {// chip imitation
-			if (DistsProtocol.isThereAreNoDists()) {
+			if (OldDistsProtocol.isThereAreNoDists()) {
 				MainActivity.makeText("нет дистанций");
 				return;
 			} 
-			Globals.chipData = ChipData.genChipDataForImitation();
+			OldGlobals.chipData = OldChipData.genChipDataForImitation();
 			onNewChipData();
 			return;
 		} else if (textView.getText().length() == 0) {
@@ -223,11 +223,11 @@ public class MainActivity extends ListActivity {
 			for (String tech : techList) {
 				if (searchedTech.equals(tech)) {
 					//Log.d("Tech", tech);
-					NfcVReaderTask task = new NfcVReaderTask();
+					OldNfcVReaderTask task = new OldNfcVReaderTask();
 					if (!task.execute(tag)) {
 						MainActivity.makeText("поднесите чип еще раз");
 					} else {
-						Globals.chipData = task.getChipData();
+						OldGlobals.chipData = task.getChipData();
 						onNewChipData();
 					}	
 					break;
@@ -241,7 +241,7 @@ public class MainActivity extends ListActivity {
 	 * @return
 	 */
 	private boolean onNewChipData() {
-		if (Globals.chipData.getCPs().size() == 0) {
+		if (OldGlobals.chipData.getCPs().size() == 0) {
 			MainActivity.makeText("пустой чип");
 			return false;
 		}
@@ -251,7 +251,7 @@ public class MainActivity extends ListActivity {
 			startActivity(actIntent);
 		} else {
 			//complex mode
-			if (DistsProtocol.isThereAreNoDists()) {
+			if (OldDistsProtocol.isThereAreNoDists()) {
 				MainActivity.makeText("нет дистанций");
 				return false;
 			}

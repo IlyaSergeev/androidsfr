@@ -8,9 +8,6 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -21,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.densvr.activities.MainActivity;
-import com.densvr.nfcreader.ConfirmDialog;
+import com.densvr.nfcreader.OldConfirmDialog;
 import com.densvr.androidsfr.R;
 import com.densvr.table.BaseTableAdapter;
 import com.densvr.table.TableFixHeaders;
@@ -217,7 +214,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 					dialog.cancel();
 					return;
 				} 
-				ConfirmDialog.showDialog(context, "удалить строку?", table.rowToString(row), new ConfirmDialog.OnClickListener() {
+				OldConfirmDialog.showDialog(context, "удалить строку?", table.rowToString(row), new OldConfirmDialog.OnClickListener() {
 					@Override
 					public void onClick(boolean bResult) {
 						if (bResult) {
@@ -239,7 +236,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 				MatrixTableAdapter.this.onDataSetObserver.onDataChanged(table);
 				break;
 			case EDIT_TABLE_DELETE_COLUMN:
-				ConfirmDialog.showDialog(context, "удалить столбец?", table.columnToString(col), new ConfirmDialog.OnClickListener() {
+				OldConfirmDialog.showDialog(context, "удалить столбец?", table.columnToString(col), new OldConfirmDialog.OnClickListener() {
 					@Override
 					public void onClick(boolean bResult) {
 						if (bResult) {

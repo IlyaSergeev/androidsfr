@@ -6,20 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.densvr.activities.MainActivity;
-import com.densvr.table.TableFixHeaders;
 
-import android.content.Intent;
-import android.content.res.TypedArray;
 import android.nfc.Tag;
 import android.nfc.tech.NfcV;
-import android.os.AsyncTask;
 import android.util.Log;
 
 @Deprecated
-public class NfcVReaderTask {
+public class OldNfcVReaderTask {
 
 	//TableFixHeaders tableFixHeaders = null;
-	private ChipData chipData;
+	private OldChipData chipData;
 	
 	public boolean execute(Tag... params) {
 		Tag tag = params[0];
@@ -90,14 +86,14 @@ public class NfcVReaderTask {
 			arrayData[j] = data.get(j);
 		}
 
-		chipData = ChipData.parseChipArray(arrayData);
+		chipData = OldChipData.parseChipArray(arrayData);
 		if (chipData == null) {
 			return false;
 		}
 		return true;
 	}
 	
-	public ChipData getChipData() {
+	public OldChipData getChipData() {
 		return chipData;
 	}
 
