@@ -86,3 +86,4 @@ lint/tmp/
 .idea/*
 /.idea/misc.xml
 /.idea/codeStyles/Project.xml
+.DS_Store
