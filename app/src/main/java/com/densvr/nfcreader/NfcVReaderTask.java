@@ -15,7 +15,7 @@ import android.nfc.tech.NfcV;
 import android.os.AsyncTask;
 import android.util.Log;
 
-
+@Deprecated
 public class NfcVReaderTask {
 
 	//TableFixHeaders tableFixHeaders = null;

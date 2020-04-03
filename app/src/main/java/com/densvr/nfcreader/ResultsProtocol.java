@@ -8,6 +8,7 @@ import com.densvr.nfcreader.ChipData.ResultsComparison;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.Table;
 
+@Deprecated
 public class ResultsProtocol {
 
 	private List<ChipData> results;

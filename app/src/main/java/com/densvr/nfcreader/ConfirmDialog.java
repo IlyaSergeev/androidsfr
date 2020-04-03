@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.TextView;
 
+@Deprecated
 public class ConfirmDialog extends AlertDialog.Builder {
 
 	private TextView view;

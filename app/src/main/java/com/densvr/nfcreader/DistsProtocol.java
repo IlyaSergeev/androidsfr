@@ -6,6 +6,7 @@ import java.util.List;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.Table;
 
+@Deprecated
 public class DistsProtocol {
 
 	private List<ChipData> dists;

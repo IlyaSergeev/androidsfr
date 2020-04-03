@@ -10,7 +10,7 @@ import com.densvr.activities.TableNamesActivity;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.Table;
 
-
+@Deprecated
 public class ChipData {
 
 

@@ -1,5 +1,6 @@
 package com.densvr.nfcreader;
 
+@Deprecated
 public class Globals {
 	
 	//philips

@@ -2,6 +2,7 @@ package com.densvr.nfcreader;
 
 import android.annotation.SuppressLint;
 
+@Deprecated
 @SuppressLint("DefaultLocale") public class Time {
 
 	
