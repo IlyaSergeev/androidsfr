@@ -1,30 +1,18 @@
 package com.densvr.nfcreader
 
-import java.text.SimpleDateFormat
-import java.util.*
+import java.util.concurrent.TimeUnit
 
-private const val timeFormatHHmmss = "HH:mm:ss"
-private const val timeFormatMmss = "mm:ss"
-private const val timeFormatSs = "ss"
+fun String.tryToTimeMillis(): Long {
 
-fun String.tryToTimeMillis(): Long? {
-    return tryParseTimeMillisWithFormat(timeFormatSs, timeFormatMmss, timeFormatHHmmss)?.time
+    val timeLexems = split(":").reversed()
+    val secondWithMillisLexems = timeLexems.getOrNull(0)?.split(".")
+
+    return secondWithMillisLexems?.getOrNull(1)?.substring(0, 3).parseTimeOrZero(TimeUnit.MILLISECONDS) +
+            secondWithMillisLexems?.getOrNull(0).parseTimeOrZero(TimeUnit.SECONDS) +
+            timeLexems.getOrNull(1).parseTimeOrZero(TimeUnit.MINUTES) +
+            timeLexems.getOrNull(2).parseTimeOrZero(TimeUnit.HOURS)
 }
 
-private fun String.tryParseTimeMillisWithFormat(vararg timeFormats: String): Date? {
-    timeFormats.forEach { simpleDateFormat ->
-        try {
-            return getTimeFormat(simpleDateFormat).parse(this)
-        } catch (error: Throwable) {
-        }
-    }
-    return null
-}
-
-private val utcTimeZone = TimeZone.getTimeZone("UTC")
-
-private fun getTimeFormat(template: String): SimpleDateFormat {
-    return SimpleDateFormat(template, Locale.getDefault()).apply {
-        timeZone = utcTimeZone
-    }
+private fun String?.parseTimeOrZero(timeUnit: TimeUnit): Long {
+    return timeUnit.toMillis(this?.toLongOrNull() ?: 0L)
 }
