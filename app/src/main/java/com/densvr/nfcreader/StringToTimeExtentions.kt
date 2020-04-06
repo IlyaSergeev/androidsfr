@@ -28,27 +28,21 @@ fun Long.toDelayTime(): String {
     val stringWithoutHours = this - TimeUnit.HOURS.toMillis(hours)
     val minutes = TimeUnit.MILLISECONDS.toMinutes(stringWithoutHours)
 
-    val stringWithoutHoursAndSecond = stringWithoutHours - TimeUnit.MINUTES.toMillis(minutes)
-    val seconds = TimeUnit.MILLISECONDS.toSeconds(this)
+    val stringWithoutHoursAndMinutes = stringWithoutHours - TimeUnit.MINUTES.toMillis(minutes)
+    val seconds = TimeUnit.MILLISECONDS.toSeconds(stringWithoutHoursAndMinutes)
 
-    val millis = stringWithoutHoursAndSecond - TimeUnit.SECONDS.toMillis(seconds)
+    val millis = stringWithoutHoursAndMinutes - TimeUnit.SECONDS.toMillis(seconds)
 
     val result = StringBuilder()
-    var addWithoutCheck = false
     if (hours > 0) {
-        addWithoutCheck = true
         result.append("%02d:".format(hours))
     }
-    if (addWithoutCheck || minutes > 0) {
-        addWithoutCheck = true
+    if (hours > 0 || minutes > 0) {
         result.append("%02d:".format(minutes))
     }
-    if (addWithoutCheck || seconds > 0) {
-        addWithoutCheck = true
-        result.append("%02d".format(seconds))
-    }
+    result.append("%02d".format(seconds))
     if (millis > 0) {
-        result.append("%03d:".format(millis))
+        result.append(".%03d".format(millis))
     }
     return result.toString()
 }
