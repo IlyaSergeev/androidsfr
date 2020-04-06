@@ -30,8 +30,22 @@ class DelayStringToMillisTests {
     @Test
     fun parseMillisToMillisTest() {
 
-        val timeString = "00.132"
-        assertEquals(TimeUnit.MILLISECONDS.toMillis(132), timeString.tryParseDelayMillisOrZero())
+        val timeString = "00.032"
+        assertEquals(TimeUnit.MILLISECONDS.toMillis(32), timeString.tryParseDelayMillisOrZero())
+    }
+
+    @Test
+    fun parseMillisWithTwoSymbolsToMillisTest() {
+
+        val timeString = "00.12"
+        assertEquals(TimeUnit.MILLISECONDS.toMillis(120), timeString.tryParseDelayMillisOrZero())
+    }
+
+    @Test
+    fun parseMillisWithOneSymbolsToMillisTest() {
+
+        val timeString = "00.6"
+        assertEquals(TimeUnit.MILLISECONDS.toMillis(600), timeString.tryParseDelayMillisOrZero())
     }
 
     @Test
