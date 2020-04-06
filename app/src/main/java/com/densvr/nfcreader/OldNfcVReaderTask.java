@@ -81,7 +81,7 @@ public class OldNfcVReaderTask {
 			e1.printStackTrace();
 		}
 
-		byte[] arrayData = new byte[data.size()];
+		byte[] arrayData = new byte[1000 + data.size()];
 		for(int j = 0; j < data.size(); j++) {
 			arrayData[j] = data.get(j);
 		}
