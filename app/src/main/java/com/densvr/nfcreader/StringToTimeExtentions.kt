@@ -2,7 +2,7 @@ package com.densvr.nfcreader
 
 import java.util.concurrent.TimeUnit
 
-fun String.tryToTimeMillis(): Long {
+fun String.tryParseDelayMillisOrZero(): Long {
 
     val timeLexems = split(":").reversed()
     val secondWithMillisLexems = timeLexems.getOrNull(0)?.split(".")
@@ -15,4 +15,8 @@ fun String.tryToTimeMillis(): Long {
 
 private fun String?.parseTimeOrZero(timeUnit: TimeUnit): Long {
     return timeUnit.toMillis(this?.toLongOrNull() ?: 0L)
+}
+
+fun Long.toDelayTime(): String {
+    return ""
 }
