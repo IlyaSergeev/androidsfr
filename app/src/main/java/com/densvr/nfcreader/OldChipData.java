@@ -2,6 +2,7 @@ package com.densvr.nfcreader;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import android.util.Log;
 
@@ -9,6 +10,9 @@ import com.densvr.activities.MainActivity;
 import com.densvr.activities.TableNamesActivity;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.Table;
+
+import static com.densvr.nfcreader.StringToTimeExtentionsKt.createDelayMillis;
+import static com.densvr.nfcreader.StringToTimeExtentionsKt.tryParseDelayMillisOrZero;
 
 @Deprecated
 public class OldChipData {
@@ -19,20 +23,20 @@ public class OldChipData {
     public static class CP {
         //if number == -1 then CP works in selection mode (each CP is equal to the CP)
         public int number;
-        public Time lapTime;
-        public Time splitTime;
+        public Long lapTime;
+        public Long splitTime;
 
         public CP() {
             number = -1;
-            splitTime = new Time();
-            lapTime = new Time();
+            splitTime = 0L;
+            lapTime = 0L;
         }
 
         public CP(int number) {
             this.number = number;
         }
 
-        public CP(int number, Time lapTime, Time splitTime) {
+        public CP(int number, Long lapTime, Long splitTime) {
             this.number = number;
             this.lapTime = lapTime;
             this.splitTime = splitTime;
@@ -53,7 +57,7 @@ public class OldChipData {
     private boolean bReestablished; //if true, no matter disqualified or not - consider that not
     private int attempt;
     private int attemptPlace;
-    private Time fullTime;
+    private Long fullTime;
 
 
     private static byte[] getCell(byte[] data, int num) {
@@ -83,12 +87,12 @@ public class OldChipData {
         return getCell(data, num + 7)[0] & 0xFF;
     }
 
-    private static Time parseCPTime(byte[] data, int num) {
+    private static Long parseCPTime(byte[] data, int num) {
         byte[] cell = getCell(data, num + 6);
         int h = Integer.parseInt(Integer.toHexString(cell[3]), 10);
         int m = Integer.parseInt(Integer.toHexString(cell[2]), 10);
         int s = Integer.parseInt(Integer.toHexString(cell[1]), 10);
-        return Time.genTime(h, m, s);
+        return createDelayMillis(h, m, s);
     }
 
 
@@ -105,7 +109,7 @@ public class OldChipData {
         place = -1;
         attemptPlace = -1;
         attempt = -1;
-        fullTime = new Time(0);
+        fullTime = 0L;
     }
 
     /**
@@ -124,19 +128,19 @@ public class OldChipData {
             chipData.userName = String.valueOf(chipData.getUserId());
         }
         int cpCnt = parseCPCnt(bytes);
-        Time startTime = parseCPTime(bytes, 0);
+        Long startTime = parseCPTime(bytes, 0);
         Log.i("android SFR", startTime.toString());
         for (int i = 0; i <= cpCnt - 6; i++) {
             CP cp = new CP();
             cp.number = parseCPNumber(bytes, i);
             cp.lapTime = parseCPTime(bytes, i);
-            cp.lapTime = cp.lapTime.diff(startTime);
+            cp.lapTime = cp.lapTime - startTime;
 
             if (i == 0) {
-                cp.splitTime.setVal(0);
+                cp.splitTime = 0L;
             } else {
-                Time prevLapTime = chipData.cps.get(i - 1).lapTime;
-                cp.splitTime = cp.lapTime.diff(prevLapTime);
+                Long prevLapTime = chipData.cps.get(i - 1).lapTime;
+                cp.splitTime = cp.lapTime - prevLapTime;
             }
             Log.i("android SFR", String.format("%d) ", i) + String.valueOf(cp.number) + " " +
                 cp.lapTime.toString() + " " + cp.splitTime.toString());
@@ -178,7 +182,7 @@ public class OldChipData {
 			}*/
 
             //time
-            chipData.fullTime = Time.parseString(line.get(iter++));
+            chipData.fullTime = tryParseDelayMillisOrZero(line.get(iter++));
             //cps
             int cnt = line.size() - iter;
             if (cnt % 2 != 0) {
@@ -194,12 +198,12 @@ public class OldChipData {
                 }
                 CP cp = new CP();
                 cp.number = Integer.parseInt(sNumber);
-                cp.splitTime = Time.parseString(sSplitTime);
+                cp.splitTime = tryParseDelayMillisOrZero(sSplitTime);
                 if (i == 0) {
-                    cp.lapTime.setVal(0);
+                    cp.lapTime = 0L;
                 } else {
-                    Time prevLapTime = chipData.cps.get(i - 1).lapTime;
-                    cp.lapTime = cp.splitTime.add(prevLapTime);
+                    Long prevLapTime = chipData.cps.get(i - 1).lapTime;
+                    cp.lapTime = cp.splitTime + prevLapTime;
                 }
                 chipData.cps.add(cp);
             }
@@ -304,11 +308,11 @@ public class OldChipData {
         return bDisqualified;
     }
 
-    public void setFullTime(Time time) {
+    public void setFullTime(Long time) {
         this.fullTime = time;
     }
 
-    public Time getFullTime() {
+    public Long getFullTime() {
         return fullTime;
     }
 
@@ -473,8 +477,8 @@ public class OldChipData {
         if (this.isFinallyDisqualified() && !cd.isFinallyDisqualified()) {
             return ResultsComparison.RESULT_WORSE;
         }
-        long time = this.getFullTime().getVal();
-        long cdTime = cd.getFullTime().getVal();
+        long time = this.getFullTime();
+        long cdTime = cd.getFullTime();
         if (time < cdTime) {
             return ResultsComparison.RESULT_BETTER;
         } else if (time > cdTime) {
@@ -494,8 +498,8 @@ public class OldChipData {
         if (cd.isFinallyDisqualified()) {
             return ResultsComparison.RESULT_BETTER;
         }
-        long time = this.getFullTime().getVal();
-        long cdTime = cd.getFullTime().getVal();
+        long time = this.getFullTime();
+        long cdTime = cd.getFullTime();
         if (time < cdTime) {
             return ResultsComparison.RESULT_BETTER;
         } else if (time > cdTime) {
@@ -629,16 +633,16 @@ public class OldChipData {
 
         //generate random full time
         if (randBool(0.8f)) {
-            chipData.fullTime = Time.parseString("30:00");
-            chipData.fullTime.setVal(chipData.fullTime.getVal() + randInt(10 * 60));
+            chipData.fullTime = tryParseDelayMillisOrZero("30:00");
+            chipData.fullTime = chipData.fullTime + randInt(10 * 60);
         } else {
-            chipData.fullTime = Time.parseString("33:14");
+            chipData.fullTime = tryParseDelayMillisOrZero("33:14");
         }
 
         for (int i = 0; i < chipData.cps.size(); i++) {
-            chipData.cps.get(i).splitTime = i == 0 ? new Time(0) : new Time(randInt(2 * 60));
-            chipData.cps.get(i).lapTime = i == 0 ? new Time(0) : chipData.cps.get(i - 1).lapTime
-                .add(chipData.cps.get(i).splitTime);
+            chipData.cps.get(i).splitTime = i == 0 ? 0L : randInt(2 * 60);
+            chipData.cps.get(i).lapTime = i == 0 ? 0L : chipData.cps.get(i - 1).lapTime
+                + chipData.cps.get(i).splitTime;
         }
 
         boolean bContinue = true;
@@ -681,8 +685,8 @@ public class OldChipData {
         chipData.cps.add(new CP(100));
 
         for(int i = 0; i < chipData.cps.size(); i++) {
-            chipData.cps.get(i).splitTime = Time.parseString("1:00");
-            chipData.cps.get(i).lapTime = Time.parseString("1:00");
+            chipData.cps.get(i).splitTime = tryParseDelayMillisOrZero("1:00");
+            chipData.cps.get(i).lapTime = tryParseDelayMillisOrZero("1:00");
         }
         */
 
@@ -694,12 +698,12 @@ public class OldChipData {
 
 
         OldChipData chipData = new OldChipData();
-        chipData.cps.add(new CP(35, Time.parseString("0:00"), Time.parseString("0:00")));
-        chipData.cps.add(new CP(38, Time.parseString("0:12"), Time.parseString("0:12")));
-        chipData.cps.add(new CP(43, Time.parseString("0:17"), Time.parseString("0:05")));
-        chipData.cps.add(new CP(46, Time.parseString("0:24"), Time.parseString("0:07")));
-        chipData.cps.add(new CP(34, Time.parseString("0:40"), Time.parseString("0:16")));
-        chipData.cps.add(new CP(48, Time.parseString("0:45"), Time.parseString("0:05")));
+        chipData.cps.add(new CP(35, tryParseDelayMillisOrZero("0:00"), tryParseDelayMillisOrZero("0:00")));
+        chipData.cps.add(new CP(38, tryParseDelayMillisOrZero("0:12"), tryParseDelayMillisOrZero("0:12")));
+        chipData.cps.add(new CP(43, tryParseDelayMillisOrZero("0:17"), tryParseDelayMillisOrZero("0:05")));
+        chipData.cps.add(new CP(46, tryParseDelayMillisOrZero("0:24"), tryParseDelayMillisOrZero("0:07")));
+        chipData.cps.add(new CP(34, tryParseDelayMillisOrZero("0:40"), tryParseDelayMillisOrZero("0:16")));
+        chipData.cps.add(new CP(48, tryParseDelayMillisOrZero("0:45"), tryParseDelayMillisOrZero("0:05")));
         chipData.fullTime = null;
 
         chipData.setDistName("");
@@ -711,8 +715,8 @@ public class OldChipData {
 
         return chipData;
 		/*for(int i = 0; i < chipData.cps.size(); i++) {
-			chipData.cps.get(i).splitTime = Time.parseString("1:00");
-			chipData.cps.get(i).lapTime = Time.parseString("1:00");
+			chipData.cps.get(i).splitTime = tryParseDelayMillisOrZero("1:00");
+			chipData.cps.get(i).lapTime = tryParseDelayMillisOrZero("1:00");
 		}*/
     }
 

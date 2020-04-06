@@ -46,3 +46,7 @@ fun Long.toDelayTime(): String {
     }
     return result.toString()
 }
+
+fun createDelayMillis(hours: Long, minutes: Long, seconds: Long) : Long {
+    return TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds)
+}
