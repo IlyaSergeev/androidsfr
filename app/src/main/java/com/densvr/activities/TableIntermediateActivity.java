@@ -27,7 +27,6 @@ import com.densvr.nfcreader.OldGlobals;
 import com.densvr.nfcreader.ResultsProtocol;
 import com.densvr.nfcreader.OldChipData.CP;
 import com.densvr.androidsfr.R;
-import com.densvr.nfcreader.Time;
 import com.densvr.table.TableFixHeaders;
 import com.densvr.table.csv.MatrixTableAdapter;
 import com.densvr.table.csv.MatrixTableAdapter.OnViewPostCreationWizard;
@@ -239,8 +238,8 @@ public class TableIntermediateActivity extends Activity {
 		//TODO outer cycle by distance and inner by chip data
 		//cp lines
 		//ChipData distData = TableDistsActivity.getDistByName(tDists, chipData.getDistName());
-		Time startTime = null;
-		Time finishTime = null;
+		Long startTime = 0L;
+		Long finishTime = 0L;
 		disqCPNum = -1; //not disqualified
 		int disqDistCpNum = -1;
 		int distCPIter = 0;
@@ -305,7 +304,7 @@ public class TableIntermediateActivity extends Activity {
 			}
 		}
 		if (startTime != null && finishTime != null) {
-			chipData.setFullTime(finishTime.diff(startTime));
+			chipData.setFullTime(finishTime - startTime);
 		}
 
 		//if disqualified, add rest cps
