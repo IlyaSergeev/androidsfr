@@ -1,15 +1,14 @@
 package com.densvr.nfcreader;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import android.util.Log;
 
 import com.densvr.activities.MainActivity;
 import com.densvr.activities.TableNamesActivity;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.Table;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static com.densvr.nfcreader.StringToTimeExtentionsKt.createDelayMillis;
 import static com.densvr.nfcreader.StringToTimeExtentionsKt.tryParseDelayMillisOrZero;
@@ -26,20 +25,16 @@ public class OldChipData {
         public Long lapTime;
         public Long splitTime;
 
-        public CP() {
-            number = -1;
-            splitTime = 0L;
-            lapTime = 0L;
-        }
-
-        public CP(int number) {
-            this.number = number;
-        }
-
         public CP(int number, Long lapTime, Long splitTime) {
             this.number = number;
             this.lapTime = lapTime;
             this.splitTime = splitTime;
+        }
+
+        public CP() {
+            number = -1;
+            splitTime = 0L;
+            lapTime = 0L;
         }
 
         public String toString() {
