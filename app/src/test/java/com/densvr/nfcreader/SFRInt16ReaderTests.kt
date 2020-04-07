@@ -7,7 +7,7 @@ import kotlin.test.assertFails
 /**
  * Created by i-sergeev on 07.04.2020.
  */
-class SFRByteArrayReaderTests {
+class SFRInt16ReaderTests {
 
     @Test
     fun readZeroInt16FromBytesAtZeroPositionTest() {
