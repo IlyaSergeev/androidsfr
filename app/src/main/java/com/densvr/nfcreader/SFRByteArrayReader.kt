@@ -24,7 +24,7 @@ internal fun ByteArray.readInt16Value(position: Int): Int {
     return readIntValue(position, INT_16_SIZE_BYTES)
 }
 
-private const val INT_32_SIZE_BYTES = 2
+private const val INT_32_SIZE_BYTES = 4
 internal fun ByteArray.readInt32Value(position: Int): Int {
     return readIntValue(position, INT_32_SIZE_BYTES)
 }
