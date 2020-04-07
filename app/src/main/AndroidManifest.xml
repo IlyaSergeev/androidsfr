@@ -20,7 +20,8 @@
         android:allowBackup="true"
         android:icon="@drawable/o_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name="com.densvr.App">
 
         <!-- Main Activity -->
         <activity
