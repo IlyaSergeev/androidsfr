@@ -10,47 +10,32 @@ class SFRParser(private val bytes: ByteArray, private val offset: Int, private v
         private const val POS_OPERATION = 4
         private const val POS_START_STATION = 5
         private const val POS_FIRST_RECORD = 6
-
-        private const val OPERATION_TYPE_OFFSET = 2
     }
 
     private fun Int.toBytesPosition(): Int {
         return offset + this * INT32_BYES_COUNT
     }
 
-    fun getIntAt(position: Int): Int {
-        return bytes.getInt32Value(position.toBytesPosition())
+    fun readIntAt(position: Int): Int {
+        return bytes.readInt32Value(position.toBytesPosition())
     }
 
-    val lastFormatTime
-        get() = getIntAt(POS_LAST_FORMAT_TIME)
+    val lastFormatTime: Long
+        get() = readIntAt(POS_LAST_FORMAT_TIME).toLong()
 
     val operationInfo: SFROperationInfo
-        get() = POS_OPERATION.toBytesPosition().let { position ->
-            SFROperationInfo(
-                bytes.getInt16Value(position),
-                bytes.getInt16Value(position + OPERATION_TYPE_OFFSET).asSFRChipType()
-            )
-        }
+        get() = bytes.readSFROperationInfo(POS_OPERATION.toBytesPosition())
 
     val chipNumber: Int
-    get() = POS_CHIP_NUMBER.toBytesPosition().let { position ->
-        
+        get() = bytes.readChipNumber(POS_CHIP_NUMBER.toBytesPosition())
+
+    val startPointInfo
+        get() = bytes.readSFRRecordInfo(POS_START_STATION.toBytesPosition())
+
+    val pointInfoCount
+        get() = (length / INT32_BYES_COUNT) - POS_START_STATION
+
+    fun pointInfoAt(position: Int): SFRRecordInfo {
+        return bytes.readSFRRecordInfo((POS_FIRST_RECORD + position).toBytesPosition())
     }
-}
-
-private fun Int.asSFRChipType(): SFRChipType? {
-    return when (this) {
-        0 -> SFRChipType.COMPETITOR
-        1 -> SFRChipType.SERVICE
-        else -> null
-    }
-}
-
-private fun ByteArray.getInt16Value(position: Int): Int {
-    return (this[0].toInt() shl 8) + this[position + 1]
-}
-
-private fun ByteArray.getInt32Value(position: Int): Int {
-    return (this[0].toInt() shl 24) + (this[position + 1].toInt() shl 16) + (this[position + 2].toInt() shl 8) + this[position + 3]
 }
