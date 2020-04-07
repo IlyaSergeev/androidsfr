@@ -12,11 +12,11 @@ private fun Int.asSFRChipType(): SFRChipType? {
 }
 
 internal fun ByteArray.readInt16Value(position: Int): Int {
-    return (this[0].toInt() shl 8) + this[position + 1]
+    return (this[position].toInt() shl 8) + this[position + 1]
 }
 
 internal fun ByteArray.readInt32Value(position: Int): Int {
-    return (this[0].toInt() shl 24) + (this[position + 1].toInt() shl 16) + (this[position + 2].toInt() shl 8) + this[position + 3]
+    return (this[position].toInt() shl 24) + (this[position + 1].toInt() shl 16) + (this[position + 2].toInt() shl 8) + this[position + 3]
 }
 
 internal fun ByteArray.readSFROperationInfo(position: Int): SFROperationInfo {
