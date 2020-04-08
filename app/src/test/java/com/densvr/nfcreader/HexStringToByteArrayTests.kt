@@ -32,13 +32,6 @@ class HexStringToByteArrayTests {
     @Test
     fun reverseConvertUpperTest() {
         val value = "040502987633A9BCD6D0FF"
-        assertEquals(value, value.hexAsByteArray.asHexUpper)
+        assertEquals(value, value.hexAsByteArray.asHex)
     }
-
-    @Test
-    fun reverseConvertLowerTest() {
-        val value = "040502987633a9bcd6d0ff"
-        assertEquals(value, value.hexAsByteArray.asHexLower)
-    }
-
 }

@@ -20,11 +20,12 @@ private fun ByteArray.readIntValue(position: Int, intLength: Int): Int {
 }
 
 private const val INT_16_SIZE_BYTES = 2
+private const val INT_32_SIZE_BYTES = 4
+
 internal fun ByteArray.readInt16Value(position: Int): Int {
     return readIntValue(position, INT_16_SIZE_BYTES)
 }
 
-private const val INT_32_SIZE_BYTES = 4
 internal fun ByteArray.readInt32Value(position: Int): Int {
     return readIntValue(position, INT_32_SIZE_BYTES)
 }
@@ -32,11 +33,13 @@ internal fun ByteArray.readInt32Value(position: Int): Int {
 internal fun ByteArray.readSFROperationInfo(position: Int): SFROperationInfo {
     return SFROperationInfo(
         readInt16Value(position),
-        readInt16Value(position + 2).asSFRChipType()
+        readInt16Value(position + INT_16_SIZE_BYTES).asSFRChipType()
     )
 }
 
 internal fun ByteArray.readChipNumber(position: Int): Int {
+
+    
     return readInt16Value(position) +
             200 * readInt16Value(position + INT_16_SIZE_BYTES) +
             40000 * readInt16Value(position + 2 * INT_16_SIZE_BYTES)
