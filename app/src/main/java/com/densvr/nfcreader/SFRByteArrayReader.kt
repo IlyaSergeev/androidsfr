@@ -11,10 +11,13 @@ private fun Int.asSFRChipType(): SFRChipType? {
     }
 }
 
+private val Byte.srfInt
+    inline get() = (0xFF and toInt())
+
 private fun ByteArray.readIntValue(position: Int, intLength: Int): Int {
     var result = 0
     for (i in position until (position + intLength)) {
-        result = (result shl 8) or (0xFF and this[i].toInt())
+        result = (result shl 8) or this[i].srfInt
     }
     return result
 }
@@ -38,11 +41,9 @@ internal fun ByteArray.readSFROperationInfo(position: Int): SFROperationInfo {
 }
 
 internal fun ByteArray.readChipNumber(position: Int): Int {
-
-    
-    return readInt16Value(position) +
-            200 * readInt16Value(position + INT_16_SIZE_BYTES) +
-            40000 * readInt16Value(position + 2 * INT_16_SIZE_BYTES)
+    return this[position].srfInt +
+            200 * this[position + 1].srfInt +
+            40000 * this[position + 2].srfInt
 }
 
 internal fun ByteArray.readSFRRecordInfo(position: Int): SFRRecordInfo {
