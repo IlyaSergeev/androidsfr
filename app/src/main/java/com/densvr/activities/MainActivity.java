@@ -2,6 +2,7 @@ package com.densvr.activities;
 
 import java.io.File;
 
+import com.densvr.nfcreader.NfcVReaderTask;
 import com.densvr.nfcreader.OldChipData;
 import com.densvr.nfcreader.OldDistsProtocol;
 import com.densvr.nfcreader.OldGlobals;
@@ -214,25 +215,29 @@ public class MainActivity extends ListActivity {
 	 * @param intent	The calling {@link Intent} (When an NfcV device is recognized)
 	 */
 	private void handleIntent(Intent intent){
+
 		if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-			Log.d("Action", "ACTION_TAG_DISCOVERED");			
-			Log.d("Tag", tag.toString());
-			String[] techList = tag.getTechList();
-			String searchedTech = NfcV.class.getName();
-			for (String tech : techList) {
-				if (searchedTech.equals(tech)) {
-					//Log.d("Tech", tech);
-					OldNfcVReaderTask task = new OldNfcVReaderTask();
-					if (!task.execute(tag)) {
-						MainActivity.makeText("поднесите чип еще раз");
-					} else {
-						OldGlobals.chipData = task.getChipData();
-						onNewChipData();
-					}	
-					break;
-				} //end if
-			}
+//			Log.d("Action", "ACTION_TAG_DISCOVERED");
+//			Log.d("Tag", tag.toString());
+//			String[] techList = tag.getTechList();
+//			String searchedTech = NfcV.class.getName();
+//			for (String tech : techList) {
+//				if (searchedTech.equals(tech)) {
+//					//Log.d("Tech", tech);
+//					OldNfcVReaderTask task = new OldNfcVReaderTask();
+//					if (!task.execute(tag)) {
+//						MainActivity.makeText("поднесите чип еще раз");
+//					} else {
+//						OldGlobals.chipData = task.getChipData();
+//						onNewChipData();
+//					}
+//					break;
+//				} //end if
+//			}
+
+			NfcVReaderTask nfcVReaderTask = new NfcVReaderTask();
+			nfcVReaderTask.readNfcTag(tag);
 		}
 	}
 	

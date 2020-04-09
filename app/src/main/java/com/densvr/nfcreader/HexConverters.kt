@@ -15,3 +15,9 @@ fun ByteArray.asHex(offset: Int, length: Int): String {
         "%02X".format(this[i + offset].toInt() and 0xFF)
     }.joinToString(separator = "")
 }
+
+fun ByteArray.asNumiratedString(chankLength: Int, firstIndex: Int, separator: String): String {
+    return asHex.chunked(chankLength)
+        .mapIndexed { index, hexString -> "${firstIndex + index}: $hexString" }
+        .joinToString("\n")
+}
