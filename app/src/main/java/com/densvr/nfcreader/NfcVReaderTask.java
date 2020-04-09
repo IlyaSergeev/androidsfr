@@ -11,8 +11,7 @@ import android.nfc.Tag;
 import android.nfc.tech.NfcV;
 import android.util.Log;
 
-@Deprecated
-public class OldNfcVReaderTask {
+public class NfcVReaderTask {
 
 	//TableFixHeaders tableFixHeaders = null;
 	private OldChipData chipData;
