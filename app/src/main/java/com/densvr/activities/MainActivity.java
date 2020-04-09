@@ -5,7 +5,7 @@ import java.io.File;
 import com.densvr.nfcreader.OldChipData;
 import com.densvr.nfcreader.OldDistsProtocol;
 import com.densvr.nfcreader.OldGlobals;
-import com.densvr.nfcreader.NfcVReaderTask;
+import com.densvr.nfcreader.OldNfcVReaderTask;
 import com.densvr.androidsfr.R;
 
 import android.content.Context;
@@ -223,7 +223,7 @@ public class MainActivity extends ListActivity {
 			for (String tech : techList) {
 				if (searchedTech.equals(tech)) {
 					//Log.d("Tech", tech);
-					NfcVReaderTask task = new NfcVReaderTask();
+					OldNfcVReaderTask task = new OldNfcVReaderTask();
 					if (!task.execute(tag)) {
 						MainActivity.makeText("поднесите чип еще раз");
 					} else {
