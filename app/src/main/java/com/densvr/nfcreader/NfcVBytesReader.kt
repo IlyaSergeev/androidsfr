@@ -59,6 +59,7 @@ internal fun NfcV.readSFRPointInfoWithCount(pointsCount: Int): List<SFRPointInfo
                     blockSize - max(0, (start + blockSize) - pointsCount)
                 )
                 start += blockSize
+                blockSize *= 2
             }
             return points
         } catch (error: NfcVReaderException) {
@@ -125,8 +126,8 @@ internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
         readSfrPointCommand[2] = position.toByte()
         val pointBytes = transceive(readSfrPointCommand).also {
             it.logAsTagTable(
-                position,
-                "Read SFR point at position=$position"
+                position + SFRParser.POS_FIRST_RECORD,
+                "Read SFR point at position=${position + SFRParser.POS_FIRST_RECORD}"
             )
         }
         val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
