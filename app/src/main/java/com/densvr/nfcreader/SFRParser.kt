@@ -3,18 +3,17 @@ package com.densvr.nfcreader
 class SFRParser(private val bytes: ByteArray, private val offset: Int, private val length: Int) {
 
     companion object {
-        private const val INT32_BYES_COUNT = 4
-        private const val POS_FIRST_RECORD = 6
+        const val POS_FIRST_RECORD = 0x06
     }
 
     private fun Int.toBytesPosition(): Int {
-        return offset + this * INT32_BYES_COUNT
+        return offset + this * INT32_SIZE_BYTES
     }
 
     val pointInfoCount
-        get() = length / INT32_BYES_COUNT
+        get() = length / INT32_SIZE_BYTES
 
-    fun pointInfoAt(position: Int): SFRRecordInfo {
-        return bytes.readSFRRecordInfo((POS_FIRST_RECORD + position).toBytesPosition())
+    fun pointInfoAt(position: Int): SFRPointInfo {
+        return bytes.readSFRPointInfo((POS_FIRST_RECORD + position).toBytesPosition())
     }
 }

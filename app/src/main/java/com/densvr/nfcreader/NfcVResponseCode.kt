@@ -45,12 +45,11 @@ enum class NfcVResponseCode(internal val bytes: ByteArray) {
     //[01B0]
     ReadAccessDenied(byteArrayOf(0x01, 0xB0.toByte()));
 
-    companion object {
-        private const val ZERO_BYTE: Byte = 0x00
-    }
-
     val hasError
         get() = bytes.size > 1 && bytes[0] != ZERO_BYTE
+
+    val isSuccessful
+        get() = this == CommandWasSuccessful
 
     val length = bytes.size
 }

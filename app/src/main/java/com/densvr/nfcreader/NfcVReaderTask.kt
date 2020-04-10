@@ -6,34 +6,111 @@ import timber.log.Timber
 
 class NfcVReaderTask {
 
+    companion object {
+        private val readSfrHeaderCommand = byteArrayOf(0x02, 0x23, 0x00, 0x05)
+        private val readSfrPointsWithCountCommand = byteArrayOf(0x02, 0x23, 0x06, 0x00)
+        private val readSfrPointCommand = byteArrayOf(0x02, 0x22, 0x00)
+
+        private fun ByteArray.logAsTagTable(startTagNumber: Int, operation: String) {
+
+            Timber.tag("NFC Reader").d(operation)
+
+            val responseString = asNumiratedString(
+                NfcVResponseParser.RESPONSE_CODE_LENGTH,
+                8,
+                startTagNumber,
+                "\n"
+            )
+            Timber.tag("NFC Reader")
+                .d("header:\n${responseString}")
+        }
+
+        private fun NfcV.readSFRHeader(): SFRHeader {
+
+            val sfrHeaderBytes = transceive(readSfrHeaderCommand).also {
+                it.logAsTagTable(0, "Read SFR Header")
+            }
+
+            val nfcVParser = NfcVResponseParser(sfrHeaderBytes, 0, sfrHeaderBytes.size)
+            return if (nfcVParser.responseCode?.isSuccessful == true) {
+                SFRHeaderParser(nfcVParser.bytes, nfcVParser.contentOffset).sfrHeader
+            } else {
+                throw IllegalAccessError("Can not read SRF header data from NFC")
+            }
+        }
+
+        private fun NfcV.readSFRPointInfoWithCount(pointsCount: Int): List<SFRPointInfo> {
+
+            readSfrPointsWithCountCommand[3] = pointsCount.toByte()
+            val pointBytes = transceive(readSfrPointsWithCountCommand).also {
+                it.logAsTagTable(
+                    SFRParser.POS_FIRST_RECORD,
+                    "Read SFR all points count=$pointsCount"
+                )
+            }
+            val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
+            val pointOffset = responseParser.contentOffset
+            return if (responseParser.responseCode?.isSuccessful == true) {
+                Array(pointsCount) { i ->
+                    pointBytes.readSFRPointInfo(pointOffset + i * SFR_BLOCK_SIZE_BITES)
+                }.asList()
+            } else {
+                throw IllegalAccessError("Can not read SRF points wih count=$pointsCount from NFC")
+            }
+        }
+
+        private fun NfcV.readAllSFRPointInfo(): List<SFRPointInfo> {
+            return arrayListOf<SFRPointInfo>().also { points ->
+                var nextPoint: SFRPointInfo?
+                var position = 0
+                do {
+                    nextPoint = readSFRPointInfo(position)?.also {
+                        points += it
+                    }
+                    position++
+                } while (nextPoint != null)
+            }
+        }
+
+        private fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
+            return try {
+                readSfrPointCommand[2] = position.toByte()
+                val pointBytes = transceive(readSfrPointCommand).also {
+                    it.logAsTagTable(
+                        SFRParser.POS_FIRST_RECORD,
+                        "Read SFR point at position=$position"
+                    )
+                }
+                val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
+                if (responseParser.responseCode?.isSuccessful == true && !pointBytes.isEmptySFRBlock(
+                        responseParser.contentOffset
+                    )
+                ) {
+                    pointBytes.readSFRPointInfo(responseParser.contentOffset)
+                } else {
+                    null
+                }
+            } catch (error: Throwable) {
+                null
+            }
+        }
+    }
+
     fun readNfcTag(nfcTag: Tag) {
 
         try {
             NfcV.get(nfcTag)?.use { nfcV ->
 
                 nfcV.connect()
-                val headerCommand = byteArrayOf(0x02, 0x23, 0x00, 0x05)
-                val sfrHeaderBytes = nfcV.transceive(headerCommand)
-                val sfrHeaderParser = SFRParserHeader(sfrHeaderBytes, 2, sfrHeaderBytes.size - 2)
-                Timber.tag("NFC Reader")
-                    .d("header:\n${sfrHeaderBytes.asNumiratedString(2, 8, 0, "\n")}")
 
+                val sfrHeader = nfcV.readSFRHeader()
 
-                val lastPointPosition = sfrHeaderParser.operationInfo.lastRecordPosition
-                val pointsCount = 200 // max(0, lastPointPosition - 0x05).toByte()
-                if (pointsCount > 0) {
-                    val pointsCommand =
-                        byteArrayOf(0x02, 0x23, 0x7F, 122.toByte())
-                    val pointsBytes = nfcV.transceive(pointsCommand)
-                    val sfrPointsParser = SFRParser(pointsBytes, 0, pointsBytes.size)
-                    Timber.tag("NFC Reader").d("points:\n${pointsBytes.asNumiratedString(0, 8, 6, "\n")}")
+                val pointsCount = sfrHeader.pointsCount
+                val sfrPoints = if (pointsCount > 0) {
+                    nfcV.readSFRPointInfoWithCount(pointsCount)
+                } else {
+                    nfcV.readAllSFRPointInfo()
                 }
-
-//                for (i in 0 until 122) {
-//                    headerCommand[2] = i.toByte()
-//                    val result = nfcV.transceive(headerCommand)
-//                    Timber.tag("NFC Reader").d("$i: ${result.asHex}")
-//                }
             }
         } catch (error: Throwable) {
             Timber.tag("NFC Reader").e(error)

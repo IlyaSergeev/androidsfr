@@ -22,22 +22,19 @@ private fun ByteArray.readIntValue(position: Int, intLength: Int): Int {
     return result
 }
 
-private const val INT_16_SIZE_BYTES = 2
-private const val INT_32_SIZE_BYTES = 4
-
 internal fun ByteArray.readInt16Value(position: Int): Int {
-    return readIntValue(position, INT_16_SIZE_BYTES)
+    return readIntValue(position, INT16_SIZE_BYTES)
 }
 
 internal fun ByteArray.readInt32Value(position: Int): Int {
-    return readIntValue(position, INT_32_SIZE_BYTES)
+    return readIntValue(position, INT32_SIZE_BYTES)
 }
 
 internal fun ByteArray.readSFROperationInfo(position: Int): SFROperationInfo {
     return SFROperationInfo(
         this[position].uint,
         this[position + 1].uint,
-        readInt16Value(position + INT_16_SIZE_BYTES).asSFRChipType()
+        readInt16Value(position + INT16_SIZE_BYTES).asSFRChipType()
     )
 }
 
@@ -47,18 +44,18 @@ internal fun ByteArray.readChipNumber(position: Int): Int {
             40000 * this[position + 2].uint
 }
 
-internal fun ByteArray.readSFRRecordInfo(position: Int): SFRRecordInfo {
-    return SFRRecordInfo(
-        readInt16Value(position),
-        readSFRTime(position + INT_16_SIZE_BYTES)
+fun ByteArray.readSFRPointInfo(position: Int): SFRPointInfo {
+    return SFRPointInfo(
+        this[position].uint,
+        readSFRTime(position + INT16_SIZE_BYTES)
     )
 }
 
 internal fun ByteArray.readSFRTime(position: Int): Long {
     return createDelayMillis(
-        hours = readIntFromDecimalFormat(position, INT_16_SIZE_BYTES),
-        minutes = readIntFromDecimalFormat(position + INT_16_SIZE_BYTES, INT_16_SIZE_BYTES),
-        seconds = readIntFromDecimalFormat(position + 2 * INT_16_SIZE_BYTES, INT_16_SIZE_BYTES)
+        hours = readIntFromDecimalFormat(position, BYTE_SIZE),
+        minutes = readIntFromDecimalFormat(position + BYTE_SIZE, BYTE_SIZE),
+        seconds = readIntFromDecimalFormat(position + 2 * BYTE_SIZE, BYTE_SIZE)
     )
 }
 
@@ -68,4 +65,13 @@ internal fun ByteArray.readIntFromDecimalFormat(position: Int, length: Int): Lon
         result = 10 * result + this[position + i]
     }
     return result
+}
+
+internal fun ByteArray.isEmptySFRBlock(offset: Int): Boolean {
+    for (i in 0 until SRF_BLOCK_SIZE_BYTES) {
+        if (this[offset + i] != ZERO_BYTE) {
+            return false
+        }
+    }
+    return true
 }

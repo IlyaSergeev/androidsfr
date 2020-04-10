@@ -16,9 +16,15 @@ fun ByteArray.asHex(offset: Int, length: Int): String {
     }.joinToString(separator = "")
 }
 
-fun ByteArray.asNumiratedString(offset: Int, chankLength: Int, firstIndex: Int, separator: String): String {
-    return asHex.substring(offset)
-        .chunked(chankLength)
-        .mapIndexed { index, hexString -> "${firstIndex + index}: $hexString" }
-        .joinToString("\n")
+fun ByteArray.asNumiratedString(
+    offset: Int,
+    chankLength: Int,
+    firstIndex: Int,
+    separator: String
+): String {
+    return asHex.take(offset) + separator +
+            asHex.substring(offset)
+                .chunked(chankLength)
+                .mapIndexed { index, hexString -> "${firstIndex + index}: $hexString" }
+                .joinToString(separator)
 }
