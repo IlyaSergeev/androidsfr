@@ -15,7 +15,7 @@ class NfcVReaderTask {
 
                 val sfrHeader = nfcV.readSFRHeader()
 
-                val pointsCount = sfrHeader.pointsCount
+                val pointsCount = sfrHeader?.pointsCount ?: 0
                 val sfrPoints = if (pointsCount > 0) {
                     nfcV.readSFRPointInfoWithCount(pointsCount)
                 } else {

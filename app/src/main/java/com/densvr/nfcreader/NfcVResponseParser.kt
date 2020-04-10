@@ -5,6 +5,6 @@ class NfcVResponseParser(
     private val offset: Int,
     private val length: Int
 ) {
-    val responseCode: NfcVResponseCode?
+    val responseCode: NfcVResponseCode
         get() = bytes.readResponseCode(offset)
 }

@@ -5,15 +5,14 @@ import com.densvr.nfcreader.NfcVResponseCode.*
 /**
  * Created by i-sergeev on 10.04.2020.
  */
-fun NfcVResponseCode.asException(): NfcVReaderException? {
-    return if (this.isError) {
-        NfcVReaderException(this, message)
-    } else {
-        null
-    }
-}
 
-private val NfcVResponseCode.message: String
+internal val NfcVResponseCode?.isError: Boolean
+    get() = this != CommandWasSuccessful
+
+internal val NfcVResponseCode.isSuccessful
+    get() = this == CommandWasSuccessful
+
+internal val NfcVResponseCode.message: String
     get() = when (this) {
         NoStatusInformation -> "No status Information"
         CommandWasSuccessful -> "Command was successful"
@@ -29,4 +28,5 @@ private val NfcVResponseCode.message: String
         StartBlockMustBeEven -> "Start block must be even"
         OneOrBothBlocksAlreadyLocked -> "One or both blocks already locked"
         ReadAccessDenied -> "Read Access denied"
+        Unknown -> "Unknown response code"
     }

@@ -43,13 +43,10 @@ enum class NfcVResponseCode(internal val bytes: ByteArray) {
     OneOrBothBlocksAlreadyLocked(byteArrayOf(0x01, 0xA2.toByte())),
 
     //[01B0]
-    ReadAccessDenied(byteArrayOf(0x01, 0xB0.toByte()));
+    ReadAccessDenied(byteArrayOf(0x01, 0xB0.toByte())),
 
-    val isError
-        get() = bytes.size > 1 && bytes[0] != ZERO_BYTE
-
-    val isSuccessful
-        get() = this == CommandWasSuccessful
+    Unknown(byteArrayOf());
 
     val length = bytes.size
 }
+

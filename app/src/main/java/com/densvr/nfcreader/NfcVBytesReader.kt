@@ -1,6 +1,8 @@
 package com.densvr.nfcreader
 
+import android.nfc.TagLostException
 import android.nfc.tech.NfcV
+import com.densvr.utility.retryOnError
 import timber.log.Timber
 
 /**
@@ -24,38 +26,44 @@ private fun ByteArray.logAsTagTable(startTagNumber: Int, operation: String) {
         .d("header:\n${responseString}")
 }
 
-internal fun NfcV.readSFRHeader(): SFRHeader {
+private const val NFC_READ_TRY_COUNTS = 3
 
-    val sfrHeaderBytes = transceive(readSfrHeaderCommand).also {
-        it.logAsTagTable(0, "Read SFR Header")
-    }
+internal fun NfcV.readSFRHeader(): SFRHeader? {
 
-    val nfcVParser = NfcVResponseParser(sfrHeaderBytes, 0, sfrHeaderBytes.size)
-    val responseCode = nfcVParser.responseCode
-    return if (responseCode?.isSuccessful == true) {
-        SFRHeaderParser(nfcVParser.bytes, responseCode.length).sfrHeader
-    } else {
-        throw IllegalAccessError("Can not read SRF header data from NFC")
+    return retryReadNfcVData {
+        val sfrHeaderBytes = transceive(readSfrHeaderCommand).also {
+            it.logAsTagTable(0, "Read SFR Header")
+        }
+
+        val nfcVParser = NfcVResponseParser(sfrHeaderBytes, 0, sfrHeaderBytes.size)
+        val responseCode = nfcVParser.responseCode
+        if (responseCode.isSuccessful) {
+            SFRHeaderParser(nfcVParser.bytes, responseCode.length).sfrHeader
+        } else {
+            throw NfcVReaderException(responseCode)
+        }
     }
 }
 
 internal fun NfcV.readSFRPointInfoWithCount(pointsCount: Int): List<SFRPointInfo> {
 
-    readSfrPointsWithCountCommand[3] = pointsCount.toByte()
-    val pointBytes = transceive(readSfrPointsWithCountCommand).also {
-        it.logAsTagTable(
-            SFRParser.POS_FIRST_RECORD,
-            "Read SFR all points count=$pointsCount"
-        )
-    }
-    val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
-    val responseCode = responseParser.responseCode
-    return if (responseCode?.isSuccessful == true) {
-        Array(pointsCount) { i ->
-            pointBytes.readSFRPointInfo(responseCode.length + i * SFR_BLOCK_SIZE_BITES)
-        }.asList()
-    } else {
-        throw IllegalAccessError("Can not read SRF points wih count=$pointsCount from NFC")
+    return retryReadNfcVData {
+        readSfrPointsWithCountCommand[3] = pointsCount.toByte()
+        val pointBytes = transceive(readSfrPointsWithCountCommand).also {
+            it.logAsTagTable(
+                SFRParser.POS_FIRST_RECORD,
+                "Read SFR all points count=$pointsCount"
+            )
+        }
+        val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
+        val responseCode = responseParser.responseCode
+        if (responseCode.isSuccessful) {
+            Array(pointsCount) { i ->
+                pointBytes.readSFRPointInfo(responseCode.length + i * SFR_BLOCK_SIZE_BITES)
+            }.asList()
+        } else {
+            emptyList()
+        }
     }
 }
 
@@ -68,12 +76,13 @@ internal fun NfcV.readAllSFRPointInfo(): List<SFRPointInfo> {
                 points += it
             }
             position++
-        } while (nextPoint != null)
+        } while (!nextPoint.isEmpty())
     }
 }
 
 internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
-    return try {
+
+    return retryReadNfcVData {
         readSfrPointCommand[2] = position.toByte()
         val pointBytes = transceive(readSfrPointCommand).also {
             it.logAsTagTable(
@@ -83,44 +92,21 @@ internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
         }
         val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
         val responseCode = responseParser.responseCode
-        if (responseCode?.isSuccessful == true && !pointBytes.isEmptySFRBlock(
-                responseCode.length
-            )
-        ) {
+        if (responseCode.isSuccessful) {
             pointBytes.readSFRPointInfo(responseCode.length)
         } else {
             null
         }
-    } catch (error: Throwable) {
-        Timber.tag("NFC Reader").e(error)
-        null
     }
 }
 
-private fun NfcV.tranceiveWithRetry(command: ByteArray, tryCount: Int): ByteArray {
-    var lastError: Throwable? = null
-    repeat(tryCount) {
-        try {
-            val pointBytes = transceive(readSfrPointCommand)
-            val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
-            val responseCode = responseParser.responseCode
-            if (responseCode?.isSuccessful == true) {
-                return pointBytes
-            }
-        } catch (error: Throwable) {
-            lastError = error
-        }
-    }
-    throw lastError!!
-}
-
-internal fun ByteArray.readResponseCode(offset: Int): NfcVResponseCode? {
+internal fun ByteArray.readResponseCode(offset: Int): NfcVResponseCode {
 
     val operationSize = kotlin.math.max(0, size - offset)
     return if (operationSize == 0) {
         NfcVResponseCode.NoStatusInformation
     } else {
-        NfcVResponseCode.values().firstOrNull {
+        NfcVResponseCode.values().firstOrNull() {
             if (it.bytes.isNotEmpty()) {
                 val compareBytesCount = kotlin.math.min(it.bytes.size, operationSize)
                 areEqualByteArrays(
@@ -130,7 +116,14 @@ internal fun ByteArray.readResponseCode(offset: Int): NfcVResponseCode? {
             } else {
                 false
             }
-        }
+        } ?: NfcVResponseCode.Unknown
     }
 }
 
+private inline fun <T> retryReadNfcVData(action: () -> T): T {
+    return retryOnError(
+        NFC_READ_TRY_COUNTS,
+        { throwable -> throwable is TagLostException },
+        action
+    )
+}
