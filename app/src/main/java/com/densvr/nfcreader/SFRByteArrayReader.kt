@@ -11,7 +11,7 @@ private fun Int.asSFRChipType(): SFRChipType? {
     }
 }
 
-private val Byte.uint
+internal val Byte.uint
     inline get() = (0xFF and toInt())
 
 private fun ByteArray.readIntValue(position: Int, intLength: Int): Int {

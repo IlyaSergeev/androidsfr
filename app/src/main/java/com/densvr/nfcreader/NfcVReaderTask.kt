@@ -3,7 +3,6 @@ package com.densvr.nfcreader
 import android.nfc.Tag
 import android.nfc.tech.NfcV
 import timber.log.Timber
-import kotlin.math.max
 
 class NfcVReaderTask {
 
