@@ -45,7 +45,7 @@ enum class NfcVResponseCode(internal val bytes: ByteArray) {
     //[01B0]
     ReadAccessDenied(byteArrayOf(0x01, 0xB0.toByte()));
 
-    val hasError
+    val isError
         get() = bytes.size > 1 && bytes[0] != ZERO_BYTE
 
     val isSuccessful
