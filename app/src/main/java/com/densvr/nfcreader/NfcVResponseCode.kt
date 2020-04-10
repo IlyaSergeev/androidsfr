@@ -6,8 +6,8 @@ enum class NfcVResponseCode(internal val bytes: ByteArray) {
     //[]
     NoStatusInformation(byteArrayOf()),
 
-    //[0000]
-    CommandWasSuccessful(byteArrayOf(0x00, 0x00)),
+    //[00]
+    CommandWasSuccessful(byteArrayOf(0x00)),
 
     //[0101]
     CommandNotSupported(byteArrayOf(0x01, 0x01)),

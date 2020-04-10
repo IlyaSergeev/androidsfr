@@ -1,19 +1,22 @@
 package com.densvr.nfcreader
 
-fun ByteArray.readResponseCode(offset: Int, length: Int) : NfcVResponseCode? {
+import kotlin.math.max
+import kotlin.math.min
 
-    return if (offset == length) {
+fun ByteArray.readResponseCode(offset: Int): NfcVResponseCode? {
+
+    val operationSize = max(0, size - offset)
+    return if (operationSize == 0) {
         NfcVResponseCode.NoStatusInformation
-    }
-    else {
-        val byte1 = this[offset]
-        val byte2 = this[offset + 1]
-
+    } else {
         NfcVResponseCode.values().firstOrNull {
-            if (it.bytes.size > 1) {
-                byte1 == it.bytes[0] && byte2 == it.bytes[1]
-            }
-            else {
+            if (it.bytes.isNotEmpty()) {
+                val compareBytesCount = min(it.bytes.size, operationSize)
+                areEqualByteArrays(
+                    this, offset, compareBytesCount,
+                    it.bytes, 0, compareBytesCount
+                )
+            } else {
                 false
             }
         }

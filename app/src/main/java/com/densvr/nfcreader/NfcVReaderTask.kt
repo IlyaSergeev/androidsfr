@@ -16,7 +16,7 @@ class NfcVReaderTask {
             Timber.tag("NFC Reader").d(operation)
 
             val responseString = asNumiratedString(
-                NfcVResponseParser.RESPONSE_CODE_LENGTH,
+                "h: ",
                 8,
                 startTagNumber,
                 "\n"
@@ -32,8 +32,9 @@ class NfcVReaderTask {
             }
 
             val nfcVParser = NfcVResponseParser(sfrHeaderBytes, 0, sfrHeaderBytes.size)
-            return if (nfcVParser.responseCode?.isSuccessful == true) {
-                SFRHeaderParser(nfcVParser.bytes, nfcVParser.contentOffset).sfrHeader
+            val responseCode = nfcVParser.responseCode
+            return if (responseCode?.isSuccessful == true) {
+                SFRHeaderParser(nfcVParser.bytes, responseCode.length).sfrHeader
             } else {
                 throw IllegalAccessError("Can not read SRF header data from NFC")
             }
@@ -49,10 +50,10 @@ class NfcVReaderTask {
                 )
             }
             val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
-            val pointOffset = responseParser.contentOffset
-            return if (responseParser.responseCode?.isSuccessful == true) {
+            val responseCode = responseParser.responseCode
+            return if (responseCode?.isSuccessful == true) {
                 Array(pointsCount) { i ->
-                    pointBytes.readSFRPointInfo(pointOffset + i * SFR_BLOCK_SIZE_BITES)
+                    pointBytes.readSFRPointInfo(responseCode.length + i * SFR_BLOCK_SIZE_BITES)
                 }.asList()
             } else {
                 throw IllegalAccessError("Can not read SRF points wih count=$pointsCount from NFC")
@@ -82,11 +83,12 @@ class NfcVReaderTask {
                     )
                 }
                 val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
-                if (responseParser.responseCode?.isSuccessful == true && !pointBytes.isEmptySFRBlock(
-                        responseParser.contentOffset
+                val responseCode = responseParser.responseCode
+                if (responseCode?.isSuccessful == true && !pointBytes.isEmptySFRBlock(
+                        responseCode.length
                     )
                 ) {
-                    pointBytes.readSFRPointInfo(responseParser.contentOffset)
+                    pointBytes.readSFRPointInfo(responseCode.length)
                 } else {
                     null
                 }

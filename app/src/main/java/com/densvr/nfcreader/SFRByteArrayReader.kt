@@ -32,9 +32,9 @@ internal fun ByteArray.readInt32Value(position: Int): Int {
 
 internal fun ByteArray.readSFROperationInfo(position: Int): SFROperationInfo {
     return SFROperationInfo(
-        this[position].uint,
+        this[position + 3 * BYTE_SIZE].uint,
         this[position + 1].uint,
-        readInt16Value(position + INT16_SIZE_BYTES).asSFRChipType()
+        this[position].uint.asSFRChipType()
     )
 }
 
@@ -47,7 +47,7 @@ internal fun ByteArray.readChipNumber(position: Int): Int {
 fun ByteArray.readSFRPointInfo(position: Int): SFRPointInfo {
     return SFRPointInfo(
         this[position].uint,
-        readSFRTime(position + INT16_SIZE_BYTES)
+        readSFRTime(position + BYTE_SIZE)
     )
 }
 
@@ -61,7 +61,7 @@ internal fun ByteArray.readSFRTime(position: Int): Long {
 
 internal fun ByteArray.readIntFromDecimalFormat(position: Int, length: Int): Long {
     var result = 0L
-    for (i in 0..length) {
+    for (i in 0 until length) {
         result = 10 * result + this[position + i]
     }
     return result
@@ -74,4 +74,22 @@ internal fun ByteArray.isEmptySFRBlock(offset: Int): Boolean {
         }
     }
     return true
+}
+
+internal fun areEqualByteArrays(
+    byteArray1: ByteArray, offset1: Int, length1: Int,
+    byteArray2: ByteArray, offset2: Int, length2: Int
+): Boolean {
+
+    return if (length1 == length2) {
+        for (i in 0 until length1) {
+            if (byteArray1[offset1 + i] != byteArray2[offset2 + i]) {
+                return false
+            }
+        }
+        true
+    }
+    else {
+        false
+    }
 }

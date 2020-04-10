@@ -17,14 +17,17 @@ fun ByteArray.asHex(offset: Int, length: Int): String {
 }
 
 fun ByteArray.asNumiratedString(
-    offset: Int,
+    offsetPrefix: String,
     chankLength: Int,
     firstIndex: Int,
     separator: String
 ): String {
-    return asHex.take(offset) + separator +
-            asHex.substring(offset)
+    val hexString = asHex
+    val offset = hexString.length % chankLength
+
+    return offsetPrefix + hexString.take(offset) + separator +
+            hexString.substring(offset)
                 .chunked(chankLength)
-                .mapIndexed { index, hexString -> "${firstIndex + index}: $hexString" }
+                .mapIndexed { index, chunkHexString -> "${firstIndex + index}: $chunkHexString" }
                 .joinToString(separator)
 }
