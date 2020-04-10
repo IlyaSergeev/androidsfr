@@ -9,7 +9,7 @@ class NfcVReaderTask {
     companion object {
         private val readSfrHeaderCommand = byteArrayOf(0x02, 0x23, 0x00, 0x05)
         private val readSfrPointsWithCountCommand = byteArrayOf(0x02, 0x23, 0x06, 0x00)
-        private val readSfrPointCommand = byteArrayOf(0x02, 0x22, 0x00)
+        private val readSfrPointCommand = byteArrayOf(0x02, 0x20, 0x00)
 
         private fun ByteArray.logAsTagTable(startTagNumber: Int, operation: String) {
 
@@ -63,7 +63,7 @@ class NfcVReaderTask {
         private fun NfcV.readAllSFRPointInfo(): List<SFRPointInfo> {
             return arrayListOf<SFRPointInfo>().also { points ->
                 var nextPoint: SFRPointInfo?
-                var position = 0
+                var position = POS_FIRST_POINT_POSITION
                 do {
                     nextPoint = readSFRPointInfo(position)?.also {
                         points += it
@@ -78,7 +78,7 @@ class NfcVReaderTask {
                 readSfrPointCommand[2] = position.toByte()
                 val pointBytes = transceive(readSfrPointCommand).also {
                     it.logAsTagTable(
-                        SFRParser.POS_FIRST_RECORD,
+                        position,
                         "Read SFR point at position=$position"
                     )
                 }
@@ -107,7 +107,7 @@ class NfcVReaderTask {
 
                 val sfrHeader = nfcV.readSFRHeader()
 
-                val pointsCount = sfrHeader.pointsCount
+                val pointsCount = 0// sfrHeader.pointsCount
                 val sfrPoints = if (pointsCount > 0) {
                     nfcV.readSFRPointInfoWithCount(pointsCount)
                 } else {
