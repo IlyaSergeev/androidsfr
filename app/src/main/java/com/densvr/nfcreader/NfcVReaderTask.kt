@@ -68,6 +68,21 @@ class NfcVReaderTask {
                     nextPoint = readSFRPointInfo(position)?.also {
                         points += it
                     }
+                    if (nextPoint == null) {
+                        nextPoint = readSFRPointInfo(position)?.also {
+                            points += it
+                        }
+                    }
+                    if (nextPoint == null) {
+                        nextPoint = readSFRPointInfo(position)?.also {
+                            points += it
+                        }
+                    }
+                    if (nextPoint == null) {
+                        nextPoint = readSFRPointInfo(position)?.also {
+                            points += it
+                        }
+                    }
                     position++
                 } while (nextPoint != null)
             }
@@ -93,6 +108,7 @@ class NfcVReaderTask {
                     null
                 }
             } catch (error: Throwable) {
+                Timber.tag("NFC Reader").e(error)
                 null
             }
         }
@@ -107,12 +123,13 @@ class NfcVReaderTask {
 
                 val sfrHeader = nfcV.readSFRHeader()
 
-                val pointsCount = 0// sfrHeader.pointsCount
+                val pointsCount = sfrHeader.pointsCount
                 val sfrPoints = if (pointsCount > 0) {
                     nfcV.readSFRPointInfoWithCount(pointsCount)
                 } else {
                     nfcV.readAllSFRPointInfo()
                 }
+
             }
         } catch (error: Throwable) {
             Timber.tag("NFC Reader").e(error)
