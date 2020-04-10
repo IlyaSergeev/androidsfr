@@ -8,6 +8,9 @@ class SFRPointInfo(
     val time: Long
 )
 
+internal val emptySFRPointInfo = SFRPointInfo(0, 0)
+
 fun SFRPointInfo?.isEmpty(): Boolean {
-    return this == null || (pointId == 0 && time == 0L)
+    return this == null ||
+            (pointId == emptySFRPointInfo.pointId && time == emptySFRPointInfo.time)
 }

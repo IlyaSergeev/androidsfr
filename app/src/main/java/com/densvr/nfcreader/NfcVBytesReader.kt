@@ -4,6 +4,7 @@ import android.nfc.TagLostException
 import android.nfc.tech.NfcV
 import com.densvr.utility.retryOnError
 import timber.log.Timber
+import kotlin.math.max
 
 /**
  * Created by i-sergeev on 10.04.2020.
@@ -47,23 +48,61 @@ internal fun NfcV.readSFRHeader(): SFRHeader? {
 
 internal fun NfcV.readSFRPointInfoWithCount(pointsCount: Int): List<SFRPointInfo> {
 
-    return retryReadNfcVData {
-        readSfrPointsWithCountCommand[3] = pointsCount.toByte()
-        val pointBytes = transceive(readSfrPointsWithCountCommand).also {
-            it.logAsTagTable(
-                SFRParser.POS_FIRST_RECORD,
-                "Read SFR all points count=$pointsCount"
-            )
+    val points = arrayListOf<SFRPointInfo>()
+    var blockSize = pointsCount
+    var start = 0
+    while (blockSize > 0) {
+        try {
+            while (start < pointsCount) {
+                points += readSFRPointInfoWithCount(
+                    start,
+                    blockSize - max(0, (start + blockSize) - pointsCount)
+                )
+                start += blockSize
+            }
+            return points
+        } catch (error: NfcVReaderException) {
+            if (error.responseCode == NfcVResponseCode.UnknownError) {
+                blockSize /= 2
+            } else {
+                throw error
+            }
+
         }
-        val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
-        val responseCode = responseParser.responseCode
-        if (responseCode.isSuccessful) {
-            Array(pointsCount) { i ->
-                pointBytes.readSFRPointInfo(responseCode.length + i * SFR_BLOCK_SIZE_BITES)
-            }.asList()
-        } else {
-            emptyList()
-        }
+    }
+    return readAllSFRPointInfo()
+}
+
+internal fun NfcV.readSFRPointInfoWithCount(position: Int, count: Int): List<SFRPointInfo> {
+
+    return if (count == 1) {
+        listOf(readSFRPointInfo(position) ?: emptySFRPointInfo)
+    } else {
+        retryOnError(
+            NFC_READ_TRY_COUNTS,
+            { throwable ->
+                throwable is TagLostException || (throwable is NfcVReaderException && throwable.responseCode != NfcVResponseCode.UnknownError)
+            },
+            {
+                readSfrPointsWithCountCommand[2] = (SFRParser.POS_FIRST_RECORD + position).toByte()
+                readSfrPointsWithCountCommand[3] = (count - 1).toByte()
+                val pointBytes = transceive(readSfrPointsWithCountCommand).also {
+                    it.logAsTagTable(
+                        position + SFRParser.POS_FIRST_RECORD,
+                        "Read SFR points from=$position count=$count"
+                    )
+                }
+                val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
+                val responseCode = responseParser.responseCode
+                if (responseCode.isSuccessful) {
+                    Array(count) { i ->
+                        pointBytes.readSFRPointInfo(responseCode.length + i * SFR_BLOCK_SIZE_BITES)
+                    }.asList()
+                } else {
+                    throw NfcVReaderException(responseCode)
+                }
+            }
+        )
     }
 }
 
@@ -116,7 +155,7 @@ internal fun ByteArray.readResponseCode(offset: Int): NfcVResponseCode {
             } else {
                 false
             }
-        } ?: NfcVResponseCode.Unknown
+        } ?: NfcVResponseCode.UnknownResponse
     }
 }
 

@@ -28,5 +28,5 @@ internal val NfcVResponseCode.message: String
         StartBlockMustBeEven -> "Start block must be even"
         OneOrBothBlocksAlreadyLocked -> "One or both blocks already locked"
         ReadAccessDenied -> "Read Access denied"
-        Unknown -> "Unknown response code"
+        UnknownResponse -> "Unknown response code"
     }

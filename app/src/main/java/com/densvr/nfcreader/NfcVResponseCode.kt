@@ -45,7 +45,7 @@ enum class NfcVResponseCode(internal val bytes: ByteArray) {
     //[01B0]
     ReadAccessDenied(byteArrayOf(0x01, 0xB0.toByte())),
 
-    Unknown(byteArrayOf());
+    UnknownResponse(byteArrayOf());
 
     val length = bytes.size
 }
