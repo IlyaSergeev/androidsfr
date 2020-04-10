@@ -133,3 +133,4 @@ internal fun ByteArray.readResponseCode(offset: Int): NfcVResponseCode? {
         }
     }
 }
+
