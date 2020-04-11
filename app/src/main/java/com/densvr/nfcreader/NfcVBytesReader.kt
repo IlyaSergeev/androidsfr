@@ -39,7 +39,7 @@ internal fun NfcV.readSFRHeader(): SFRHeader? {
         val nfcVParser = NfcVResponseParser(sfrHeaderBytes, 0, sfrHeaderBytes.size)
         val responseCode = nfcVParser.responseCode
         if (responseCode.isSuccessful) {
-            SFRHeaderParser(nfcVParser.bytes, responseCode.length).sfrHeader
+            sfrHeaderBytes.readSFRHeader(responseCode.length)
         } else {
             throw NfcVReaderException(responseCode)
         }
@@ -146,7 +146,7 @@ internal fun ByteArray.readResponseCode(offset: Int): NfcVResponseCode {
     return if (operationSize == 0) {
         NfcVResponseCode.NoStatusInformation
     } else {
-        NfcVResponseCode.values().firstOrNull() {
+        NfcVResponseCode.values().firstOrNull {
             if (it.bytes.isNotEmpty()) {
                 val compareBytesCount = kotlin.math.min(it.bytes.size, operationSize)
                 areEqualByteArrays(
