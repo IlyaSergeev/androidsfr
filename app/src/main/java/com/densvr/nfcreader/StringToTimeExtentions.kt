@@ -1,6 +1,5 @@
 package com.densvr.nfcreader
 
-import java.lang.StringBuilder
 import java.util.concurrent.TimeUnit
 
 fun String.tryParseDelayMillisOrZero(): Long {
@@ -8,7 +7,8 @@ fun String.tryParseDelayMillisOrZero(): Long {
     val timeLexems = split(":").reversed()
     val secondWithMillisLexems = timeLexems.getOrNull(0)?.split(".")
 
-    return secondWithMillisLexems?.getOrNull(1).toNormalMillisString().parseTimeOrZero(TimeUnit.MILLISECONDS) +
+    return secondWithMillisLexems?.getOrNull(1).toNormalMillisString()
+        .parseTimeOrZero(TimeUnit.MILLISECONDS) +
             secondWithMillisLexems?.getOrNull(0).parseTimeOrZero(TimeUnit.SECONDS) +
             timeLexems.getOrNull(1).parseTimeOrZero(TimeUnit.MINUTES) +
             timeLexems.getOrNull(2).parseTimeOrZero(TimeUnit.HOURS)
@@ -47,6 +47,10 @@ fun Long.toDelayTime(): String {
     return result.toString()
 }
 
-fun createDelayMillis(hours: Long, minutes: Long, seconds: Long) : Long {
-    return TimeUnit.HOURS.toMillis(hours) + TimeUnit.MINUTES.toMillis(minutes) + TimeUnit.SECONDS.toMillis(seconds)
+fun createDelaySeconds(hours: Long, minutes: Long, seconds: Long): Long {
+    return TimeUnit.MILLISECONDS.toSeconds(
+        TimeUnit.HOURS.toMillis(hours)
+                + TimeUnit.MINUTES.toMillis(minutes)
+                + TimeUnit.SECONDS.toMillis(seconds)
+    )
 }

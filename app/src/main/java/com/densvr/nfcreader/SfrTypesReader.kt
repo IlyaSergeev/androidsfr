@@ -67,7 +67,7 @@ fun ByteArray.readSFRPointInfo(position: Int): SFRPointInfo {
 }
 
 internal fun ByteArray.readSFRTime(position: Int): Long {
-    return createDelayMillis(
+    return createDelaySeconds(
         hours = readIntFromDecimalFormat(position + 2 * ONE_BYTE, ONE_BYTE),
         minutes = readIntFromDecimalFormat(position + ONE_BYTE, ONE_BYTE),
         seconds = readIntFromDecimalFormat(position, ONE_BYTE)

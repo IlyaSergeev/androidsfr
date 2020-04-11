@@ -10,7 +10,7 @@ import com.densvr.table.csv.Table;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.densvr.nfcreader.StringToTimeExtentionsKt.createDelayMillis;
+import static com.densvr.nfcreader.StringToTimeExtentionsKt.createDelaySeconds;
 import static com.densvr.nfcreader.StringToTimeExtentionsKt.tryParseDelayMillisOrZero;
 
 @Deprecated
@@ -87,7 +87,7 @@ public class OldChipData {
         int h = Integer.parseInt(Integer.toHexString(cell[3]), 10);
         int m = Integer.parseInt(Integer.toHexString(cell[2]), 10);
         int s = Integer.parseInt(Integer.toHexString(cell[1]), 10);
-        return createDelayMillis(h, m, s);
+        return createDelaySeconds(h, m, s);
     }
 
 
