@@ -1,5 +1,7 @@
 package com.densvr.nfcreader
 
+import com.densvr.util.asHex
+import com.densvr.util.hexAsByteArray
 import org.junit.Test
 import kotlin.test.assertEquals
 
