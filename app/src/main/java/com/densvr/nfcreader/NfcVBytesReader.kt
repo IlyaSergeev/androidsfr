@@ -36,8 +36,7 @@ internal fun NfcV.readSFRHeader(): SFRHeader? {
             it.logAsTagTable(0, "Read SFR Header")
         }
 
-        val nfcVParser = NfcVResponseParser(sfrHeaderBytes, 0, sfrHeaderBytes.size)
-        val responseCode = nfcVParser.responseCode
+        val responseCode = sfrHeaderBytes.readResponseCode(0)
         if (responseCode.isSuccessful) {
             sfrHeaderBytes.readSFRHeader(responseCode.length)
         } else {
@@ -93,8 +92,7 @@ internal fun NfcV.readSFRPointInfoWithCount(position: Int, count: Int): List<SFR
                         "Read SFR points from=$position count=$count"
                     )
                 }
-                val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
-                val responseCode = responseParser.responseCode
+                val responseCode = pointBytes.readResponseCode(0)
                 if (responseCode.isSuccessful) {
                     Array(count) { i ->
                         pointBytes.readSFRPointInfo(responseCode.length + i * SFR_BLOCK_SIZE_BITES)
@@ -130,8 +128,7 @@ internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
                 "Read SFR point at position=${position + SFRParser.POS_FIRST_RECORD}"
             )
         }
-        val responseParser = NfcVResponseParser(pointBytes, 0, pointBytes.size)
-        val responseCode = responseParser.responseCode
+        val responseCode = pointBytes.readResponseCode(0)
         if (responseCode.isSuccessful) {
             pointBytes.readSFRPointInfo(responseCode.length)
         } else {
@@ -142,7 +139,7 @@ internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
 
 internal fun ByteArray.readResponseCode(offset: Int): NfcVResponseCode {
 
-    val operationSize = kotlin.math.max(0, size - offset)
+    val operationSize = max(0, size - offset)
     return if (operationSize == 0) {
         NfcVResponseCode.NoStatusInformation
     } else {
