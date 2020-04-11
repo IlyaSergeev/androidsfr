@@ -37,7 +37,7 @@ internal fun NfcV.readSFRHeader(): SFRHeader? {
         }
 
         val responseCode = sfrHeaderBytes.readResponseCode(0)
-        if (responseCode.isSuccessful) {
+        if (responseCode == NfcVResponseCode.CommandWasSuccessful) {
             sfrHeaderBytes.readSFRHeader(responseCode.length)
         } else {
             throw NfcVReaderException(responseCode)
@@ -93,7 +93,7 @@ internal fun NfcV.readSFRPointInfoWithCount(position: Int, count: Int): List<SFR
                     )
                 }
                 val responseCode = pointBytes.readResponseCode(0)
-                if (responseCode.isSuccessful) {
+                if (responseCode == NfcVResponseCode.CommandWasSuccessful) {
                     Array(count) { i ->
                         pointBytes.readSFRPointInfo(responseCode.length + i * SFR_BLOCK_SIZE_BITES)
                     }.asList()
@@ -129,7 +129,7 @@ internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
             )
         }
         val responseCode = pointBytes.readResponseCode(0)
-        if (responseCode.isSuccessful) {
+        if (responseCode == NfcVResponseCode.CommandWasSuccessful) {
             pointBytes.readSFRPointInfo(responseCode.length)
         } else {
             null
