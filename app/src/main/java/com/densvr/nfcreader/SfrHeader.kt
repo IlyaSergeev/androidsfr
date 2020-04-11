@@ -9,5 +9,5 @@ class SfrHeader(
     val startPointInfo: SFRPointInfo
 ) {
     val pointsCount
-        get() = max(0, operationInfo.lastRecordPosition - SFR_BLOCK_POS_FIRST_POINT)
+        get() = max(0, operationInfo.lastRecordPosition - SFR_BLOCK_POS_BASE_POINT)
 }
