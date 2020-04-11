@@ -6,6 +6,7 @@ import com.densvr.nfcreader.OldChipData;
 import com.densvr.nfcreader.OldDistsProtocol;
 import com.densvr.nfcreader.OldGlobals;
 import com.densvr.androidsfr.R;
+import com.densvr.nfcreader.SfrRecord;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -220,14 +221,14 @@ public class MainActivity extends ListActivity {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			if (tag != null && getCanReadSfrRecord(tag)) {
 				try {
-					readSfrRecord(tag);
-				}
-				catch (Throwable ex) {
+					SfrRecord sfrRecord = readSfrRecord(tag);
+					OldGlobals.chipData = OldChipData.fillFrom(sfrRecord);
+					onNewChipData();
+				} catch (Throwable ex) {
 					ex.printStackTrace();
 					MainActivity.makeText("поднесите чип еще раз");
 				}
-			}
-			else {
+			} else {
 				MainActivity.makeText("поднесите чип еще раз");
 			}
 //			Log.d("Action", "ACTION_TAG_DISCOVERED");

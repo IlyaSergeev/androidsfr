@@ -148,6 +148,38 @@ public class OldChipData {
         return chipData;
     }
 
+    public static OldChipData fillFrom(SfrRecord sfrRecord) {
+        OldChipData chipData = new OldChipData();
+        chipData.userId = sfrRecord.getPersonNumber();
+        Table tNames = CSV.read(OldGlobals.CSV_NAMES);
+        chipData.userName = TableNamesActivity.getUserById(tNames, chipData.getUserId());
+        if (chipData.userName == null) {
+            chipData.userName = String.valueOf(chipData.getUserId());
+        }
+        List<SFRPointInfo> points = sfrRecord.getPoints();
+        int cpCnt = points.size();
+        Long startTime = points.get(0).getTime();
+        Log.i("android SFR", startTime.toString());
+        for(SFRPointInfo point :points) {
+            CP cp = new CP();
+            cp.number = point.getPointId();
+            cp.lapTime = point.getTime()- startTime;
+
+            if (points.get(0) == point) {
+                cp.splitTime = 0L;
+            } else {
+                Long prevLapTime = chipData.cps.get(chipData.cps.size() - 1).lapTime;
+                cp.splitTime = cp.lapTime - prevLapTime;
+            }
+            chipData.cps.add(cp);
+        }
+        if (chipData.cps.size() > 0) {
+            chipData.fullTime = chipData.cps.get(cpCnt - 6).lapTime;
+        }
+        Log.i("android SFR", chipData.fullTime.toString());
+        return chipData;
+    }
+
     /**
      * initialize chip data from CSV_RESULTS (only cps and place)
      *
