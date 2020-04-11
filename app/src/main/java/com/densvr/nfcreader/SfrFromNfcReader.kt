@@ -81,7 +81,7 @@ internal fun NfcV.readSFRPointInfoInRange(position: Int, count: Int): List<SFRPo
                 transceive(readSfrPointsWithCountCommand).also {
                     it.logAsNfcMessage(
                         position + SFR_BLOCK_POS_FIRST_POINT,
-                        "Read SFR points from=$position count=$count"
+                        "Read SFR points from=${position + SFR_BLOCK_POS_FIRST_POINT} count=$count"
                     )
                 }.parseNfcMessage(
                     { bytes, offset ->
@@ -99,13 +99,13 @@ internal fun NfcV.readSFRPointInfoInRange(position: Int, count: Int): List<SFRPo
 internal fun NfcV.readAllSFRPointInfo(): List<SFRPointInfo> {
     return arrayListOf<SFRPointInfo>().also { points ->
         var nextPoint: SFRPointInfo?
-        var position = SFR_BLOCK_POS_FIRST_POINT
+        var position = 0
         do {
             nextPoint = readSFRPointInfo(position)?.also {
                 points += it
             }
             position++
-        } while (!nextPoint.isEmpty())
+        } while (nextPoint != null)
     }
 }
 
@@ -120,7 +120,7 @@ internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
 
     return retryReadNfcVData {
 
-        readSfrPointCommand[2] = position.toByte()
+        readSfrPointCommand[2] = (position + SFR_BLOCK_POS_FIRST_POINT).toByte()
 
         transceive(readSfrPointCommand).also {
             it.logAsNfcMessage(
