@@ -2,7 +2,6 @@ package com.densvr.activities;
 
 import java.io.File;
 
-import com.densvr.nfcreader.NfcVReaderTask;
 import com.densvr.nfcreader.OldChipData;
 import com.densvr.nfcreader.OldDistsProtocol;
 import com.densvr.nfcreader.OldGlobals;
@@ -31,6 +30,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.ViewGroup;
+
+import static com.densvr.nfcreader.NfcVReaderTaskKt.getCanReadSfrRecord;
+import static com.densvr.nfcreader.NfcVReaderTaskKt.readSfrRecord;
 
 
 public class MainActivity extends ListActivity {
@@ -218,6 +220,18 @@ public class MainActivity extends ListActivity {
 
 		if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+			if (tag != null && getCanReadSfrRecord(tag)) {
+				try {
+					readSfrRecord(tag);
+				}
+				catch (Throwable ex) {
+					ex.printStackTrace();
+					MainActivity.makeText("поднесите чип еще раз");
+				}
+			}
+			else {
+				MainActivity.makeText("поднесите чип еще раз");
+			}
 //			Log.d("Action", "ACTION_TAG_DISCOVERED");
 //			Log.d("Tag", tag.toString());
 //			String[] techList = tag.getTechList();
@@ -236,8 +250,6 @@ public class MainActivity extends ListActivity {
 //				} //end if
 //			}
 
-			NfcVReaderTask nfcVReaderTask = new NfcVReaderTask();
-			nfcVReaderTask.readNfcTag(tag);
 		}
 	}
 	

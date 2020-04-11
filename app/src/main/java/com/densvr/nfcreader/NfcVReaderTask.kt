@@ -2,29 +2,30 @@ package com.densvr.nfcreader
 
 import android.nfc.Tag
 import android.nfc.tech.NfcV
-import timber.log.Timber
 
-class NfcVReaderTask {
+fun Tag.readSfrRecord(): SFRRecord {
 
-    fun readNfcTag(nfcTag: Tag) {
+    return NfcV.get(this).use { nfcV ->
 
-        try {
-            NfcV.get(nfcTag)?.use { nfcV ->
+        nfcV.connect()
 
-                nfcV.connect()
+        val sfrHeader = nfcV.readSFRHeader()
 
-                val sfrHeader = nfcV.readSFRHeader()
-
-                val pointsCount = sfrHeader?.pointsCount ?: 0
-                val sfrPoints = if (pointsCount > 0) {
-                    nfcV.readSFRPointInfoWithCount(pointsCount)
-                } else {
-                    nfcV.readAllSFRPointInfo()
-                }
-
-            }
-        } catch (error: Throwable) {
-            Timber.tag("NFC Reader").e(error)
+        val pointsCount = sfrHeader.pointsCount ?: 0
+        val sfrPoints = if (pointsCount > 0) {
+            nfcV.readSFRPointInfoWithCount(pointsCount)
+        } else {
+            nfcV.readAllSFRPointInfo()
         }
+        SFRRecord(
+            sfrHeader.lastFormatTime,
+            sfrHeader.chipNumber,
+            sfrHeader.operationInfo.type,
+            sfrHeader.startPointInfo,
+            sfrPoints
+        )
     }
 }
+
+val Tag.canReadSfrRecord: Boolean
+    get() = techList.contains(NfcV::class.java.name)

@@ -29,7 +29,7 @@ private fun ByteArray.logAsTagTable(startTagNumber: Int, operation: String) {
 
 private const val NFC_READ_TRY_COUNTS = 3
 
-internal fun NfcV.readSFRHeader(): SFRHeader? {
+internal fun NfcV.readSFRHeader(): SFRHeader {
 
     return retryReadNfcVData {
         val sfrHeaderBytes = transceive(readSfrHeaderCommand).also {
