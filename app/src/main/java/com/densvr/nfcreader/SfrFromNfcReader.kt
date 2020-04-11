@@ -3,7 +3,6 @@ package com.densvr.nfcreader
 import android.nfc.TagLostException
 import android.nfc.tech.NfcV
 import com.densvr.util.retryOnError
-import timber.log.Timber
 import kotlin.math.max
 
 /**
@@ -29,27 +28,13 @@ private val readSfrPointCommand = byteArrayOf(
     ZERO_BYTE
 )
 
-private fun ByteArray.logAsTagTable(startTagNumber: Int, operation: String) {
-
-    Timber.tag("NFC Reader").d(operation)
-
-    val responseString = asNumeratedString(
-        "h: ",
-        8,
-        startTagNumber,
-        "\n"
-    )
-    Timber.tag("NFC Reader")
-        .d("header:\n${responseString}")
-}
-
 private const val NFC_READ_TRY_COUNTS = 3
 
 internal fun NfcV.readSFRHeader(): SfrHeader {
 
     return retryReadNfcVData {
         val sfrHeaderBytes = transceive(readSfrHeaderCommand).also {
-            it.logAsTagTable(0, "Read SFR Header")
+            it.logAsNfcMessage(0, "Read SFR Header")
         }
 
         val responseCode = sfrHeaderBytes.readResponseCode(0)
@@ -103,7 +88,7 @@ internal fun NfcV.readSFRPointInfoWithCount(position: Int, count: Int): List<SFR
                 readSfrPointsWithCountCommand[2] = (SFR_BLOCK_POS_FIRST_POINT + position).toByte()
                 readSfrPointsWithCountCommand[3] = (count - 1).toByte()
                 val pointBytes = transceive(readSfrPointsWithCountCommand).also {
-                    it.logAsTagTable(
+                    it.logAsNfcMessage(
                         position + SFR_BLOCK_POS_FIRST_POINT,
                         "Read SFR points from=$position count=$count"
                     )
@@ -139,7 +124,7 @@ internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
     return retryReadNfcVData {
         readSfrPointCommand[2] = position.toByte()
         val pointBytes = transceive(readSfrPointCommand).also {
-            it.logAsTagTable(
+            it.logAsNfcMessage(
                 position + SFR_BLOCK_POS_FIRST_POINT,
                 "Read SFR point at position=${position + SFR_BLOCK_POS_FIRST_POINT}"
             )

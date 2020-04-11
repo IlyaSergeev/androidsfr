@@ -1,8 +1,9 @@
 package com.densvr.nfcreader
 
 import com.densvr.util.asHex
+import timber.log.Timber
 
-internal fun ByteArray.asNumeratedString(
+private fun ByteArray.asNumeratedString(
     offsetPrefix: String,
     chunkLength: Int,
     firstIndex: Int,
@@ -16,4 +17,21 @@ internal fun ByteArray.asNumeratedString(
                 .chunked(chunkLength)
                 .mapIndexed { index, chunkHexString -> "${firstIndex + index}: $chunkHexString" }
                 .joinToString(separator)
+}
+
+private const val NFC_READER_TAG = "NFC Reader"
+
+internal fun ByteArray.logAsNfcMessage(startTagNumber: Int, operation: String) {
+
+    Timber.tag(NFC_READER_TAG).apply {
+        d(operation)
+        d(
+            asNumeratedString(
+                offsetPrefix = "h: ",
+                chunkLength = 8,
+                firstIndex = startTagNumber,
+                separator = "\n"
+            )
+        )
+    }
 }
