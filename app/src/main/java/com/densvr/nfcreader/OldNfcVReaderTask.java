@@ -13,6 +13,8 @@ import android.util.Log;
 
 import timber.log.Timber;
 
+@Deprecated
+//TODO "Many bugs here"
 public class OldNfcVReaderTask {
 
     //TableFixHeaders tableFixHeaders = null;

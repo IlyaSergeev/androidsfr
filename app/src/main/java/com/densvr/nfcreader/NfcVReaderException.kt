@@ -1,14 +1,14 @@
 package com.densvr.nfcreader
 
-import com.densvr.nfcreader.NfcVResponseCode.*
+import com.densvr.nfcreader.NfcResponseCode.*
 /**
  * Created by i-sergeev on 10.04.2020.
  */
 class NfcVReaderException(
-    val responseCode: NfcVResponseCode
+    val responseCode: NfcResponseCode
 ) : Exception(responseCode.message)
 
-private val NfcVResponseCode.message: String
+private val NfcResponseCode.message: String
     get() = when (this) {
         NoStatusInformation -> "No status Information"
         CommandWasSuccessful -> "Command was successful"

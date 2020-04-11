@@ -5,14 +5,12 @@ import java.io.File;
 import com.densvr.nfcreader.OldChipData;
 import com.densvr.nfcreader.OldDistsProtocol;
 import com.densvr.nfcreader.OldGlobals;
-import com.densvr.nfcreader.OldNfcVReaderTask;
 import com.densvr.androidsfr.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
@@ -31,8 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.ViewGroup;
 
-import static com.densvr.nfcreader.NfcVReaderTaskKt.getCanReadSfrRecord;
-import static com.densvr.nfcreader.NfcVReaderTaskKt.readSfrRecord;
+import static com.densvr.nfcreader.NfcReaderTaskKt.getCanReadSfrRecord;
+import static com.densvr.nfcreader.NfcReaderTaskKt.readSfrRecord;
 
 
 public class MainActivity extends ListActivity {

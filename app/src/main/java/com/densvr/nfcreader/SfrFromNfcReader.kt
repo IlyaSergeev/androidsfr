@@ -53,7 +53,7 @@ internal fun NfcV.readSFRHeader(): SfrHeader {
         }
 
         val responseCode = sfrHeaderBytes.readResponseCode(0)
-        if (responseCode == NfcVResponseCode.CommandWasSuccessful) {
+        if (responseCode == NfcResponseCode.CommandWasSuccessful) {
             sfrHeaderBytes.readSFRHeader(responseCode.length)
         } else {
             throw NfcVReaderException(responseCode)
@@ -78,7 +78,7 @@ internal fun NfcV.readSFRPointInfoWithCount(pointsCount: Int): List<SFRPointInfo
             }
             return points
         } catch (error: NfcVReaderException) {
-            if (error.responseCode == NfcVResponseCode.UnknownError) {
+            if (error.responseCode == NfcResponseCode.UnknownError) {
                 blockSize /= 2
             } else {
                 throw error
@@ -97,7 +97,7 @@ internal fun NfcV.readSFRPointInfoWithCount(position: Int, count: Int): List<SFR
         retryOnError(
             NFC_READ_TRY_COUNTS,
             { throwable ->
-                throwable is TagLostException || (throwable is NfcVReaderException && throwable.responseCode != NfcVResponseCode.UnknownError)
+                throwable is TagLostException || (throwable is NfcVReaderException && throwable.responseCode != NfcResponseCode.UnknownError)
             },
             {
                 readSfrPointsWithCountCommand[2] = (SFR_BLOCK_POS_FIRST_POINT + position).toByte()
@@ -109,7 +109,7 @@ internal fun NfcV.readSFRPointInfoWithCount(position: Int, count: Int): List<SFR
                     )
                 }
                 val responseCode = pointBytes.readResponseCode(0)
-                if (responseCode == NfcVResponseCode.CommandWasSuccessful) {
+                if (responseCode == NfcResponseCode.CommandWasSuccessful) {
                     Array(count) { i ->
                         pointBytes.readSFRPointInfo(responseCode.length + i.sfrBlockOffset)
                     }.asList()
@@ -145,31 +145,11 @@ internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
             )
         }
         val responseCode = pointBytes.readResponseCode(0)
-        if (responseCode == NfcVResponseCode.CommandWasSuccessful) {
+        if (responseCode == NfcResponseCode.CommandWasSuccessful) {
             pointBytes.readSFRPointInfo(responseCode.length)
         } else {
             null
         }
-    }
-}
-
-internal fun ByteArray.readResponseCode(offset: Int): NfcVResponseCode {
-
-    val operationSize = max(0, size - offset)
-    return if (operationSize == 0) {
-        NfcVResponseCode.NoStatusInformation
-    } else {
-        NfcVResponseCode.values().firstOrNull {
-            if (it.bytes.isNotEmpty()) {
-                val compareBytesCount = kotlin.math.min(it.bytes.size, operationSize)
-                areEqualByteArrays(
-                    this, offset, compareBytesCount,
-                    it.bytes, 0, compareBytesCount
-                )
-            } else {
-                false
-            }
-        } ?: NfcVResponseCode.UnknownResponse
     }
 }
 

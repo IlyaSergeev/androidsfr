@@ -1,7 +1,7 @@
 package com.densvr.nfcreader
 
 //value from ISO15693
-enum class NfcVResponseCode(internal val bytes: ByteArray) {
+enum class NfcResponseCode(internal val bytes: ByteArray) {
 
     //[]
     NoStatusInformation(byteArrayOf()),
