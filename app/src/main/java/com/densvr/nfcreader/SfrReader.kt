@@ -9,9 +9,25 @@ import kotlin.math.max
 /**
  * Created by i-sergeev on 10.04.2020.
  */
-private val readSfrHeaderCommand = byteArrayOf(0x02, 0x23, 0x00, 0x05)
-private val readSfrPointsWithCountCommand = byteArrayOf(0x02, 0x23, 0x06, 0x00)
-private val readSfrPointCommand = byteArrayOf(0x02, 0x20, 0x00)
+private val readSfrHeaderCommand = byteArrayOf(
+    NFC_HIGH_DATA_RATE_FLAG,
+    NFC_READ_MULTIPLE_BLOCK,
+    SFR_BLOCK_POS_START.toByte(),
+    SFR_BLOCK_POS_BASE_POINT.toByte()
+)
+
+private val readSfrPointsWithCountCommand = byteArrayOf(
+    NFC_HIGH_DATA_RATE_FLAG,
+    NFC_READ_MULTIPLE_BLOCK,
+    SFR_BLOCK_POS_FIRST_POINT.toByte(),
+    ZERO_BYTE
+)
+
+private val readSfrPointCommand = byteArrayOf(
+    NFC_HIGH_DATA_RATE_FLAG,
+    NFC_READ_SINGLE_BLOCK,
+    ZERO_BYTE
+)
 
 private fun ByteArray.logAsTagTable(startTagNumber: Int, operation: String) {
 
