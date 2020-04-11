@@ -2,9 +2,9 @@ package com.densvr.nfcreader
 
 import kotlin.math.max
 
-class SFRHeader(
+class SfrHeader(
     val lastFormatTime: Long,
-    val operationInfo: SFROperationInfo,
+    val operationInfo: SfrOperationInfo,
     val chipNumber: Int,
     val startPointInfo: SFRPointInfo
 ) {

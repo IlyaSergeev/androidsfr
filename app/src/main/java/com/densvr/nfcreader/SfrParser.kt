@@ -1,6 +1,6 @@
 package com.densvr.nfcreader
 
-class SFRParser(private val bytes: ByteArray, private val offset: Int, private val length: Int) {
+class SfrParser(private val bytes: ByteArray, private val offset: Int, private val length: Int) {
 
     companion object {
         const val POS_FIRST_RECORD = 0x06

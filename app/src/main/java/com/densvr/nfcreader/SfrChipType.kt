@@ -1,6 +1,6 @@
 package com.densvr.nfcreader
 
-enum class SFRChipType {
+enum class SfrChipType {
     SERVICE,
     COMPETITOR
 }

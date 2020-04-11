@@ -3,10 +3,10 @@ package com.densvr.nfcreader
 /**
  * Created by i-sergeev on 07.04.2020.
  */
-private fun Int.asSFRChipType(): SFRChipType? {
+private fun Int.asSFRChipType(): SfrChipType? {
     return when (this) {
-        0 -> SFRChipType.COMPETITOR
-        1 -> SFRChipType.SERVICE
+        0 -> SfrChipType.COMPETITOR
+        1 -> SfrChipType.SERVICE
         else -> null
     }
 }
@@ -30,8 +30,8 @@ internal fun ByteArray.readInt32Value(position: Int): Int {
     return readIntValue(position, INT32_SIZE_BYTES)
 }
 
-internal fun ByteArray.readSFROperationInfo(position: Int): SFROperationInfo {
-    return SFROperationInfo(
+internal fun ByteArray.readSFROperationInfo(position: Int): SfrOperationInfo {
+    return SfrOperationInfo(
         this[position + 3 * ONE_BYTE].uint,
         this[position + 1].uint,
         this[position].uint.asSFRChipType()

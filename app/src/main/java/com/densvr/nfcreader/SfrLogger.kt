@@ -29,7 +29,7 @@ private fun ByteArray.logAsTagTable(startTagNumber: Int, operation: String) {
 
 private const val NFC_READ_TRY_COUNTS = 3
 
-internal fun NfcV.readSFRHeader(): SFRHeader {
+internal fun NfcV.readSFRHeader(): SfrHeader {
 
     return retryReadNfcVData {
         val sfrHeaderBytes = transceive(readSfrHeaderCommand).also {
@@ -84,11 +84,11 @@ internal fun NfcV.readSFRPointInfoWithCount(position: Int, count: Int): List<SFR
                 throwable is TagLostException || (throwable is NfcVReaderException && throwable.responseCode != NfcVResponseCode.UnknownError)
             },
             {
-                readSfrPointsWithCountCommand[2] = (SFRParser.POS_FIRST_RECORD + position).toByte()
+                readSfrPointsWithCountCommand[2] = (SfrParser.POS_FIRST_RECORD + position).toByte()
                 readSfrPointsWithCountCommand[3] = (count - 1).toByte()
                 val pointBytes = transceive(readSfrPointsWithCountCommand).also {
                     it.logAsTagTable(
-                        position + SFRParser.POS_FIRST_RECORD,
+                        position + SfrParser.POS_FIRST_RECORD,
                         "Read SFR points from=$position count=$count"
                     )
                 }
@@ -124,8 +124,8 @@ internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
         readSfrPointCommand[2] = position.toByte()
         val pointBytes = transceive(readSfrPointCommand).also {
             it.logAsTagTable(
-                position + SFRParser.POS_FIRST_RECORD,
-                "Read SFR point at position=${position + SFRParser.POS_FIRST_RECORD}"
+                position + SfrParser.POS_FIRST_RECORD,
+                "Read SFR point at position=${position + SfrParser.POS_FIRST_RECORD}"
             )
         }
         val responseCode = pointBytes.readResponseCode(0)

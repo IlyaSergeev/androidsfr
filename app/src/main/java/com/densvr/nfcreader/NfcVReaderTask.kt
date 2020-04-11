@@ -3,7 +3,7 @@ package com.densvr.nfcreader
 import android.nfc.Tag
 import android.nfc.tech.NfcV
 
-fun Tag.readSfrRecord(): SFRRecord {
+fun Tag.readSfrRecord(): SfrRecord {
 
     return NfcV.get(this).use { nfcV ->
 
@@ -17,7 +17,7 @@ fun Tag.readSfrRecord(): SFRRecord {
         } else {
             nfcV.readAllSFRPointInfo()
         }
-        SFRRecord(
+        SfrRecord(
             sfrHeader.lastFormatTime,
             sfrHeader.chipNumber,
             sfrHeader.operationInfo.type,
