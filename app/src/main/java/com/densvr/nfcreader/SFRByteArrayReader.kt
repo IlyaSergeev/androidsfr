@@ -32,7 +32,7 @@ internal fun ByteArray.readInt32Value(position: Int): Int {
 
 internal fun ByteArray.readSFROperationInfo(position: Int): SFROperationInfo {
     return SFROperationInfo(
-        this[position + 3 * BYTE_SIZE].uint,
+        this[position + 3 * ONE_BYTE].uint,
         this[position + 1].uint,
         this[position].uint.asSFRChipType()
     )
@@ -47,15 +47,15 @@ internal fun ByteArray.readChipNumber(position: Int): Int {
 fun ByteArray.readSFRPointInfo(position: Int): SFRPointInfo {
     return SFRPointInfo(
         this[position].uint,
-        readSFRTime(position + BYTE_SIZE)
+        readSFRTime(position + ONE_BYTE)
     )
 }
 
 internal fun ByteArray.readSFRTime(position: Int): Long {
     return createDelayMillis(
-        hours = readIntFromDecimalFormat(position, BYTE_SIZE),
-        minutes = readIntFromDecimalFormat(position + BYTE_SIZE, BYTE_SIZE),
-        seconds = readIntFromDecimalFormat(position + 2 * BYTE_SIZE, BYTE_SIZE)
+        hours = readIntFromDecimalFormat(position, ONE_BYTE),
+        minutes = readIntFromDecimalFormat(position + ONE_BYTE, ONE_BYTE),
+        seconds = readIntFromDecimalFormat(position + 2 * ONE_BYTE, ONE_BYTE)
     )
 }
 

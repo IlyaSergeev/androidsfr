@@ -1,33 +1,19 @@
 package com.densvr.nfcreader
 
-import java.util.*
+import com.densvr.util.asHex
 
-val String.hexAsByteArray
-    inline get() = chunked(2).map { it.toUpperCase(Locale.ROOT).toInt(16).toByte() }.toByteArray()
-
-val ByteArray.asHex
-    inline get() = this.joinToString(separator = "") {
-        "%02X".format(it.toInt() and 0xFF)
-    }
-
-fun ByteArray.asHex(offset: Int, length: Int): String {
-    return Array(length - offset) { i ->
-        "%02X".format(this[i + offset].toInt() and 0xFF)
-    }.joinToString(separator = "")
-}
-
-fun ByteArray.asNumiratedString(
+internal fun ByteArray.asNumeratedString(
     offsetPrefix: String,
-    chankLength: Int,
+    chunkLength: Int,
     firstIndex: Int,
     separator: String
 ): String {
     val hexString = asHex
-    val offset = hexString.length % chankLength
+    val offset = hexString.length % chunkLength
 
     return offsetPrefix + hexString.take(offset) + separator +
             hexString.substring(offset)
-                .chunked(chankLength)
+                .chunked(chunkLength)
                 .mapIndexed { index, chunkHexString -> "${firstIndex + index}: $chunkHexString" }
                 .joinToString(separator)
 }

@@ -2,7 +2,7 @@ package com.densvr.nfcreader
 
 import android.nfc.TagLostException
 import android.nfc.tech.NfcV
-import com.densvr.utility.retryOnError
+import com.densvr.util.retryOnError
 import timber.log.Timber
 import kotlin.math.max
 
@@ -17,7 +17,7 @@ private fun ByteArray.logAsTagTable(startTagNumber: Int, operation: String) {
 
     Timber.tag("NFC Reader").d(operation)
 
-    val responseString = asNumiratedString(
+    val responseString = asNumeratedString(
         "h: ",
         8,
         startTagNumber,
@@ -95,7 +95,7 @@ internal fun NfcV.readSFRPointInfoWithCount(position: Int, count: Int): List<SFR
                 val responseCode = pointBytes.readResponseCode(0)
                 if (responseCode == NfcVResponseCode.CommandWasSuccessful) {
                     Array(count) { i ->
-                        pointBytes.readSFRPointInfo(responseCode.length + i * SFR_BLOCK_SIZE_BITES)
+                        pointBytes.readSFRPointInfo(responseCode.length + i.sfrBlockOffset)
                     }.asList()
                 } else {
                     throw NfcVReaderException(responseCode)
@@ -108,7 +108,7 @@ internal fun NfcV.readSFRPointInfoWithCount(position: Int, count: Int): List<SFR
 internal fun NfcV.readAllSFRPointInfo(): List<SFRPointInfo> {
     return arrayListOf<SFRPointInfo>().also { points ->
         var nextPoint: SFRPointInfo?
-        var position = POS_FIRST_POINT_POSITION
+        var position = SFR_BLOCK_POS_FIRST_POINT_POSITION
         do {
             nextPoint = readSFRPointInfo(position)?.also {
                 points += it

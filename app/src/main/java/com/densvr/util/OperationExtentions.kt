@@ -1,4 +1,4 @@
-package com.densvr.utility
+package com.densvr.util
 
 import timber.log.Timber
 
