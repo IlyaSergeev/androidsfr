@@ -13,7 +13,7 @@ fun Tag.readSfrRecord(): SfrRecord {
 
         val pointsCount = sfrHeader.pointsCount ?: 0
         val sfrPoints = if (pointsCount > 0) {
-            nfcV.readSFRPointInfoWithCount(pointsCount)
+            nfcV.readSFRPointInfoInRange(pointsCount)
         } else {
             nfcV.readAllSFRPointInfo()
         }
