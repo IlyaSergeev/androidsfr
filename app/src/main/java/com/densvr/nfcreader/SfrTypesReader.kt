@@ -1,6 +1,7 @@
 package com.densvr.nfcreader
 
 import com.densvr.util.areEquals
+import com.densvr.util.asHex
 import kotlin.math.max
 import kotlin.math.min
 
@@ -40,7 +41,7 @@ internal fun ByteArray.readSFRHeader(offset: Int): SfrHeader {
 internal fun ByteArray.readSFROperationInfo(position: Int): SfrOperationInfo {
     return SfrOperationInfo(
         this[position + 3 * ONE_BYTE].uint,
-        this[position + 1].uint,
+        this[position + ONE_BYTE].uint,
         this[position].uint.asSFRChipType()
     )
 }
@@ -54,9 +55,9 @@ private fun Int.asSFRChipType(): SfrChipType? {
 }
 
 internal fun ByteArray.readChipNumber(position: Int): Int {
-    return this[position].uint +
-            200 * this[position + 1].uint +
-            40000 * this[position + 2].uint
+    return this[position + 3 * ONE_BYTE].uint +
+            200 * this[position + 2 * ONE_BYTE].uint +
+            40000 * this[position + ONE_BYTE].uint
 }
 
 fun ByteArray.readSFRPointInfo(position: Int): SFRPointInfo {
@@ -67,9 +68,10 @@ fun ByteArray.readSFRPointInfo(position: Int): SFRPointInfo {
 }
 
 internal fun ByteArray.readSFRTime(position: Int): Long {
+
     return createDelaySeconds(
-        hours = readIntFromDecimalFormat(position + 2 * ONE_BYTE, ONE_BYTE),
-        minutes = readIntFromDecimalFormat(position + ONE_BYTE, ONE_BYTE),
-        seconds = readIntFromDecimalFormat(position, ONE_BYTE)
+        hours = asHex(position + 2 * ONE_BYTE, ONE_BYTE).toLong(10),
+        minutes = asHex(position + ONE_BYTE, ONE_BYTE).toLong(10),
+        seconds = asHex(position, ONE_BYTE).toLong(10)
     )
 }
