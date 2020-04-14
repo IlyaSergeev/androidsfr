@@ -174,7 +174,7 @@ public class OldChipData {
             chipData.cps.add(cp);
         }
         if (chipData.cps.size() > 0) {
-            chipData.fullTime = chipData.cps.get(cpCnt - 6).lapTime;
+            chipData.fullTime = chipData.cps.get(cpCnt - 1).lapTime;
         }
         Log.i("android SFR", chipData.fullTime.toString());
         return chipData;
