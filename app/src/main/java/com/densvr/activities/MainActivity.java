@@ -6,12 +6,14 @@ import com.densvr.nfcreader.OldChipData;
 import com.densvr.nfcreader.OldDistsProtocol;
 import com.densvr.nfcreader.OldGlobals;
 import com.densvr.androidsfr.R;
+import com.densvr.nfcreader.OldNfcVReaderTask;
 import com.densvr.nfcreader.SfrRecord;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
@@ -29,6 +31,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.ViewGroup;
+
+import timber.log.Timber;
 
 import static com.densvr.nfcreader.NfcReaderTaskKt.getCanReadSfrRecord;
 import static com.densvr.nfcreader.NfcReaderTaskKt.readSfrRecord;
@@ -217,12 +221,16 @@ public class MainActivity extends ListActivity {
 	 */
 	private void handleIntent(Intent intent){
 
+        OldChipData oldData = null;
+        OldChipData newData = null;
+
 		if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			if (tag != null && getCanReadSfrRecord(tag)) {
 				try {
 					SfrRecord sfrRecord = readSfrRecord(tag);
-					OldGlobals.chipData = OldChipData.fillFrom(sfrRecord);
+                    newData = OldChipData.fillFrom(sfrRecord);
+					OldGlobals.chipData = newData;
 					onNewChipData();
 				} catch (Throwable ex) {
 					ex.printStackTrace();
@@ -231,24 +239,27 @@ public class MainActivity extends ListActivity {
 			} else {
 				MainActivity.makeText("поднесите чип еще раз");
 			}
-//			Log.d("Action", "ACTION_TAG_DISCOVERED");
-//			Log.d("Tag", tag.toString());
-//			String[] techList = tag.getTechList();
-//			String searchedTech = NfcV.class.getName();
-//			for (String tech : techList) {
-//				if (searchedTech.equals(tech)) {
-//					//Log.d("Tech", tech);
-//					OldNfcVReaderTask task = new OldNfcVReaderTask();
-//					if (!task.execute(tag)) {
-//						MainActivity.makeText("поднесите чип еще раз");
-//					} else {
-//						OldGlobals.chipData = task.getChipData();
-//						onNewChipData();
-//					}
-//					break;
-//				} //end if
-//			}
 
+			Log.d("Action", "ACTION_TAG_DISCOVERED");
+			Log.d("Tag", tag.toString());
+			String[] techList = tag.getTechList();
+			String searchedTech = NfcV.class.getName();
+			for (String tech : techList) {
+				if (searchedTech.equals(tech)) {
+					//Log.d("Tech", tech);
+					OldNfcVReaderTask task = new OldNfcVReaderTask();
+					if (!task.execute(tag)) {
+						MainActivity.makeText("поднесите чип еще раз");
+					} else {
+                        oldData = task.getChipData();
+						OldGlobals.chipData = oldData;
+						onNewChipData();
+					}
+					break;
+				} //end if
+			}
+
+            Timber.tag("Cool").d("Cool");
 		}
 	}
 	
