@@ -221,16 +221,12 @@ public class MainActivity extends ListActivity {
 	 */
 	private void handleIntent(Intent intent){
 
-        OldChipData oldData = null;
-        OldChipData newData = null;
-
 		if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			if (tag != null && getCanReadSfrRecord(tag)) {
 				try {
 					SfrRecord sfrRecord = readSfrRecord(tag);
-                    newData = OldChipData.fillFrom(sfrRecord);
-					OldGlobals.chipData = newData;
+					OldGlobals.chipData = OldChipData.fillFrom(sfrRecord);
 					onNewChipData();
 				} catch (Throwable ex) {
 					ex.printStackTrace();
@@ -239,27 +235,6 @@ public class MainActivity extends ListActivity {
 			} else {
 				MainActivity.makeText("поднесите чип еще раз");
 			}
-
-			Log.d("Action", "ACTION_TAG_DISCOVERED");
-			Log.d("Tag", tag.toString());
-			String[] techList = tag.getTechList();
-			String searchedTech = NfcV.class.getName();
-			for (String tech : techList) {
-				if (searchedTech.equals(tech)) {
-					//Log.d("Tech", tech);
-					OldNfcVReaderTask task = new OldNfcVReaderTask();
-					if (!task.execute(tag)) {
-						MainActivity.makeText("поднесите чип еще раз");
-					} else {
-                        oldData = task.getChipData();
-						OldGlobals.chipData = oldData;
-						onNewChipData();
-					}
-					break;
-				} //end if
-			}
-
-            Timber.tag("Cool").d("Cool");
 		}
 	}
 	
