@@ -1,5 +1,6 @@
 package com.densvr.util
 
+import com.densvr.nfcreader.uint
 import java.util.*
 
 /**
@@ -10,11 +11,11 @@ val String.hexAsByteArray
 
 val ByteArray.asHex
     inline get() = this.joinToString(separator = "") {
-        "%02X".format(it.toInt() and 0xFF)
+        "%02X".format(it.uint)
     }
 
 fun ByteArray.asHex(offset: Int, length: Int): String {
-    return Array(length - offset) { i ->
-        "%02X".format(this[i + offset].toInt() and 0xFF)
+    return Array(length) { i ->
+        "%02X".format(this[i + offset].uint)
     }.joinToString(separator = "")
 }
