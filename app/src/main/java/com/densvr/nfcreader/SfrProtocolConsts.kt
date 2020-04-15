@@ -12,7 +12,7 @@ internal const val SFR_BLOCK_POS_OPERATION = 4
 internal const val SFR_BLOCK_POS_BASE_POINT = 5
 internal const val SFR_BLOCK_POS_FIRST_POINT = 6
 
-const val SFR_HEAD_SIZE_BYTES = 6
+const val SFR_HEAD_SIZE_BLOCKS = 6
 
 internal val Int.sfrBlockOffset: Int
     get() = this * SRF_BLOCK_SIZE_BYTES

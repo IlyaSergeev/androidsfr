@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.densvr.androidsfr.R
-import com.densvr.generator.nextSfrRecordBytes
+import com.densvr.mock.nextSfrRecordBytes
 import com.densvr.ui.NfcLogsViewModel
 import kotlinx.android.synthetic.main.fragment_nfc_logs.*
 import java.util.*
