@@ -27,7 +27,7 @@ import com.densvr.nfcreader.OldChipData;
 import com.densvr.nfcreader.OldDistsProtocol;
 import com.densvr.nfcreader.OldGlobals;
 import com.densvr.nfcreader.SfrRecord;
-import com.densvr.util.SfrReaderLogger;
+import com.densvr.util.NfcReaderLogger;
 
 import java.io.File;
 
@@ -222,7 +222,7 @@ public class MainActivity extends ListActivity {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			if (tag != null && getCanReadSfrRecord(tag)) {
 				try {
-					SfrRecord sfrRecord = readSfrRecord(tag, new SfrReaderLogger());
+					SfrRecord sfrRecord = readSfrRecord(tag, new NfcReaderLogger());
 					OldGlobals.chipData = OldChipData.fillFrom(sfrRecord);
 					onNewChipData();
 				} catch (Throwable ex) {

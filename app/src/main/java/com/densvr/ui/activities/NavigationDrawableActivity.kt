@@ -19,7 +19,7 @@ import com.densvr.androidsfr.R
 import com.densvr.nfcreader.canReadSfrRecord
 import com.densvr.nfcreader.readSfrRecord
 import com.densvr.ui.NfcLogsViewModel
-import com.densvr.util.SfrReaderLogger
+import com.densvr.util.NfcReaderLogger
 import com.google.android.material.navigation.NavigationView
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,7 +29,7 @@ class NavigationDrawableActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val nfcLogsViewModel: NfcLogsViewModel by viewModels()
     private val readLogger by lazy {
-        SfrReaderLogger()
+        NfcReaderLogger()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,7 +2,7 @@ package com.densvr.nfcreader
 
 import android.nfc.TagLostException
 import android.nfc.tech.NfcV
-import com.densvr.util.SfrReaderLogger
+import com.densvr.util.NfcReaderLogger
 import com.densvr.util.retryOnError
 import kotlin.math.max
 
@@ -18,7 +18,7 @@ private val readSfrHeaderCommand = byteArrayOf(
     SFR_BLOCK_POS_BASE_POINT.toByte()
 )
 
-internal fun NfcV.readSFRHeader(readerLogger: SfrReaderLogger): SfrHeader {
+internal fun NfcV.readSFRHeader(readerLogger: NfcReaderLogger): SfrHeader {
 
     return retryReadNfcVData {
         transceive(readSfrHeaderCommand).also {
@@ -33,7 +33,7 @@ internal fun NfcV.readSFRHeader(readerLogger: SfrReaderLogger): SfrHeader {
 }
 
 internal fun NfcV.readSFRPointInfoInRange(
-    readerLogger: SfrReaderLogger,
+    readerLogger: NfcReaderLogger,
     pointsCount: Int
 ): List<SFRPointInfo> {
 
@@ -72,7 +72,7 @@ private val readSfrPointsWithCountCommand = byteArrayOf(
 )
 
 internal fun NfcV.readSFRPointInfoInRange(
-    readerLogger: SfrReaderLogger,
+    readerLogger: NfcReaderLogger,
     position: Int,
     count: Int
 ): List<SFRPointInfo> {
@@ -110,7 +110,7 @@ internal fun NfcV.readSFRPointInfoInRange(
     }
 }
 
-internal fun NfcV.readAllSFRPointInfo(readerLogger: SfrReaderLogger): List<SFRPointInfo> {
+internal fun NfcV.readAllSFRPointInfo(readerLogger: NfcReaderLogger): List<SFRPointInfo> {
     return arrayListOf<SFRPointInfo>().also { points ->
         var nextPoint: SFRPointInfo?
         var position = 0
@@ -130,7 +130,7 @@ private val readSfrPointCommand = byteArrayOf(
     ZERO_BYTE
 )
 
-internal fun NfcV.readSFRPointInfo(readerLogger: SfrReaderLogger, position: Int): SFRPointInfo? {
+internal fun NfcV.readSFRPointInfo(readerLogger: NfcReaderLogger, position: Int): SFRPointInfo? {
 
     val blockPosition = position + SFR_BLOCK_POS_FIRST_POINT
     return retryReadNfcVData {
@@ -160,7 +160,7 @@ private inline fun <T> retryReadNfcVData(action: () -> T): T {
 }
 
 private inline fun <T> ByteArray.parseNfcMessage(
-    readerLogger: SfrReaderLogger,
+    readerLogger: NfcReaderLogger,
     positionIndex: Int,
     onSuccess: (bytes: ByteArray, offset: Int) -> T,
     onFail: (NfcResponseCode) -> T

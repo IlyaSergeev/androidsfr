@@ -7,7 +7,7 @@ import com.densvr.nfcreader.asNumeratedString
 /**
  * Created by i-sergeev on 15.04.2020.
  */
-class SfrReaderLogger {
+class NfcReaderLogger {
 
     private val stringBuilder = SpannableStringBuilder()
 

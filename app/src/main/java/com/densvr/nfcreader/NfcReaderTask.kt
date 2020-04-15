@@ -2,9 +2,9 @@ package com.densvr.nfcreader
 
 import android.nfc.Tag
 import android.nfc.tech.NfcV
-import com.densvr.util.SfrReaderLogger
+import com.densvr.util.NfcReaderLogger
 
-fun Tag.readSfrRecord(readerLogger: SfrReaderLogger): SfrRecord {
+fun Tag.readSfrRecord(readerLogger: NfcReaderLogger): SfrRecord {
 
     return NfcV.get(this).use { nfcV ->
 

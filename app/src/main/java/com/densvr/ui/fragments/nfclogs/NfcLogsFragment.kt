@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import com.densvr.androidsfr.R
 import com.densvr.mock.nextSfrRecordBytes
 import com.densvr.ui.NfcLogsViewModel
-import com.densvr.util.SfrReaderLogger
+import com.densvr.util.NfcReaderLogger
 import kotlinx.android.synthetic.main.fragment_nfc_logs.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,7 +25,7 @@ class NfcLogsFragment : Fragment(R.layout.fragment_nfc_logs) {
         })
 
         nfc_logs_test.setOnClickListener {
-            val readLogger = SfrReaderLogger()
+            val readLogger = NfcReaderLogger()
             readLogger.clear()
             readLogger.appendMessage(
                 SimpleDateFormat.getDateTimeInstance(
