@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sfr_logs_last_format_date">Дата форматирования: %s</string>
+    <string name="sfr_logs_person_number">Номер участника: %s</string>
+    <string name="sfr_logs_points_count">Количество точек: %s</string>
+    <string name="sfr_logs_start_point_id">Номер стартовой точки: %s</string>
+    <string name="sfr_logs_chip_type">Тип чипа: %s</string>
+    <string name="sfr_logs_points_label">Контрольные точки:</string>
+</resources>

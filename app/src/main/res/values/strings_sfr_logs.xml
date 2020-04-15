@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sfr_logs_last_format_date">Last format date: %s</string>
+    <string name="sfr_logs_person_number">Person number: %s</string>
+    <string name="sfr_logs_points_count">Points count: %s</string>
+    <string name="sfr_logs_start_point_id">Start point ID: %s</string>
+    <string name="sfr_logs_chip_type">Chip type: %s</string>
+    <string name="sfr_logs_points_label">Points:</string>
+</resources>

@@ -158,12 +158,12 @@ public class OldChipData {
         }
         List<SFRPointInfo> points = sfrRecord.getPoints();
         int cpCnt = points.size();
-        Long startTime = points.get(0).getTime();
+        Long startTime = points.get(0).getTimeSeconds();
         Log.i("android SFR", startTime.toString());
         for(SFRPointInfo point :points) {
             CP cp = new CP();
             cp.number = point.getPointId();
-            cp.lapTime = point.getTime()- startTime;
+            cp.lapTime = point.getTimeSeconds()- startTime;
 
             if (points.get(0) == point) {
                 cp.splitTime = 0L;
