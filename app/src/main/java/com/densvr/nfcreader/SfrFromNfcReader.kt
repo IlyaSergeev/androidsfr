@@ -2,6 +2,7 @@ package com.densvr.nfcreader
 
 import android.nfc.TagLostException
 import android.nfc.tech.NfcV
+import com.densvr.util.BytesLogger
 import com.densvr.util.retryOnError
 import kotlin.math.max
 
@@ -17,19 +18,23 @@ private val readSfrHeaderCommand = byteArrayOf(
     SFR_BLOCK_POS_BASE_POINT.toByte()
 )
 
-internal fun NfcV.readSFRHeader(): SfrHeader {
+internal fun NfcV.readSFRHeader(bytesLogger: BytesLogger): SfrHeader {
 
     return retryReadNfcVData {
         transceive(readSfrHeaderCommand).also {
             it.logAsNfcMessage(0, "Read SFR Header")
         }.parseNfcMessage(
+            bytesLogger,
             { bytes, offset -> bytes.readSFRHeader(offset) },
             { responseCode -> throw NfcVReaderException(responseCode) }
         )
     }
 }
 
-internal fun NfcV.readSFRPointInfoInRange(pointsCount: Int): List<SFRPointInfo> {
+internal fun NfcV.readSFRPointInfoInRange(
+    bytesLogger: BytesLogger,
+    pointsCount: Int
+): List<SFRPointInfo> {
 
     val points = arrayListOf<SFRPointInfo>()
     var blockSize = pointsCount
@@ -38,6 +43,7 @@ internal fun NfcV.readSFRPointInfoInRange(pointsCount: Int): List<SFRPointInfo> 
         try {
             while (startPosition < pointsCount) {
                 points += readSFRPointInfoInRange(
+                    bytesLogger,
                     startPosition,
                     blockSize - max(0, (startPosition + blockSize) - pointsCount)
                 )
@@ -53,7 +59,7 @@ internal fun NfcV.readSFRPointInfoInRange(pointsCount: Int): List<SFRPointInfo> 
             }
         }
     }
-    return readAllSFRPointInfo()
+    return readAllSFRPointInfo(bytesLogger)
 }
 
 
@@ -64,10 +70,14 @@ private val readSfrPointsWithCountCommand = byteArrayOf(
     ZERO_BYTE
 )
 
-internal fun NfcV.readSFRPointInfoInRange(position: Int, count: Int): List<SFRPointInfo> {
+internal fun NfcV.readSFRPointInfoInRange(
+    bytesLogger: BytesLogger,
+    position: Int,
+    count: Int
+): List<SFRPointInfo> {
 
     return if (count == 1) {
-        listOf(readSFRPointInfo(position) ?: emptySFRPointInfo)
+        listOf(readSFRPointInfo(bytesLogger, position) ?: emptySFRPointInfo)
     } else {
         retryOnError(
             NFC_READ_TRY_COUNTS,
@@ -84,6 +94,7 @@ internal fun NfcV.readSFRPointInfoInRange(position: Int, count: Int): List<SFRPo
                         "Read SFR points from=${position + SFR_BLOCK_POS_FIRST_POINT} count=$count"
                     )
                 }.parseNfcMessage(
+                    bytesLogger,
                     { bytes, offset ->
                         Array(count) { i ->
                             bytes.readSFRPointInfo(offset + i.sfrBlockOffset)
@@ -96,12 +107,12 @@ internal fun NfcV.readSFRPointInfoInRange(position: Int, count: Int): List<SFRPo
     }
 }
 
-internal fun NfcV.readAllSFRPointInfo(): List<SFRPointInfo> {
+internal fun NfcV.readAllSFRPointInfo(bytesLogger: BytesLogger): List<SFRPointInfo> {
     return arrayListOf<SFRPointInfo>().also { points ->
         var nextPoint: SFRPointInfo?
         var position = 0
         do {
-            nextPoint = readSFRPointInfo(position)?.also {
+            nextPoint = readSFRPointInfo(bytesLogger, position)?.also {
                 points += it
             }
             position++
@@ -116,7 +127,7 @@ private val readSfrPointCommand = byteArrayOf(
     ZERO_BYTE
 )
 
-internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
+internal fun NfcV.readSFRPointInfo(bytesLogger: BytesLogger, position: Int): SFRPointInfo? {
 
     return retryReadNfcVData {
 
@@ -128,6 +139,7 @@ internal fun NfcV.readSFRPointInfo(position: Int): SFRPointInfo? {
                 "Read SFR point at position=${position + SFR_BLOCK_POS_FIRST_POINT}"
             )
         }.parseNfcMessage(
+            bytesLogger,
             { bytes, offset -> bytes.readSFRPointInfo(offset) },
             { null }
         )
@@ -143,11 +155,13 @@ private inline fun <T> retryReadNfcVData(action: () -> T): T {
 }
 
 private inline fun <T> ByteArray.parseNfcMessage(
+    bytesLogger: BytesLogger,
     onSuccess: (bytes: ByteArray, offset: Int) -> T,
     onFail: (NfcResponseCode) -> T
 ): T {
     val responseCode = readResponseCode(0)
     return if (responseCode == NfcResponseCode.CommandWasSuccessful) {
+        bytesLogger.appendBytes(this, responseCode.length)
         onSuccess(this, responseCode.length)
     } else {
         onFail(responseCode)

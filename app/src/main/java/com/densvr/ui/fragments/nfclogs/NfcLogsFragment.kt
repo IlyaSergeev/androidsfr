@@ -9,6 +9,7 @@ import com.densvr.androidsfr.R
 import com.densvr.mock.nextSfrRecordBytes
 import com.densvr.ui.NfcLogsViewModel
 import kotlinx.android.synthetic.main.fragment_nfc_logs.*
+import java.lang.IllegalStateException
 import java.util.*
 import kotlin.random.Random
 
@@ -23,7 +24,7 @@ class NfcLogsFragment : Fragment(R.layout.fragment_nfc_logs) {
         })
 
         nfc_logs_test.setOnClickListener {
-            nfcLogsViewModel.setLogs(Random.nextSfrRecordBytes(), Date())
+            nfcLogsViewModel.setLogs(Random.nextSfrRecordBytes(), IllegalStateException("Test exception"), Date())
         }
     }
 }

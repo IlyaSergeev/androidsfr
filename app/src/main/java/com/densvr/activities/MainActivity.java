@@ -8,6 +8,7 @@ import com.densvr.nfcreader.OldGlobals;
 import com.densvr.androidsfr.R;
 import com.densvr.nfcreader.OldNfcVReaderTask;
 import com.densvr.nfcreader.SfrRecord;
+import com.densvr.util.BytesLogger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -225,7 +226,7 @@ public class MainActivity extends ListActivity {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			if (tag != null && getCanReadSfrRecord(tag)) {
 				try {
-					SfrRecord sfrRecord = readSfrRecord(tag);
+					SfrRecord sfrRecord = readSfrRecord(tag, new BytesLogger());
 					OldGlobals.chipData = OldChipData.fillFrom(sfrRecord);
 					onNewChipData();
 				} catch (Throwable ex) {

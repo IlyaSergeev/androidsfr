@@ -15,9 +15,10 @@ class NfcLogsViewModel : ViewModel() {
 
     val lastReadLogs: LiveData<String> = mutableLastReadLogs
 
-    fun setLogs(bytes: ByteArray, operationDate: Date) {
+    fun setLogs(bytes: ByteArray, error: Throwable?, operationDate: Date) {
         mutableLastReadLogs.value =
             SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.MEDIUM)
-                .format(operationDate) + "\n\n" + bytes.asNumeratedString()
+                .format(operationDate) + "\n\n" + bytes.asNumeratedString() +
+                    if (error != null) "\n\n!!!  ${error.message}" else ""
     }
 }
