@@ -4,17 +4,31 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/nav_names"
+            android:icon="@drawable/ic_people_black_24dp"
+            android:title="@string/menu_names" />
+
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/nav_distances"
+            android:icon="@drawable/ic_swap_calls_black_24dp"
+            android:title="@string/menu_distances" />
+
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/nav_results"
+            android:icon="@drawable/ic_format_list_numbered_black_24dp"
+            android:title="@string/menu_results" />
+
+        <item
+            android:id="@+id/nav_programming"
+            android:icon="@drawable/ic_phonelink_setup_black_24dp"
+            android:title="@string/menu_programming" />
+
+        <item
+            android:id="@+id/nav_nfc_logs"
+            android:icon="@drawable/ic_nfc_black_24dp"
+            android:title="@string/menu_nfc_log" />
+
     </group>
 </menu>

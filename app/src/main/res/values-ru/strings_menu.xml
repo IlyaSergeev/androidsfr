@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="menu_names">Имена</string>
+    <string name="menu_distances">Дистанции</string>
+    <string name="menu_results">Результаты</string>
+    <string name="menu_programming">Программирование</string>
+    <string name="menu_nfc_log">NFC логи</string>
+
+</resources>
