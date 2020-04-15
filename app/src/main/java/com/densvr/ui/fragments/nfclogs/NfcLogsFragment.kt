@@ -7,7 +7,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.densvr.androidsfr.R
 import com.densvr.mock.nextSfrRecordBytes
-import com.densvr.ui.NfcLogsViewModel
+import com.densvr.ui.viewmodels.NfcLogsViewModel
 import com.densvr.util.NfcReaderLogger
 import kotlinx.android.synthetic.main.fragment_nfc_logs.*
 import java.text.SimpleDateFormat

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.densvr.activities.ui.home.HomeFragment">
+    tools:context="com.densvr.ui.activities.NavigationDrawableActivity">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_home"

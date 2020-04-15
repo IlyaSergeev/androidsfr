@@ -15,18 +15,18 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/nfc_logs_text"
+            android:id="@+id/sfr_logs_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="NFC logs"
+            android:text="SFR logs"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:typeface="monospace" />
 
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/nfc_logs_test"
+        android:id="@+id/sfr_logs_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

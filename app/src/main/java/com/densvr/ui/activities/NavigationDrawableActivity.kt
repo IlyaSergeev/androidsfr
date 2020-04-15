@@ -18,7 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.densvr.androidsfr.R
 import com.densvr.nfcreader.canReadSfrRecord
 import com.densvr.nfcreader.readSfrRecord
-import com.densvr.ui.NfcLogsViewModel
+import com.densvr.ui.viewmodels.NfcLogsViewModel
 import com.densvr.util.NfcReaderLogger
 import com.google.android.material.navigation.NavigationView
 import java.text.SimpleDateFormat

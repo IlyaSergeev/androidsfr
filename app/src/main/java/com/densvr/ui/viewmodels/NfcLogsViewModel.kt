@@ -1,4 +1,4 @@
-package com.densvr.ui
+package com.densvr.ui.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
