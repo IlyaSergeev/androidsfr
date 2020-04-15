@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.densvr.androidsfr.R
 
+@Deprecated("Auto generated")
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel

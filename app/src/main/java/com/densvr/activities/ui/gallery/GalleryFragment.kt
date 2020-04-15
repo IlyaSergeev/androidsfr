@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.densvr.androidsfr.R
 
+@Deprecated("Auto generated")
 class GalleryFragment : Fragment() {
 
     private lateinit var galleryViewModel: GalleryViewModel
