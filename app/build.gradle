@@ -5,8 +5,8 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'com.google.firebase.crashlytics'
 
-def appVersionCode = 5
-def appVersionName = "1.0.2.$appVersionCode"
+def appVersionCode = 6
+def appVersionName = "1.1.1.$appVersionCode"
 
 android {
     compileSdkVersion 29
