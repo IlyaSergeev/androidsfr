@@ -13,7 +13,7 @@ class SfrRecordViewModel : ViewModel() {
 
     val lastSfrRecord: LiveData<SfrRecord?> = mutableSfrRecord
 
-    fun setLogs(srfRecord: SfrRecord) {
+    fun setRecord(srfRecord: SfrRecord?) {
         mutableSfrRecord.value = srfRecord
     }
 }

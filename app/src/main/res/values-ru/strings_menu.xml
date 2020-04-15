@@ -6,5 +6,6 @@
     <string name="menu_results">Результаты</string>
     <string name="menu_programming">Программирование</string>
     <string name="menu_nfc_log">NFC логи</string>
+    <string name="menu_sfr_log">SFR логи</string>
 
 </resources>

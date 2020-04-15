@@ -19,6 +19,7 @@ import com.densvr.androidsfr.R
 import com.densvr.nfcreader.canReadSfrRecord
 import com.densvr.nfcreader.readSfrRecord
 import com.densvr.ui.viewmodels.NfcLogsViewModel
+import com.densvr.ui.viewmodels.SfrRecordViewModel
 import com.densvr.util.NfcReaderLogger
 import com.google.android.material.navigation.NavigationView
 import java.text.SimpleDateFormat
@@ -27,7 +28,10 @@ import java.util.*
 class NavigationDrawableActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+
     private val nfcLogsViewModel: NfcLogsViewModel by viewModels()
+    private val sfrRecordViewModel: SfrRecordViewModel by viewModels()
+
     private val readLogger by lazy {
         NfcReaderLogger()
     }
@@ -50,7 +54,8 @@ class NavigationDrawableActivity : AppCompatActivity() {
                 R.id.nav_distances,
                 R.id.nav_results,
                 R.id.nav_programming,
-                R.id.nav_nfc_logs
+                R.id.nav_nfc_logs,
+                R.id.nav_sfr_logs
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -85,11 +90,17 @@ class NavigationDrawableActivity : AppCompatActivity() {
                 SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.MEDIUM).format(Date()))
             readLogger.appendLn()
             readLogger.appendLn()
+
             val sfrRecord = tag.readSfrRecord(readLogger)
+            sfrRecordViewModel.setRecord(sfrRecord)
             //TODO process sfrRecord
+
         } catch (error: Throwable) {
             readLogger.appendMessage("\n\n")
             readLogger.appendError(error)
+
+            //TODO set error
+            sfrRecordViewModel.setRecord(null)
 
             error.printStackTrace()
             Toast.makeText(

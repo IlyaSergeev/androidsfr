@@ -30,5 +30,10 @@
             android:icon="@drawable/ic_nfc_black_24dp"
             android:title="@string/menu_nfc_log" />
 
+        <item
+            android:id="@+id/nav_sfr_logs"
+            android:icon="@drawable/ic_assignment_turned_in_black_24dp"
+            android:title="@string/menu_nfc_log" />
+
     </group>
 </menu>

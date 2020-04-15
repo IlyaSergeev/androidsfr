@@ -35,4 +35,10 @@
         android:label="@string/menu_nfc_log"
         tools:layout="@layout/fragment_nfc_logs"/>
 
+    <fragment
+        android:id="@+id/nav_sfr_logs"
+        android:name="com.densvr.ui.fragments.sfrlogs.SfrLogsFragment"
+        android:label="@string/menu_sfr_log"
+        tools:layout="@layout/fragment_sfr_logs"/>
+
 </navigation>

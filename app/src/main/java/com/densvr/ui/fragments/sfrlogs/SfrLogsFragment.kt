@@ -23,7 +23,7 @@ class SfrLogsFragment : Fragment(R.layout.fragment_sfr_logs) {
         })
 
         sfr_logs_test.setOnClickListener {
-            sfrRecordViewModel.setLogs(Random.nextSfrRecord())
+            sfrRecordViewModel.setRecord(Random.nextSfrRecord())
         }
     }
 }
