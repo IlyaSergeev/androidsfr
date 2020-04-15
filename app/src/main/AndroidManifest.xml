@@ -21,7 +21,8 @@
         <activity
             android:name="com.densvr.ui.activities.NavigationDrawableActivity"
             android:label="@string/title_activity_navigation_drawable"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -54,12 +55,12 @@
             </intent-filter>
 
             <!-- Launch from NFC Communication Received -->
-            <intent-filter>
-                <action android:name="android.nfc.action.TAG_DISCOVERED" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.nfc.action.TAG_DISCOVERED" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <!-- <data android:mimeType="text/plain" /> -->
-            </intent-filter>
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                &lt;!&ndash; <data android:mimeType="text/plain" /> &ndash;&gt;-->
+<!--            </intent-filter>-->
 
             <meta-data
                 android:name="android.nfc.action.TAG_DISCOVERED"

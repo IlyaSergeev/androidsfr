@@ -2,21 +2,21 @@ package com.densvr.nfcreader
 
 import android.nfc.Tag
 import android.nfc.tech.NfcV
-import com.densvr.util.BytesLogger
+import com.densvr.util.SfrReaderLogger
 
-fun Tag.readSfrRecord(bytesLogger: BytesLogger): SfrRecord {
+fun Tag.readSfrRecord(readerLogger: SfrReaderLogger): SfrRecord {
 
     return NfcV.get(this).use { nfcV ->
 
         nfcV.connect()
 
-        val sfrHeader = nfcV.readSFRHeader(bytesLogger)
+        val sfrHeader = nfcV.readSFRHeader(readerLogger)
 
         val pointsCount = sfrHeader.pointsCount
         val sfrPoints = if (pointsCount > 0) {
-            nfcV.readSFRPointInfoInRange(bytesLogger, pointsCount)
+            nfcV.readSFRPointInfoInRange(readerLogger, pointsCount)
         } else {
-            nfcV.readAllSFRPointInfo(bytesLogger)
+            nfcV.readAllSFRPointInfo(readerLogger)
         }
         SfrRecord(
             sfrHeader.lastFormatTime,

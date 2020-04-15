@@ -19,16 +19,17 @@ import com.densvr.androidsfr.R
 import com.densvr.nfcreader.canReadSfrRecord
 import com.densvr.nfcreader.readSfrRecord
 import com.densvr.ui.NfcLogsViewModel
-import com.densvr.util.BytesLogger
+import com.densvr.util.SfrReaderLogger
 import com.google.android.material.navigation.NavigationView
+import java.text.SimpleDateFormat
 import java.util.*
 
 class NavigationDrawableActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val nfcLogsViewModel: NfcLogsViewModel by viewModels()
-    private val bytesLogger by lazy {
-        BytesLogger()
+    private val readLogger by lazy {
+        SfrReaderLogger()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,13 +79,18 @@ class NavigationDrawableActivity : AppCompatActivity() {
     }
 
     private fun handleSfrNfcTag(tag: Tag) {
-        val parseDate = Date()
         try {
-            bytesLogger.clear()
-            val sfrRecord = tag.readSfrRecord(bytesLogger)
+            readLogger.clear()
+            readLogger.appendMessage(
+                SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.MEDIUM).format(Date()))
+            readLogger.appendLn()
+            readLogger.appendLn()
+            val sfrRecord = tag.readSfrRecord(readLogger)
             //TODO process sfrRecord
         } catch (error: Throwable) {
-            bytesLogger.onErrorHappened(error)
+            readLogger.appendMessage("\n\n")
+            readLogger.appendError(error)
+
             error.printStackTrace()
             Toast.makeText(
                 this,
@@ -92,6 +98,6 @@ class NavigationDrawableActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-        nfcLogsViewModel.setLogs(bytesLogger.bytes, bytesLogger.error, parseDate)
+        nfcLogsViewModel.setLogs(readLogger.log)
     }
 }

@@ -5,6 +5,23 @@ import timber.log.Timber
 
 fun ByteArray.asNumeratedString(firstIndex: Int = 0): String {
     return asNumeratedString(
+        offset = 0,
+        length = size,
+        offsetPrefix = "h: ",
+        chunkLength = 8,
+        firstIndex = firstIndex,
+        separator = "\n"
+    )
+}
+
+fun ByteArray.asNumeratedString(
+    offset: Int,
+    length: Int,
+    firstIndex: Int = 0
+): String {
+    return asNumeratedString(
+        offset = offset,
+        length = length,
         offsetPrefix = "h: ",
         chunkLength = 8,
         firstIndex = firstIndex,
@@ -18,7 +35,25 @@ private fun ByteArray.asNumeratedString(
     firstIndex: Int,
     separator: String
 ): String {
-    val hexString = asHex
+    return asNumeratedString(
+        offset = 0,
+        length = size,
+        offsetPrefix = offsetPrefix,
+        chunkLength = chunkLength,
+        firstIndex = firstIndex,
+        separator = separator
+    )
+}
+
+private fun ByteArray.asNumeratedString(
+    offset: Int,
+    length: Int,
+    offsetPrefix: String,
+    chunkLength: Int,
+    firstIndex: Int,
+    separator: String
+): String {
+    val hexString = asHex(offset, length)
     val offset = hexString.length % chunkLength
 
     return if (offset > 0) {

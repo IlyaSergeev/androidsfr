@@ -4,11 +4,11 @@ import com.densvr.nfcreader.NfcResponseCode.*
 /**
  * Created by i-sergeev on 10.04.2020.
  */
-class NfcVReaderException(
+internal class NfcVReaderException(
     val responseCode: NfcResponseCode
-) : Exception(responseCode.message)
+) : Exception(responseCode.errorMessage)
 
-private val NfcResponseCode.message: String
+internal val NfcResponseCode.errorMessage: String
     get() = when (this) {
         NoStatusInformation -> "No status Information"
         CommandWasSuccessful -> "Command was successful"

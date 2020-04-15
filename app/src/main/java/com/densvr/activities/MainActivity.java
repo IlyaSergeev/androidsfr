@@ -1,29 +1,19 @@
 package com.densvr.activities;
 
-import java.io.File;
-
-import com.densvr.nfcreader.OldChipData;
-import com.densvr.nfcreader.OldDistsProtocol;
-import com.densvr.nfcreader.OldGlobals;
-import com.densvr.androidsfr.R;
-import com.densvr.nfcreader.OldNfcVReaderTask;
-import com.densvr.nfcreader.SfrRecord;
-import com.densvr.util.BytesLogger;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.NfcV;
-import android.os.Bundle;
-import android.os.Environment;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -31,9 +21,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.ViewGroup;
 
-import timber.log.Timber;
+import com.densvr.androidsfr.R;
+import com.densvr.nfcreader.OldChipData;
+import com.densvr.nfcreader.OldDistsProtocol;
+import com.densvr.nfcreader.OldGlobals;
+import com.densvr.nfcreader.SfrRecord;
+import com.densvr.util.SfrReaderLogger;
+
+import java.io.File;
 
 import static com.densvr.nfcreader.NfcReaderTaskKt.getCanReadSfrRecord;
 import static com.densvr.nfcreader.NfcReaderTaskKt.readSfrRecord;
@@ -226,7 +222,7 @@ public class MainActivity extends ListActivity {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			if (tag != null && getCanReadSfrRecord(tag)) {
 				try {
-					SfrRecord sfrRecord = readSfrRecord(tag, new BytesLogger());
+					SfrRecord sfrRecord = readSfrRecord(tag, new SfrReaderLogger());
 					OldGlobals.chipData = OldChipData.fillFrom(sfrRecord);
 					onNewChipData();
 				} catch (Throwable ex) {
