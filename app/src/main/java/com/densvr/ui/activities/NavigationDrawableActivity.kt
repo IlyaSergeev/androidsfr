@@ -14,17 +14,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.densvr.activities.MainActivity
 import com.densvr.androidsfr.R
-import com.densvr.nfcreader.OldChipData
-import com.densvr.nfcreader.OldGlobals
 import com.densvr.nfcreader.canReadSfrRecord
 import com.densvr.nfcreader.readSfrRecord
+import com.densvr.ui.NfcLogsViewModel
 import com.google.android.material.navigation.NavigationView
 
 class NavigationDrawableActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var nfcLogsViewModel: NfcLogsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
