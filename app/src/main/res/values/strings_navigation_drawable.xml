@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_drawable_title" translatable="false">Densvr</string>
+    <string name="nav_drawable_support_email" translatable="false">master.hensh@gmail.com</string>
+</resources>

@@ -1,19 +1,26 @@
 package com.densvr.ui.activities
 
+import android.content.Intent
+import android.nfc.NfcAdapter
+import android.nfc.Tag
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import com.densvr.activities.MainActivity
 import com.densvr.androidsfr.R
+import com.densvr.nfcreader.OldChipData
+import com.densvr.nfcreader.OldGlobals
+import com.densvr.nfcreader.canReadSfrRecord
+import com.densvr.nfcreader.readSfrRecord
+import com.google.android.material.navigation.NavigationView
 
 class NavigationDrawableActivity : AppCompatActivity() {
 
@@ -52,5 +59,30 @@ class NavigationDrawableActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        if (intent?.action == NfcAdapter.ACTION_TAG_DISCOVERED) {
+            val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+            if (tag?.canReadSfrRecord == true) {
+                handleSfrNfcTag(tag)
+            }
+        }
+    }
+
+    private fun handleSfrNfcTag(tag: Tag) {
+        try {
+            val sfrRecord = tag.readSfrRecord()
+            //TODO process sfrRecord
+        } catch (ex: Throwable) {
+            ex.printStackTrace()
+            Toast.makeText(
+                this,
+                R.string.nav_drawable_activity_can_not_read_nfc,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

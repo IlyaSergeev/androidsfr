@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_drawable_activity_can_not_read_nfc">Поднесите чип еще раз</string>
+</resources>
