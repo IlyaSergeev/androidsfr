@@ -3,6 +3,7 @@ package com.densvr.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.densvr.nfcreader.asNumeratedString
 
 class NfcLogsViewModel : ViewModel() {
 
@@ -12,7 +13,7 @@ class NfcLogsViewModel : ViewModel() {
 
     val lastReadLogs: LiveData<String> = mutableLastReadLogs
 
-    fun setLogs(nfcLogs: String) {
-        mutableLastReadLogs.value = nfcLogs
+    fun setLogs(bytes: ByteArray) {
+        mutableLastReadLogs.value = bytes.asNumeratedString()
     }
 }
