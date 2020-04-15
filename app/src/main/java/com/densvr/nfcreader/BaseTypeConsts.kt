@@ -5,6 +5,9 @@ package com.densvr.nfcreader
  */
 internal const val INT32_SIZE_BYTES = 4
 internal const val INT16_SIZE_BYTES = 2
+
 internal const val ONE_BYTE = 1
+internal const val TWO_BYTES = 2 * ONE_BYTE
+internal const val THREE_BYTES = 3 * ONE_BYTE
 
 internal const val ZERO_BYTE: Byte = 0x00

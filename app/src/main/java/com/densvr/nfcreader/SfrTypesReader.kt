@@ -40,7 +40,7 @@ internal fun ByteArray.readSFRHeader(offset: Int): SfrHeader {
 
 internal fun ByteArray.readSFROperationInfo(position: Int): SfrOperationInfo {
     return SfrOperationInfo(
-        this[position + 3 * ONE_BYTE].uint,
+        this[position + THREE_BYTES].uint,
         this[position + ONE_BYTE].uint,
         this[position].uint.asSFRChipType()
     )
@@ -55,14 +55,14 @@ private fun Int.asSFRChipType(): SfrChipType? {
 }
 
 internal fun ByteArray.readChipNumber(position: Int): Int {
-    return this[position + 3 * ONE_BYTE].uint +
-            200 * this[position + 2 * ONE_BYTE].uint +
+    return this[position + THREE_BYTES].uint +
+            200 * this[position + TWO_BYTES].uint +
             40000 * this[position + ONE_BYTE].uint
 }
 
 fun ByteArray.readSFRPointInfo(position: Int): SFRPointInfo {
     return SFRPointInfo(
-        this[position + 3 * ONE_BYTE].uint,
+        this[position + THREE_BYTES].uint,
         readSFRTime(position)
     )
 }
@@ -70,7 +70,7 @@ fun ByteArray.readSFRPointInfo(position: Int): SFRPointInfo {
 internal fun ByteArray.readSFRTime(position: Int): Long {
 
     return createDelaySeconds(
-        hours = asHex(position + 2 * ONE_BYTE, ONE_BYTE).toLong(10),
+        hours = asHex(position + TWO_BYTES, ONE_BYTE).toLong(10),
         minutes = asHex(position + ONE_BYTE, ONE_BYTE).toLong(10),
         seconds = asHex(position, ONE_BYTE).toLong(10)
     )
