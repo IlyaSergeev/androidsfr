@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+@Deprecated //Old activity. Not use it in future
 public class EditAttemptActivity extends Activity {
 	
 	

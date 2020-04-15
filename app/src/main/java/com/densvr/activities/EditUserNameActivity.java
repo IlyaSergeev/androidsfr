@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+@Deprecated //Old activity. Not use it in future
 public class EditUserNameActivity extends Activity {
 	
 	

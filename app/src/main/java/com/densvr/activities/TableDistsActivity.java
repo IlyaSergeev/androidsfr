@@ -11,6 +11,7 @@ import com.densvr.table.csv.Table;
 import com.densvr.table.csv.TableActivity;
 import com.densvr.table.csv.MatrixTableAdapter.EditTableOption;
 
+@Deprecated //Old activity. Not use it in future
 public class TableDistsActivity extends TableActivity {
 
 	public TableDistsActivity() {

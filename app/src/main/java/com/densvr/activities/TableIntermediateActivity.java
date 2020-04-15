@@ -32,6 +32,7 @@ import com.densvr.table.csv.MatrixTableAdapter;
 import com.densvr.table.csv.MatrixTableAdapter.OnViewPostCreationWizard;
 import com.densvr.table.csv.Table;
 
+@Deprecated //Old activity. Not use it in future
 public class TableIntermediateActivity extends Activity {
 
 

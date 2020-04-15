@@ -37,7 +37,7 @@ import timber.log.Timber;
 import static com.densvr.nfcreader.NfcReaderTaskKt.getCanReadSfrRecord;
 import static com.densvr.nfcreader.NfcReaderTaskKt.readSfrRecord;
 
-
+@Deprecated //Old activity. Not use it in future
 public class MainActivity extends ListActivity {
 
 	//Properties...

@@ -23,6 +23,7 @@
         android:theme="@style/AppTheme"
         android:name="com.densvr.App">
 
+        <!--    Old  activities   -->
         <!-- Main Activity -->
         <activity
             android:name="com.densvr.activities.MainActivity"
