@@ -29,4 +29,7 @@ fun Tag.readSfrRecord(readerLogger: NfcReaderLogger): SfrRecord {
 }
 
 val Tag.canReadSfrRecord: Boolean
+    get() = hasNfcVTech
+
+val Tag.hasNfcVTech: Boolean
     get() = techList.contains(NfcV::class.java.name)

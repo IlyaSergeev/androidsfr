@@ -22,7 +22,7 @@ internal fun NfcV.readSFRHeader(readerLogger: NfcReaderLogger): SfrHeader {
 
     return retryReadNfcVData {
         transceive(readSfrHeaderCommand).also {
-            it.logAsNfcMessage(0, "Read SFR Header")
+            it.logAsNfcReadMessage(0, "Read SFR Header")
         }.parseNfcMessage(
             readerLogger,
             0,
@@ -91,7 +91,7 @@ internal fun NfcV.readSFRPointInfoInRange(
                 readSfrPointsWithCountCommand[3] = (count - 1).toByte()
 
                 transceive(readSfrPointsWithCountCommand).also {
-                    it.logAsNfcMessage(
+                    it.logAsNfcReadMessage(
                         blockPosition,
                         "Read SFR points from=${blockPosition} count=$count"
                     )
@@ -138,7 +138,7 @@ internal fun NfcV.readSFRPointInfo(readerLogger: NfcReaderLogger, position: Int)
         readSfrPointCommand[2] = (blockPosition).toByte()
 
         transceive(readSfrPointCommand).also {
-            it.logAsNfcMessage(
+            it.logAsNfcReadMessage(
                 blockPosition,
                 "Read SFR point at position=${blockPosition}"
             )

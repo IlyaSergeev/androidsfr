@@ -16,12 +16,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.densvr.androidsfr.R
-import com.densvr.nfc.canReadSfrRecord
-import com.densvr.nfc.readSfrRecord
+import com.densvr.nfc.*
+import com.densvr.nfc.ZERO_BYTE
 import com.densvr.ui.viewmodels.NfcLogsViewModel
 import com.densvr.ui.viewmodels.SfrRecordViewModel
 import com.densvr.util.NfcReaderLogger
 import com.google.android.material.navigation.NavigationView
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -75,19 +76,40 @@ class NavigationDrawableActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
+        Timber.tag("NFC").d("${intent?.action}")
         if (intent?.action == NfcAdapter.ACTION_TAG_DISCOVERED) {
             val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
             if (tag?.canReadSfrRecord == true) {
-                handleSfrNfcTag(tag)
+//                readSfrRecodr(tag)
+                writeSfrData(tag)
             }
         }
     }
 
-    private fun handleSfrNfcTag(tag: Tag) {
+    private fun writeSfrData(tag: Tag) {
+        try {
+            tag.writeSfrData(
+                listOf(
+                    SfrTagBytes(
+                        3,
+                        byteArrayOf(ZERO_BYTE, 0x10, ZERO_BYTE, ZERO_BYTE)
+                    )
+                )
+            )
+        } catch (error: Throwable) {
+            error.printStackTrace()
+        }
+    }
+
+    private fun readSfrRecodr(tag: Tag) {
         try {
             readLogger.clear()
             readLogger.appendMessage(
-                SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.MEDIUM).format(Date()))
+                SimpleDateFormat.getDateTimeInstance(
+                    SimpleDateFormat.SHORT,
+                    SimpleDateFormat.MEDIUM
+                ).format(Date())
+            )
             readLogger.appendLn()
             readLogger.appendLn()
 

@@ -8,3 +8,6 @@ internal const val NFC_HIGH_DATA_RATE_FLAG = 0x02.toByte()
 
 internal const val NFC_READ_SINGLE_BLOCK = 0x20.toByte()
 internal const val NFC_READ_MULTIPLE_BLOCK = 0x23.toByte()
+
+internal const val NFC_WRITE_SINGLE_BLOCK = 0x21.toByte()
+internal const val NFC_LOCK_BLOCK = 0x22.toByte()

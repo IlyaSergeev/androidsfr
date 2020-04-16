@@ -74,10 +74,14 @@ private fun ByteArray.asNumeratedString(
 
 private const val NFC_READER_TAG = "NFC Reader"
 
-internal fun ByteArray.logAsNfcMessage(startTagNumber: Int, operation: String) {
+internal fun ByteArray.logAsNfcReadMessage(startTagNumber: Int, operation: String) {
 
-    Timber.tag(NFC_READER_TAG).apply {
-        d(operation)
-        d(asNumeratedString(firstIndex = startTagNumber))
-    }
+    Timber.tag(NFC_READER_TAG).d(operation)
+    Timber.tag(NFC_READER_TAG).d(asNumeratedString(firstIndex = startTagNumber))
+}
+
+private const val NFC_WRITER_TAG = "NFC Writer"
+internal fun ByteArray.logAsNfcWriteMessage(tagIndex: Byte, bytes: ByteArray, operation: String) {
+
+    Timber.tag(NFC_WRITER_TAG).d("$operation $tagIndex: ${bytes.asHex} ->> $asHex")
 }
