@@ -26,13 +26,13 @@ import com.densvr.androidsfr.R;
 import com.densvr.nfcreader.OldChipData;
 import com.densvr.nfcreader.OldDistsProtocol;
 import com.densvr.nfcreader.OldGlobals;
-import com.densvr.nfcreader.SfrRecord;
+import com.densvr.nfc.SfrRecord;
 import com.densvr.util.NfcReaderLogger;
 
 import java.io.File;
 
-import static com.densvr.nfcreader.NfcReaderTaskKt.getCanReadSfrRecord;
-import static com.densvr.nfcreader.NfcReaderTaskKt.readSfrRecord;
+import static com.densvr.nfc.NfcReaderTaskKt.getCanReadSfrRecord;
+import static com.densvr.nfc.NfcReaderTaskKt.readSfrRecord;
 
 @Deprecated //Old activity. Not use it in future
 public class MainActivity extends ListActivity {

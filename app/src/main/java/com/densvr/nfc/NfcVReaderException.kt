@@ -1,6 +1,6 @@
-package com.densvr.nfcreader
+package com.densvr.nfc
 
-import com.densvr.nfcreader.NfcResponseCode.*
+import com.densvr.nfc.NfcResponseCode.*
 /**
  * Created by i-sergeev on 10.04.2020.
  */

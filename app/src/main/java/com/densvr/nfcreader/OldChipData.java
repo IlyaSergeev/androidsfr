@@ -4,14 +4,16 @@ import android.util.Log;
 
 import com.densvr.activities.MainActivity;
 import com.densvr.activities.TableNamesActivity;
+import com.densvr.nfc.SFRPointInfo;
+import com.densvr.nfc.SfrRecord;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.Table;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.densvr.nfcreader.StringToTimeExtentionsKt.createDelaySeconds;
-import static com.densvr.nfcreader.StringToTimeExtentionsKt.tryParseDelayMillisOrZero;
+import static com.densvr.nfc.StringToTimeExtentionsKt.createDelaySeconds;
+import static com.densvr.nfc.StringToTimeExtentionsKt.tryParseDelayMillisOrZero;
 
 @Deprecated
 public class OldChipData {

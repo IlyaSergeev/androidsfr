@@ -1,6 +1,6 @@
 package com.densvr.util
 
-import com.densvr.nfcreader.uint
+import com.densvr.nfc.uint
 import java.util.*
 
 /**

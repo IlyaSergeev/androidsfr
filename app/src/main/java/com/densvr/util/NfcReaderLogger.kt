@@ -2,7 +2,7 @@ package com.densvr.util
 
 import android.graphics.Color
 import android.text.SpannableStringBuilder
-import com.densvr.nfcreader.asNumeratedString
+import com.densvr.nfc.asNumeratedString
 
 /**
  * Created by i-sergeev on 15.04.2020.

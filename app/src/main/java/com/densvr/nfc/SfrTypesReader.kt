@@ -1,4 +1,4 @@
-package com.densvr.nfcreader
+package com.densvr.nfc
 
 import com.densvr.util.areEquals
 import com.densvr.util.asHex

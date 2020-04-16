@@ -16,8 +16,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.densvr.androidsfr.R
-import com.densvr.nfcreader.canReadSfrRecord
-import com.densvr.nfcreader.readSfrRecord
+import com.densvr.nfc.canReadSfrRecord
+import com.densvr.nfc.readSfrRecord
 import com.densvr.ui.viewmodels.NfcLogsViewModel
 import com.densvr.ui.viewmodels.SfrRecordViewModel
 import com.densvr.util.NfcReaderLogger

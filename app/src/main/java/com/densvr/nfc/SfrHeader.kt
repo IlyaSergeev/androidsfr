@@ -1,4 +1,4 @@
-package com.densvr.nfcreader
+package com.densvr.nfc
 
 import kotlin.math.max
 

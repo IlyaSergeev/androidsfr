@@ -1,4 +1,4 @@
-package com.densvr.nfcreader
+package com.densvr.nfc
 
 import java.util.concurrent.TimeUnit
 

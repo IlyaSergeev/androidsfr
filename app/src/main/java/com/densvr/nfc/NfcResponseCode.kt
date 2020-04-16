@@ -1,4 +1,4 @@
-package com.densvr.nfcreader
+package com.densvr.nfc
 
 //value from ISO15693
 enum class NfcResponseCode(internal val bytes: ByteArray) {

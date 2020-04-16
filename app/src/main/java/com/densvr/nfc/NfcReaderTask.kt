@@ -1,4 +1,4 @@
-package com.densvr.nfcreader
+package com.densvr.nfc
 
 import android.nfc.Tag
 import android.nfc.tech.NfcV

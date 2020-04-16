@@ -1,4 +1,4 @@
-package com.densvr.nfcreader
+package com.densvr.nfc
 
 import android.nfc.TagLostException
 import android.nfc.tech.NfcV

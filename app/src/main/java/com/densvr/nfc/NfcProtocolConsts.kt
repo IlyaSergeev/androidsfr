@@ -1,4 +1,4 @@
-package com.densvr.nfcreader
+package com.densvr.nfc
 
 /**
  * Created by i-sergeev on 11.04.2020.

@@ -7,8 +7,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.densvr.androidsfr.R
 import com.densvr.mock.nextSfrRecord
-import com.densvr.nfcreader.SfrRecord
-import com.densvr.nfcreader.toDelayTime
+import com.densvr.nfc.SfrRecord
+import com.densvr.nfc.toDelayTime
 import com.densvr.ui.viewmodels.SfrRecordViewModel
 import kotlinx.android.synthetic.main.fragment_sfr_logs.*
 import java.text.SimpleDateFormat

@@ -1,6 +1,7 @@
 package com.densvr.mock
 
-import com.densvr.nfcreader.*
+import com.densvr.nfc.*
+import com.densvr.nfc.SRF_BLOCK_SIZE_BYTES
 import java.lang.System.currentTimeMillis
 import kotlin.random.Random
 
