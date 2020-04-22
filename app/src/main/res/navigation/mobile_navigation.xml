@@ -3,42 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_programming">
+    app:startDestination="@+id/nav_names">
 
     <fragment
         android:id="@+id/nav_names"
         android:name="com.densvr.ui.fragments.names.NamesFragment"
         android:label="@string/menu_names"
-        tools:layout="@layout/fragment_names"/>
+        tools:layout="@layout/fragment_names" />
 
     <fragment
         android:id="@+id/nav_distances"
         android:name="com.densvr.ui.fragments.distances.DistancesFragment"
         android:label="@string/menu_distances"
-        tools:layout="@layout/fragment_distances"/>
+        tools:layout="@layout/fragment_distances" />
 
     <fragment
         android:id="@+id/nav_results"
         android:name="com.densvr.ui.fragments.results.ResultsFragment"
         android:label="@string/menu_results"
-        tools:layout="@layout/fragment_results"/>
-
-    <fragment
-        android:id="@+id/nav_programming"
-        android:name="com.densvr.ui.fragments.programming.ProgrammingFragment"
-        android:label="@string/menu_programming"
-        tools:layout="@layout/fragment_programming"/>
+        tools:layout="@layout/fragment_results" />
 
     <fragment
         android:id="@+id/nav_nfc_logs"
         android:name="com.densvr.ui.fragments.nfclogs.NfcLogsFragment"
         android:label="@string/menu_nfc_log"
-        tools:layout="@layout/fragment_nfc_logs"/>
+        tools:layout="@layout/fragment_nfc_logs" />
 
     <fragment
         android:id="@+id/nav_sfr_logs"
         android:name="com.densvr.ui.fragments.sfrlogs.SfrLogsFragment"
         android:label="@string/menu_sfr_log"
-        tools:layout="@layout/fragment_sfr_logs"/>
+        tools:layout="@layout/fragment_sfr_logs" />
 
 </navigation>

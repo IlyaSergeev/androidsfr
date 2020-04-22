@@ -16,8 +16,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.densvr.androidsfr.R
-import com.densvr.nfc.*
-import com.densvr.nfc.ZERO_BYTE
+import com.densvr.nfc.canReadSfrRecord
+import com.densvr.nfc.readSfrRecord
 import com.densvr.ui.viewmodels.NfcLogsViewModel
 import com.densvr.ui.viewmodels.SfrRecordViewModel
 import com.densvr.util.NfcReaderLogger
@@ -54,7 +54,6 @@ class NavigationDrawableActivity : AppCompatActivity() {
                 R.id.nav_names,
                 R.id.nav_distances,
                 R.id.nav_results,
-                R.id.nav_programming,
                 R.id.nav_nfc_logs,
                 R.id.nav_sfr_logs
             ), drawerLayout
@@ -80,24 +79,8 @@ class NavigationDrawableActivity : AppCompatActivity() {
         if (intent?.action == NfcAdapter.ACTION_TAG_DISCOVERED) {
             val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
             if (tag?.canReadSfrRecord == true) {
-//                readSfrRecodr(tag)
-                writeSfrData(tag)
+                readSfrRecodr(tag)
             }
-        }
-    }
-
-    private fun writeSfrData(tag: Tag) {
-        try {
-            tag.writeSfrData(
-                listOf(
-                    SfrTagBytes(
-                        3,
-                        byteArrayOf(ZERO_BYTE, 0x10, ZERO_BYTE, ZERO_BYTE)
-                    )
-                )
-            )
-        } catch (error: Throwable) {
-            error.printStackTrace()
         }
     }
 

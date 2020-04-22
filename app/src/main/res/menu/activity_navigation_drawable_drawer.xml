@@ -21,11 +21,6 @@
             android:title="@string/menu_results" />
 
         <item
-            android:id="@+id/nav_programming"
-            android:icon="@drawable/ic_phonelink_setup_black_24dp"
-            android:title="@string/menu_programming" />
-
-        <item
             android:id="@+id/nav_nfc_logs"
             android:icon="@drawable/ic_nfc_black_24dp"
             android:title="@string/menu_nfc_log" />
