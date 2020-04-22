@@ -54,14 +54,14 @@ private fun ByteArray.asNumeratedString(
     separator: String
 ): String {
     val hexString = asHex(offset, length)
-    val offset = hexString.length % chunkLength
+    val strOffset = hexString.length % chunkLength
 
-    return if (offset > 0) {
-        offsetPrefix + hexString.take(offset)
+    return if (strOffset > 0) {
+        offsetPrefix + hexString.take(strOffset)
     } else {
         ""
     } + separator +
-            hexString.substring(offset)
+            hexString.substring(strOffset)
                 .chunked(chunkLength)
                 .mapIndexed { index, chunkHexString ->
                     "%03d: %s".format(

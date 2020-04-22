@@ -3,6 +3,7 @@ package com.densvr.nfc
 import android.nfc.tech.NfcV
 import com.densvr.util.retryOnError
 
+//TODO write nfc loginc  work unstable on all my devices
 private const val NFC_WRITE_TRY_COUNTS = 3
 
 internal const val NFC_WRITE_BLOCK_FLAG = 0x42.toByte()
@@ -34,14 +35,14 @@ fun NfcV.writeTag(tagIndex: Byte, bytes: ByteArray) {
 
     return retryOnError(
         NFC_WRITE_TRY_COUNTS,
-        { throwable -> true },
+        { true },
         {
             transceive(writeSfrTagCommand).also {
                 it.logAsNfcWriteMessage(tagIndex, writeSfrTagCommand, "Write single tag ")
             }
                 .parseNfcMessage(
-                    { bytes, offset -> },
-                    { nfcResponseCode ->  }
+                    { _, _ -> },
+                    { }
                 )
         }
     )
