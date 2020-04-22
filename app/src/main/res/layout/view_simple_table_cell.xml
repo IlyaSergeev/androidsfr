@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textview.MaterialTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/default_table_cell_height"
+    android:text="1234"
+    android:gravity="center"
+    android:id="@+id/view_simple_table_cell_text"
+    android:minWidth="@dimen/default_table_cell_width"/>
