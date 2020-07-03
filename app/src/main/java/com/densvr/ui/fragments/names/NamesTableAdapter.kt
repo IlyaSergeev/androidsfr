@@ -9,6 +9,7 @@ import com.densvr.androidsfr.R
 import com.densvr.model.Person
 import com.densvr.ui.helpers.SimpleTextWatcher
 import com.densvr.ui.helpers.setTextWithChangeListener
+import kotlinx.android.synthetic.main.item_names_add_person.view.*
 import kotlinx.android.synthetic.main.item_names_person.view.*
 
 /**
@@ -19,8 +20,10 @@ class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val TYPE_HEADER = 0
         private const val TYPE_PERSON = 1
+        private const val TYPE_ADD_PERSON = 2
 
         private const val COUNT_TYPE_HEADER = 1
+        private const val COUNT_TYPE_ADD_PERSON = 1
     }
 
     private val persons = mutableListOf<Person>()
@@ -48,12 +51,23 @@ class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     false
                 )
             )
+            TYPE_ADD_PERSON ->
+                AddPersonVH(
+                    layoutInflater.inflate(
+                        R.layout.item_names_add_person,
+                        parent,
+                        false
+                    )
+                ) { itemPosition ->
+                    persons += Person("", "")
+                    notifyItemInserted(itemPosition)
+                }
             else -> throw IllegalStateException("Unknown viewType=$viewType")
         }
     }
 
     override fun getItemCount(): Int {
-        return COUNT_TYPE_HEADER + persons.size
+        return COUNT_TYPE_HEADER + persons.size + COUNT_TYPE_ADD_PERSON
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -67,11 +81,22 @@ class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemViewType(position: Int): Int {
         return when {
             position < COUNT_TYPE_HEADER -> TYPE_HEADER
+            position >= COUNT_TYPE_HEADER + persons.size -> TYPE_ADD_PERSON
             else -> TYPE_PERSON
         }
     }
 
     private class HeaderVH(view: View) : RecyclerView.ViewHolder(view)
+
+    private class AddPersonVH(view: View, onClickAdd: (Int) -> Unit) :
+        RecyclerView.ViewHolder(view) {
+
+        init {
+            view.item_name_add_person_button.setOnClickListener {
+                onClickAdd(adapterPosition)
+            }
+        }
+    }
 
     private class PersonVH(view: View) : RecyclerView.ViewHolder(view) {
 
