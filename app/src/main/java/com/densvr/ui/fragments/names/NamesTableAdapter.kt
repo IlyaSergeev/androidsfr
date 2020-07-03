@@ -1,87 +1,104 @@
 package com.densvr.ui.fragments.names
 
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.densvr.androidsfr.R
-import com.densvr.ui.tableviews.SimpleTableCellVH
-import com.evrencoskun.tableview.adapter.AbstractTableAdapter
-import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder
+import com.densvr.model.Person
+import com.densvr.ui.helpers.SimpleTextWatcher
+import com.densvr.ui.helpers.setTextWithChangeListener
+import kotlinx.android.synthetic.main.item_names_person.view.*
 
 /**
  * Created by i-sergeev on 22.04.2020.
  */
-class NamesTableAdapter : AbstractTableAdapter<String, String, String>() {
+class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private fun ViewGroup.createCellViewHolder(): SimpleTableCellVH {
+    companion object {
+        private const val TYPE_HEADER = 0
+        private const val TYPE_PERSON = 1
 
-        val layoutInflater = LayoutInflater.from(context)
-        return SimpleTableCellVH(
-            layoutInflater.inflate(
-                R.layout.view_simple_table_cell,
-                this,
-                false
+        private const val COUNT_TYPE_HEADER = 1
+    }
+
+    private val persons = mutableListOf<Person>()
+
+    fun showPersons(newPersons: Iterable<Person>) {
+        persons.clear()
+        persons.addAll(newPersons)
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            TYPE_HEADER -> HeaderVH(
+                layoutInflater.inflate(
+                    R.layout.item_names_header,
+                    parent,
+                    false
+                )
             )
-        )
+            TYPE_PERSON -> PersonVH(
+                layoutInflater.inflate(
+                    R.layout.item_names_person,
+                    parent,
+                    false
+                )
+            )
+            else -> throw IllegalStateException("Unknown viewType=$viewType")
+        }
     }
 
-    override fun onCreateColumnHeaderViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): AbstractViewHolder {
-
-        return parent.createCellViewHolder()
+    override fun getItemCount(): Int {
+        return COUNT_TYPE_HEADER + persons.size
     }
 
-    override fun onBindColumnHeaderViewHolder(
-        holder: AbstractViewHolder,
-        columnHeaderItemModel: String?,
-        columnPosition: Int
-    ) {
-        (holder as SimpleTableCellVH).textView.text = columnHeaderItemModel
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is PersonVH -> (position - COUNT_TYPE_HEADER).let { personPosition ->
+                holder.bind(persons[personPosition], personPosition + 1)
+            }
+        }
     }
 
-    override fun onBindRowHeaderViewHolder(
-        holder: AbstractViewHolder,
-        rowHeaderItemModel: String?,
-        rowPosition: Int
-    ) {
-        (holder as SimpleTableCellVH).textView.text = rowHeaderItemModel
+    override fun getItemViewType(position: Int): Int {
+        return when {
+            position < COUNT_TYPE_HEADER -> TYPE_HEADER
+            else -> TYPE_PERSON
+        }
     }
 
-    override fun onCreateRowHeaderViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder {
+    private class HeaderVH(view: View) : RecyclerView.ViewHolder(view)
 
-        return parent.createCellViewHolder()
-    }
+    private class PersonVH(view: View) : RecyclerView.ViewHolder(view) {
 
-    override fun getCellItemViewType(position: Int): Int {
-        return 0
-    }
+        private lateinit var person: Person
 
-    override fun onCreateCellViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder {
-        return parent.createCellViewHolder()
-    }
+        private val idTextView = view.item_names_person_id
+        private val nameEditText = view.item_names_person_name
+        private val chipIdEditText = view.item_names_person_chip_id
 
-    override fun onCreateCornerView(parent: ViewGroup): View {
+        private val nameTextChangeListener = object : SimpleTextWatcher() {
+            override fun afterTextChanged(text: Editable?) {
+                person.name = text.toString()
+            }
+        }
 
-        return LayoutInflater.from(parent.context)
-            .inflate(R.layout.support_simple_spinner_dropdown_item, parent, false)
-    }
+        private val chipIdTextChangeListener = object : SimpleTextWatcher() {
+            override fun afterTextChanged(text: Editable?) {
+                person.chipId = text.toString()
+            }
+        }
 
-    override fun onBindCellViewHolder(
-        holder: AbstractViewHolder,
-        cellItemModel: String?,
-        columnPosition: Int,
-        rowPosition: Int
-    ) {
-        (holder as SimpleTableCellVH).textView.text = cellItemModel
-    }
+        fun bind(person: Person, position: Int) {
+            this.person = person
 
-    override fun getColumnHeaderItemViewType(position: Int): Int {
-        return 0
-    }
-
-    override fun getRowHeaderItemViewType(position: Int): Int {
-        return 0
+            idTextView.text = "$position"
+            nameEditText.setTextWithChangeListener(person.name, nameTextChangeListener)
+            chipIdEditText.setTextWithChangeListener(person.chipId, chipIdTextChangeListener)
+        }
     }
 }

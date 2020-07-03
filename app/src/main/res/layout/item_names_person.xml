@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/item_names_person_id"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="1" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/item_names_person_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:inputType="text"
+        android:maxLines="1"
+        android:text="Name" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/item_names_person_chip_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:inputType="number"
+        android:maxLines="1"
+        android:text="Chip ID" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
