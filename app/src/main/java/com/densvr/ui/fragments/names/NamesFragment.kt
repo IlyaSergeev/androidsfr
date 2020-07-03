@@ -3,6 +3,7 @@ package com.densvr.ui.fragments.names
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.densvr.androidsfr.R
 import com.densvr.model.Person
 import kotlinx.android.synthetic.main.fragment_names.view.*
@@ -17,6 +18,9 @@ class NamesFragment : Fragment(R.layout.fragment_names) {
         super.onViewCreated(view, savedInstanceState)
 
         view.names_recycler_view.adapter = tableAdapter
+        ItemTouchHelper(SwipeToDeleteCallback(tableAdapter, requireContext())).attachToRecyclerView(
+            view.names_recycler_view
+        )
     }
 
     override fun onResume() {

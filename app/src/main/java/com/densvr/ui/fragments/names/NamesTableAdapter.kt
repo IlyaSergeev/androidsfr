@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.item_names_person.view.*
 /**
  * Created by i-sergeev on 22.04.2020.
  */
-class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+internal class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_HEADER = 0
@@ -24,6 +24,10 @@ class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private const val COUNT_TYPE_HEADER = 1
         private const val COUNT_TYPE_ADD_PERSON = 1
+
+        fun RecyclerView.ViewHolder.canSwipe(): Boolean {
+            return this is PersonVH
+        }
     }
 
     private val persons = mutableListOf<Person>()
@@ -86,6 +90,14 @@ class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    fun delete(viewHolder: RecyclerView.ViewHolder) {
+        if (viewHolder is PersonVH) {
+            persons.remove(viewHolder.person)
+            notifyItemRemoved(viewHolder.adapterPosition)
+            notifyItemRangeChanged(0, itemCount)
+        }
+    }
+
     private class HeaderVH(view: View) : RecyclerView.ViewHolder(view)
 
     private class AddPersonVH(view: View, onClickAdd: (Int) -> Unit) :
@@ -100,7 +112,7 @@ class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private class PersonVH(view: View) : RecyclerView.ViewHolder(view) {
 
-        private lateinit var person: Person
+        lateinit var person: Person
 
         private val idTextView = view.item_names_person_id
         private val nameEditText = view.item_names_person_name
