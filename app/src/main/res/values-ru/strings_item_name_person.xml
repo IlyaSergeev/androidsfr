@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="item_name_person_title">Имя</string>
+    <string name="item_name_person_chip_id">Номер чипа</string>
+</resources>
