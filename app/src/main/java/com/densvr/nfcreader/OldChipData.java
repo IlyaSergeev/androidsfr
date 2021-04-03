@@ -39,7 +39,7 @@ public class OldChipData {
         }
 
         public String toString() {
-            return String.valueOf(number) + " " + lapTime.toString() + " " + splitTime.toString();
+            return number + " " + secondsFormatString(lapTime) + " " + secondsFormatString(splitTime);
         }
     }
 
@@ -139,13 +139,13 @@ public class OldChipData {
                 cp.splitTime = cp.lapTime - prevLapTime;
             }
             Log.i("android SFR", String.format("%d) ", i) + String.valueOf(cp.number) + " " +
-                cp.lapTime.toString() + " " + cp.splitTime.toString());
+                    secondsFormatString(cp.lapTime) + " " + secondsFormatString(cp.splitTime));
             chipData.cps.add(cp);
         }
         if (chipData.cps.size() > 0) {
             chipData.fullTime = chipData.cps.get(cpCnt - 6).lapTime;
         }
-        Log.i("android SFR", chipData.fullTime.toString());
+        Log.i("android SFR", secondsFormatString(chipData.fullTime));
         return chipData;
     }
 
@@ -177,7 +177,7 @@ public class OldChipData {
         if (chipData.cps.size() > 0) {
             chipData.fullTime = chipData.cps.get(cpCnt - 1).lapTime;
         }
-        Log.i("android SFR", chipData.fullTime.toString());
+        Log.i("android SFR", secondsFormatString(chipData.fullTime));
         return chipData;
     }
 
@@ -473,7 +473,7 @@ public class OldChipData {
         line.add(userName); //name
         line.add(getPlaceStr()); //place
         line.add(getAttemptPlaceStr());//place in attempt
-        line.add(fullTime.toString()); //time
+        line.add(secondsFormatString(fullTime)); //time
         for (int i = 0; i < cps.size(); i++) {
             CP cp = cps.get(i);
             line.add(String.valueOf(cp.number)); //number
