@@ -12,6 +12,7 @@ import java.util.List;
 
 import static com.densvr.nfcreader.StringToTimeExtentionsKt.createDelaySeconds;
 import static com.densvr.nfcreader.StringToTimeExtentionsKt.tryParseDelayMillisOrZero;
+import static com.densvr.util.TimeFormatKt.secondsFormatString;
 
 @Deprecated
 public class OldChipData {
@@ -476,7 +477,7 @@ public class OldChipData {
         for (int i = 0; i < cps.size(); i++) {
             CP cp = cps.get(i);
             line.add(String.valueOf(cp.number)); //number
-            line.add(cp.splitTime.toString()); //split time
+            line.add(secondsFormatString(cp.splitTime)); //split time
         }
         return line;
     }
