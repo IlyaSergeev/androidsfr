@@ -32,7 +32,8 @@ import com.densvr.table.csv.MatrixTableAdapter;
 import com.densvr.table.csv.MatrixTableAdapter.OnViewPostCreationWizard;
 import com.densvr.table.csv.Table;
 
-@Deprecated //Old activity. Not use it in future
+import static com.densvr.util.TimeFormatKt.secondsFormatString;
+
 public class TableIntermediateActivity extends Activity {
 
 
@@ -283,7 +284,7 @@ public class TableIntermediateActivity extends Activity {
 				}
 			}
 			line.add(String.valueOf(chipCP.number));
-			line.add(chipCP.splitTime.toString());
+			line.add(secondsFormatString(chipCP.splitTime));
 			table.add(line);
 			if (distCPIter >= distData.getCPs().size()) {
 				//all dist cps checked
@@ -327,7 +328,7 @@ public class TableIntermediateActivity extends Activity {
 		line = new LinkedList<String>();
 		line.add("");
 		line.add("Время");
-		line.add(String.valueOf(chipData.getFullTime()));
+		line.add(secondsFormatString(chipData.getFullTime()));
 		table.add(line);
 		
 		//add place and attempt place
