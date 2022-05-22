@@ -7,7 +7,8 @@ import java.util.*
  * Created by i-sergeev on 11.04.2020.
  */
 val String.hexAsByteArray
-    inline get() = chunked(2).map { it.toUpperCase(Locale.ROOT).toInt(16).toByte() }.toByteArray()
+    //TODO .toByte() is overhead
+    inline get() = chunked(2).map { it.toUByte(16).toByte() }.toByteArray()
 
 val ByteArray.asHex
     inline get() = this.joinToString(separator = "") {
