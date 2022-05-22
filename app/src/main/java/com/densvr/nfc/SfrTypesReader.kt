@@ -55,9 +55,9 @@ private fun Int.asSFRChipType(): SfrChipType? {
 }
 
 internal fun ByteArray.readChipNumber(position: Int): Int {
-    return this[position + THREE_BYTES].uint +
-            200 * this[position + TWO_BYTES].uint +
-            40000 * this[position + ONE_BYTE].uint
+    return this[position].uint +
+            200 * this[position + ONE_BYTE].uint +
+            40000 * this[position + TWO_BYTES].uint
 }
 
 fun ByteArray.readSFRPointInfo(position: Int): SFRPointInfo {
