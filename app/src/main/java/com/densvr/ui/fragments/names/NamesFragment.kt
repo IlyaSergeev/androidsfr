@@ -1,25 +1,43 @@
 package com.densvr.ui.fragments.names
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.densvr.androidsfr.R
+import com.densvr.androidsfr.databinding.FragmentNamesBinding
 import com.densvr.model.Person
-import kotlinx.android.synthetic.main.fragment_names.view.*
 
-class NamesFragment : Fragment(R.layout.fragment_names) {
+class NamesFragment : Fragment() {
+
+    private var _binding: FragmentNamesBinding? = null
+    private val binding get() = _binding!!
 
     private val tableAdapter by lazy {
         NamesTableAdapter()
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentNamesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.names_recycler_view.adapter = tableAdapter
+        binding.namesRecyclerView.adapter = tableAdapter
         ItemTouchHelper(SwipeToDeleteCallback(tableAdapter, requireContext())).attachToRecyclerView(
-            view.names_recycler_view
+            binding.namesRecyclerView
         )
     }
 

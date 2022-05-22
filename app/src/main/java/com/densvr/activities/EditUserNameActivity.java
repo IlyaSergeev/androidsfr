@@ -1,9 +1,5 @@
 package com.densvr.activities;
 
-import com.densvr.nfcreader.OldChipData;
-import com.densvr.nfcreader.OldGlobals;
-import com.densvr.androidsfr.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,32 +7,26 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import com.densvr.androidsfr.databinding.ActivityEditUserNameBinding;
+import com.densvr.nfcreader.OldChipData;
+import com.densvr.nfcreader.OldGlobals;
 
 @Deprecated //Old activity. Not use it in future
 public class EditUserNameActivity extends Activity {
-	
-	
-	private EditText editText;
-	private Button buttonBack;
-	private Button buttonOk;
-	
+
+	private ActivityEditUserNameBinding binding;
 	String startUserName;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_edit_user_name);
-		
-		
-		editText = (EditText)findViewById(R.id.edit_text);
-		buttonBack = (Button)findViewById(R.id.button_back);
-		buttonOk = (Button)findViewById(R.id.button_ok);
-		
-		editText.setText(OldGlobals.chipData.getUserName());
-		editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		binding = ActivityEditUserNameBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
+
+		binding.editText.setText(OldGlobals.chipData.getUserName());
+		binding.editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -49,15 +39,15 @@ public class EditUserNameActivity extends Activity {
 
 		
 		startUserName = new String(OldGlobals.chipData.getUserName());
-		
-		buttonBack.setOnClickListener(new OnClickListener() {
+
+		binding.buttonBack.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				EditUserNameActivity.this.finish();
 			}
 		});
-		buttonOk.setOnClickListener(new OnClickListener() {
+		binding.buttonOk.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -69,7 +59,7 @@ public class EditUserNameActivity extends Activity {
 
 	private void editName() {
 		OldChipData chipData = OldGlobals.chipData;
-		String newUserName = editText.getText().toString();
+		String newUserName = binding.editText.getText().toString();
 		chipData.setUserName(newUserName);
 		if (!newUserName.equals(startUserName)) {
 			//update name in database

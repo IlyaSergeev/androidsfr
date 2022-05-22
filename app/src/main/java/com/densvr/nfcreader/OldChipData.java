@@ -12,8 +12,8 @@ import com.densvr.table.csv.Table;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.densvr.nfcreader.StringToTimeExtentionsKt.createDelaySeconds;
-import static com.densvr.nfcreader.StringToTimeExtentionsKt.tryParseDelayMillisOrZero;
+import static com.densvr.nfc.StringToTimeExtentionsKt.createDelaySeconds;
+import static com.densvr.nfc.StringToTimeExtentionsKt.tryParseDelayMillisOrZero;
 import static com.densvr.util.TimeFormatKt.secondsFormatString;
 
 @Deprecated

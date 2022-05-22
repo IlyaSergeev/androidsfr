@@ -1,30 +1,47 @@
 package com.densvr.ui.fragments.nfclogs
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.densvr.androidsfr.R
+import com.densvr.androidsfr.databinding.FragmentNfcLogsBinding
 import com.densvr.mock.nextSfrRecordBytes
 import com.densvr.ui.viewmodels.NfcLogsViewModel
 import com.densvr.util.NfcReaderLogger
-import kotlinx.android.synthetic.main.fragment_nfc_logs.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
-class NfcLogsFragment : Fragment(R.layout.fragment_nfc_logs) {
+class NfcLogsFragment : Fragment() {
 
     private val nfcLogsViewModel: NfcLogsViewModel by activityViewModels()
+    private var _bindings : FragmentNfcLogsBinding? = null
+    private val bindings get() = _bindings!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _bindings = FragmentNfcLogsBinding.inflate(inflater, container, false)
+        return bindings.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindings = null
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         nfcLogsViewModel.lastReadLogs.observe(viewLifecycleOwner, Observer { lastLogs ->
-            nfc_logs_text.text = lastLogs
+            bindings.nfcLogsTest.text = lastLogs
         })
 
-        nfc_logs_test.setOnClickListener {
+        bindings.nfcLogsTest.setOnClickListener {
             val readLogger = NfcReaderLogger()
             readLogger.clear()
             readLogger.appendMessage(

@@ -1,9 +1,7 @@
 package com.densvr.activities;
 
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import static com.densvr.util.TimeFormatKt.secondsFormatString;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,46 +13,34 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 
+import com.densvr.androidsfr.R;
+import com.densvr.androidsfr.databinding.ActivityIntermediateResultsBinding;
 import com.densvr.nfcreader.OldChipData;
+import com.densvr.nfcreader.OldChipData.CP;
 import com.densvr.nfcreader.OldDistsProtocol;
 import com.densvr.nfcreader.OldGlobals;
 import com.densvr.nfcreader.ResultsProtocol;
-import com.densvr.nfcreader.OldChipData.CP;
-import com.densvr.androidsfr.R;
 import com.densvr.table.TableFixHeaders;
 import com.densvr.table.csv.MatrixTableAdapter;
 import com.densvr.table.csv.MatrixTableAdapter.OnViewPostCreationWizard;
 import com.densvr.table.csv.Table;
 
-import static com.densvr.util.TimeFormatKt.secondsFormatString;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class TableIntermediateActivity extends Activity {
 
-
-	private Context ctx;
+	private ActivityIntermediateResultsBinding binding;
 
 	private Table table = new Table();
 	
 	private MatrixTableAdapter matrixTableAdapter;
 	private TableFixHeaders tableFixHeaders;
-
-	private Button buttonCancel;
-	private Button buttonSave;
-	private CheckBox checkBoxReestablish;
-	private CheckBox checkBoxOverwriteAttempt;
-	
-	private Button buttonEditName;
-	private Button buttonEditDistance;
-
-
-	
-	
 	
 	/**
 	 * link to Globals.chipData
@@ -68,16 +54,13 @@ public class TableIntermediateActivity extends Activity {
 
 	private int headersCnt;
 
-
-
-
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.ctx = this;
-		setContentView(R.layout.activity_intermediate_results);
+		binding = ActivityIntermediateResultsBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 		//setContentView(R.layout.table);
 
 		chipData = OldGlobals.chipData;
@@ -115,12 +98,7 @@ public class TableIntermediateActivity extends Activity {
 			}
 		});
 
-		buttonCancel = (Button)findViewById(R.id.button_cancel);
-		buttonSave = (Button)findViewById(R.id.button_save);
-		checkBoxReestablish = (CheckBox)findViewById(R.id.CheckBox_reestablish);
-		checkBoxOverwriteAttempt = (CheckBox)findViewById(R.id.checkBox_overwrite_attempt);	
-		
-		buttonCancel.setOnClickListener(new OnClickListener() {
+		binding.buttonCancel.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -129,7 +107,7 @@ public class TableIntermediateActivity extends Activity {
 			}
 		});
 
-		buttonSave.setOnClickListener(new OnClickListener() {
+		binding.buttonSave.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -140,9 +118,9 @@ public class TableIntermediateActivity extends Activity {
 				startActivity(new Intent(MainActivity.pActivity.getBaseContext(), MainActivity.class));
 			}
 		});
-		
-		
-		checkBoxReestablish.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+
+		binding.CheckBoxReestablish.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -159,8 +137,8 @@ public class TableIntermediateActivity extends Activity {
 				
 			}
 		});
-		
-		checkBoxOverwriteAttempt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+		binding.checkBoxOverwriteAttempt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -345,7 +323,7 @@ public class TableIntermediateActivity extends Activity {
 	 * adds current result to results protocol
 	 */
 	private void saveToResultsProtocol() {
-		if (checkBoxReestablish.isChecked()) {
+		if (binding.CheckBoxReestablish.isChecked()) {
 			if (chipData.isDisqualified()) {
 				chipData.setReestablished(true);
 			}
@@ -355,7 +333,7 @@ public class TableIntermediateActivity extends Activity {
 		//save chip data to results protocol
 		ResultsProtocol rp = ResultsProtocol.readFromDatabase();
 		//Log.i("android SFR", rp.toString());
-		if (checkBoxOverwriteAttempt.isChecked()) {
+		if (binding.checkBoxOverwriteAttempt.isChecked()) {
 			//overwrite
 			rp.overwriteChipData(OldGlobals.chipData);
 		} else {
@@ -376,6 +354,7 @@ public class TableIntermediateActivity extends Activity {
 		CharSequence optNames[] = new CharSequence[] {
 			"имя", "дистанцию", "в обратную сторону", "отменить"
 		};
+		Context context = this;
 		alert.setItems(optNames, new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -392,7 +371,7 @@ public class TableIntermediateActivity extends Activity {
 						//Toast.makeText(ctx, "Обратный порядок кп", Toast.LENGTH_SHORT).show();
 						TableIntermediateActivity.this.recreate();
 					} else {
-						Toast.makeText(ctx, "Не удалось изменить порядок кп", Toast.LENGTH_SHORT).show();
+						Toast.makeText(context, "Не удалось изменить порядок кп", Toast.LENGTH_SHORT).show();
 					}
 					break;
 				default: //cancel

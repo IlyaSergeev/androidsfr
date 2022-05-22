@@ -1,11 +1,5 @@
 package com.densvr.activities;
 
-import com.densvr.nfcreader.OldChipData;
-import com.densvr.nfcreader.OldGlobals;
-import com.densvr.androidsfr.R;
-import com.densvr.table.csv.CSV;
-import com.densvr.table.csv.Table;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -14,14 +8,22 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.densvr.androidsfr.databinding.ActivityChooseDistBinding;
+import com.densvr.nfcreader.OldChipData;
+import com.densvr.nfcreader.OldGlobals;
+import com.densvr.table.csv.CSV;
+import com.densvr.table.csv.Table;
+
 @Deprecated //Old activity. Not use it in future
 public class ChooseDistanceActivity extends ListActivity {
 
+	private ActivityChooseDistBinding binding;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_choose_dist);
+		binding = ActivityChooseDistBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 		Table dists = CSV.read(OldGlobals.CSV_DISTS);
 		B b[] = new B[dists.cols()];
 		for(int i = 0; i < dists.cols(); i++) {

@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 
+import com.densvr.androidsfr.R;
+import com.densvr.androidsfr.databinding.ActivityTableResultsBinding;
 import com.densvr.nfcreader.OldConfirmDialog;
 import com.densvr.nfcreader.OldGlobals;
-import com.densvr.androidsfr.R;
 import com.densvr.table.TableFixHeaders;
 import com.densvr.table.csv.CSV;
 import com.densvr.table.csv.MatrixTableAdapter;
@@ -19,23 +19,19 @@ import com.densvr.table.csv.Table;
 @Deprecated //Old activity. Not use it in future
 public class TableResultsActivity extends Activity {
 
+	private ActivityTableResultsBinding binding;
 	private String adress;
 	
 	Table table;
 	
 	private MatrixTableAdapter matrixTableAdapter;
 	private TableFixHeaders tableFixHeaders;
-	
-	private Button buttonBack;
-	private Button buttonClear;
-	
-	
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_table_results);
+		binding = ActivityTableResultsBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 		adress = OldGlobals.CSV_RESULTS;
 		
 		tableFixHeaders = (TableFixHeaders) findViewById(R.id.table_results_table);
@@ -108,13 +104,9 @@ public class TableResultsActivity extends Activity {
 			matrixTableAdapter.setInformation(table);
 			tableFixHeaders.setAdapter(matrixTableAdapter);
 		}
-		
-		//buttons
-		buttonBack = (Button) findViewById(R.id.table_results_button_back);
-		buttonClear = (Button) findViewById(R.id.table_results_button_clear);
-		
+
 		//back
-		buttonBack.setOnClickListener(new OnClickListener() {
+		binding.tableResultsButtonBack.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -122,8 +114,8 @@ public class TableResultsActivity extends Activity {
 			}
 			
 		});
-		
-		buttonClear.setOnClickListener(new OnClickListener() {
+
+		binding.tableResultsButtonClear.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {

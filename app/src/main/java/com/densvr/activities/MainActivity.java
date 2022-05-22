@@ -1,9 +1,11 @@
 package com.densvr.activities;
 
+import static com.densvr.nfc.NfcReaderTaskKt.getCanReadSfrRecord;
+import static com.densvr.nfc.NfcReaderTaskKt.readSfrRecord;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -23,22 +25,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.densvr.androidsfr.R;
+import com.densvr.androidsfr.databinding.ActivityMainBinding;
+import com.densvr.nfc.SfrRecord;
 import com.densvr.nfcreader.OldChipData;
 import com.densvr.nfcreader.OldDistsProtocol;
 import com.densvr.nfcreader.OldGlobals;
-import com.densvr.nfc.SfrRecord;
 import com.densvr.util.NfcReaderLogger;
 
 import java.io.File;
 
-import static com.densvr.nfc.NfcReaderTaskKt.getCanReadSfrRecord;
-import static com.densvr.nfc.NfcReaderTaskKt.readSfrRecord;
-
 @Deprecated //Old activity. Not use it in future
 public class MainActivity extends ListActivity {
 
-	//Properties...
-	private final Context ctx = this;
+	private ActivityMainBinding binding;
 
 	private NfcAdapter nfcAdapter;
 	
@@ -58,7 +57,8 @@ public class MainActivity extends ListActivity {
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		binding = ActivityMainBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 		
 		pActivity = this;
 		nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -87,7 +87,7 @@ public class MainActivity extends ListActivity {
 		checkBoxSimpleMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				SharedPreferences settings = ctx.getSharedPreferences("UserInfo", 0);
+				SharedPreferences settings = getSharedPreferences("UserInfo", 0);
 				settings.edit().putBoolean("SimpleMode", isChecked).apply();
 			}
 		});
@@ -246,7 +246,7 @@ public class MainActivity extends ListActivity {
 		}
 		if (checkBoxSimpleMode.isChecked()) {
 			//simple mode
-			Intent actIntent = new Intent(ctx, TableIntermediateActivity.class);
+			Intent actIntent = new Intent(this, TableIntermediateActivity.class);
 			startActivity(actIntent);
 		} else {
 			//complex mode
@@ -254,7 +254,7 @@ public class MainActivity extends ListActivity {
 				MainActivity.makeText("нет дистанций");
 				return false;
 			}
-			Intent actIntent = new Intent(ctx, ChooseDistanceActivity.class);
+			Intent actIntent = new Intent(this, ChooseDistanceActivity.class);
 			startActivity(actIntent);
 		}
 		return true;

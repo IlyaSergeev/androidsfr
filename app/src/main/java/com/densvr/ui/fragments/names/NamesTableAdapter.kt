@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.densvr.androidsfr.R
+import com.densvr.androidsfr.databinding.ItemNamesAddPersonBinding
+import com.densvr.androidsfr.databinding.ItemNamesPersonBinding
 import com.densvr.model.Person
 import com.densvr.ui.helpers.SimpleTextWatcher
 import com.densvr.ui.helpers.setTextWithChangeListener
-import kotlinx.android.synthetic.main.item_names_add_person.view.*
-import kotlinx.android.synthetic.main.item_names_person.view.*
 
 /**
  * Created by i-sergeev on 22.04.2020.
@@ -48,20 +48,10 @@ internal class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
                     false
                 )
             )
-            TYPE_PERSON -> PersonVH(
-                layoutInflater.inflate(
-                    R.layout.item_names_person,
-                    parent,
-                    false
-                )
-            )
+            TYPE_PERSON -> PersonVH(ItemNamesPersonBinding.inflate(layoutInflater, parent, false))
             TYPE_ADD_PERSON ->
                 AddPersonVH(
-                    layoutInflater.inflate(
-                        R.layout.item_names_add_person,
-                        parent,
-                        false
-                    )
+                    ItemNamesAddPersonBinding.inflate(layoutInflater, parent, false)
                 ) { itemPosition ->
                     persons += Person("", "")
                     notifyItemInserted(itemPosition)
@@ -100,23 +90,20 @@ internal class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private class HeaderVH(view: View) : RecyclerView.ViewHolder(view)
 
-    private class AddPersonVH(view: View, onClickAdd: (Int) -> Unit) :
-        RecyclerView.ViewHolder(view) {
+    private class AddPersonVH(viewBinding: ItemNamesAddPersonBinding, onClickAdd: (Int) -> Unit) :
+        RecyclerView.ViewHolder(viewBinding.root) {
 
         init {
-            view.item_name_add_person_button.setOnClickListener {
+            viewBinding.itemNameAddPersonButton.setOnClickListener {
                 onClickAdd(adapterPosition)
             }
         }
     }
 
-    private class PersonVH(view: View) : RecyclerView.ViewHolder(view) {
+    private class PersonVH(private val viewBinding: ItemNamesPersonBinding) :
+        RecyclerView.ViewHolder(viewBinding.root) {
 
         lateinit var person: Person
-
-        private val idTextView = view.item_names_person_id
-        private val nameEditText = view.item_names_person_name
-        private val chipIdEditText = view.item_names_person_chip_id
 
         private val nameTextChangeListener = object : SimpleTextWatcher() {
             override fun afterTextChanged(text: Editable?) {
@@ -133,9 +120,15 @@ internal class NamesTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>
         fun bind(person: Person, position: Int) {
             this.person = person
 
-            idTextView.text = "$position"
-            nameEditText.setTextWithChangeListener(person.name, nameTextChangeListener)
-            chipIdEditText.setTextWithChangeListener(person.chipId, chipIdTextChangeListener)
+            viewBinding.itemNamesPersonId.text = "$position"
+            viewBinding.itemNamesPersonName.setTextWithChangeListener(
+                person.name,
+                nameTextChangeListener
+            )
+            viewBinding.itemNamesPersonChipId.setTextWithChangeListener(
+                person.chipId,
+                chipIdTextChangeListener
+            )
         }
     }
 }

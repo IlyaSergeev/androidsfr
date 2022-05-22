@@ -1,15 +1,15 @@
 package com.densvr.activities;
 
-import java.util.LinkedList;
-
 import android.os.Bundle;
 
 import com.densvr.nfcreader.OldChipData;
 import com.densvr.nfcreader.OldGlobals;
 import com.densvr.table.csv.MatrixTableAdapter;
+import com.densvr.table.csv.MatrixTableAdapter.EditTableOption;
 import com.densvr.table.csv.Table;
 import com.densvr.table.csv.TableActivity;
-import com.densvr.table.csv.MatrixTableAdapter.EditTableOption;
+
+import java.util.LinkedList;
 
 @Deprecated //Old activity. Not use it in future
 public class TableDistsActivity extends TableActivity {

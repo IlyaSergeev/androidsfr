@@ -9,13 +9,13 @@ def appVersionCode = 8
 def appVersionName = "1.1.3.$appVersionCode"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.densvr.androidsfr"
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode appVersionCode
         versionName appVersionName
 
@@ -24,9 +24,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
+    buildFeatures {
+        viewBinding true
     }
 
     signingConfigs {
@@ -62,6 +61,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+    namespace 'com.densvr.androidsfr'
 }
 
 dependencies {
