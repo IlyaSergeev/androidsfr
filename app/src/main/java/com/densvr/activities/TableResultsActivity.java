@@ -20,11 +20,8 @@ import com.densvr.table.csv.Table;
 public class TableResultsActivity extends Activity {
 
     private String adress;
-
     Table table;
-
     private MatrixTableAdapter matrixTableAdapter;
-    private TableFixHeaders tableFixHeaders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +30,7 @@ public class TableResultsActivity extends Activity {
         setContentView(binding.getRoot());
         adress = OldGlobals.CSV_RESULTS;
 
-        tableFixHeaders = (TableFixHeaders) findViewById(R.id.table_results_table);
+        TableFixHeaders tableFixHeaders = (TableFixHeaders) findViewById(R.id.table_results_table);
         matrixTableAdapter = new MatrixTableAdapter(tableFixHeaders, this, table);
         matrixTableAdapter.setEditableHeader(false);
         matrixTableAdapter.setEditableData(false);

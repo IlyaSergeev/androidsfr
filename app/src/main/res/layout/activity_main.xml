@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <CheckBox
-        android:text="Простой режим"
+        android:id="@+id/checkBox_simple_mode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
         android:paddingTop="20dp"
         android:paddingBottom="10dp"
-        android:textAlignment="center"
-        android:id="@+id/checkBox_simple_mode" />
+        android:text="Простой режим"
+        android:textAlignment="center" />
 
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/checkBox_simple_mode"
         tools:context=".MainActivity"
-        tools:listitem="@layout/listview_item"
-        android:layout_below="@+id/checkBox_simple_mode">
-    </ListView>
-
+        tools:listitem="@layout/listview_item" />
 
 </RelativeLayout>
 

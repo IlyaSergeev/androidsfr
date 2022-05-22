@@ -8,7 +8,6 @@ import android.widget.TextView;
 @Deprecated
 public class OldConfirmDialog extends AlertDialog.Builder {
 
-	private TextView view;
 	OnClickListener onClickListener;
 	
 	
@@ -25,7 +24,7 @@ public class OldConfirmDialog extends AlertDialog.Builder {
 		super(context);
 		this.setTitle(title);
 		if (!text.isEmpty()) {
-			view  = new TextView(context);
+			TextView view = new TextView(context);
 			view.setText(text);
 			this.setView(view);
 		}

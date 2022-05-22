@@ -22,11 +22,6 @@ public abstract class TableActivity extends Activity {
 	
 	protected Table table;
 
-	
-	
-	private Button buttonBack;
-	
-	
 	public TableActivity(String adress) {
 		this.adress = adress;
 		
@@ -53,7 +48,7 @@ public abstract class TableActivity extends Activity {
 		loadFromCSV(adress);
 		
 		//buttons
-		buttonBack = (Button) findViewById(R.id.table_buttonBack);
+		Button buttonBack = (Button) findViewById(R.id.table_buttonBack);
 		
 		//back
 		buttonBack.setOnClickListener(new OnClickListener() {

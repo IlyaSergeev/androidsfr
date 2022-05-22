@@ -39,7 +39,6 @@ public class TableIntermediateActivity extends Activity {
 
     private Table table = new Table();
 
-    private MatrixTableAdapter matrixTableAdapter;
     private TableFixHeaders tableFixHeaders;
 
     /**
@@ -70,7 +69,7 @@ public class TableIntermediateActivity extends Activity {
         createIntermediateResultsTable();
 
         TableFixHeaders tableFixHeaders = (TableFixHeaders) findViewById(R.id.inter_results_table);
-        matrixTableAdapter = new MatrixTableAdapter(tableFixHeaders, this, table);
+        MatrixTableAdapter matrixTableAdapter = new MatrixTableAdapter(tableFixHeaders, this, table);
         tableFixHeaders.setAdapter(matrixTableAdapter);
 
         //ISO15693 - ti не поддерживается
