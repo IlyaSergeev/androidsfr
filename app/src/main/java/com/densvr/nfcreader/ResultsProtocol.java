@@ -235,10 +235,12 @@ public class ResultsProtocol {
 			//update other results
 			updateDistResults(distName);
 		} else {
-			//attempt wasn't found - add new attempt 
-			while(true) {
-				MainActivity.makeText("fail");
-			}
+			//attempt wasn't found - add new attempt
+			//TODO infinite loop
+//			while(true) {
+				//TODO hard depend from MainActivity and Context
+//				MainActivity.makeText("fail");
+//			}
 			///addChipData(cd);
 		}
 	}

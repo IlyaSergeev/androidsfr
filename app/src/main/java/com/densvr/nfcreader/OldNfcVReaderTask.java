@@ -1,15 +1,13 @@
 package com.densvr.nfcreader;
 
+import android.nfc.Tag;
+import android.nfc.tech.NfcV;
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.densvr.activities.MainActivity;
-
-import android.nfc.Tag;
-import android.nfc.tech.NfcV;
-import android.util.Log;
 
 import timber.log.Timber;
 
@@ -32,7 +30,8 @@ public class OldNfcVReaderTask {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            MainActivity.makeText("поднесите чип еще раз");
+            //TODO hard depend from MainActivity and Context
+//            MainActivity.makeText("поднесите чип еще раз");
             return false;
         }
 		

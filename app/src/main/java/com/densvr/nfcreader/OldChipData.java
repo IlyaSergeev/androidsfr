@@ -651,7 +651,8 @@ public class OldChipData {
         OldChipData chipData = dists.getDistByNumber(randInt(dists.getCnt()));
         //ChipData chipData = dists.getDistByNumber(0);
 
-        MainActivity.makeText("дистанция " + chipData.getDistName());
+        //TODO hard depend from MainActivity and Context
+//        MainActivity.makeText("дистанция " + chipData.getDistName());
 
         chipData.setDistName("");
 

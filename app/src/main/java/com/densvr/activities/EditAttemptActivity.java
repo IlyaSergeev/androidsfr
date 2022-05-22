@@ -14,12 +14,11 @@ import com.densvr.nfcreader.ResultsProtocol;
 @Deprecated //Old activity. Not use it in future
 public class EditAttemptActivity extends Activity {
 
-	private ActivityEditAttemptBinding binding;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		binding = ActivityEditAttemptBinding.inflate(getLayoutInflater());
+
+		ActivityEditAttemptBinding binding = ActivityEditAttemptBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 		
 		OldChipData chipData = OldGlobals.chipData;
@@ -33,8 +32,7 @@ public class EditAttemptActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				//TODO
-				//delete all attempts from table results activity
+				//TODO delete all attempts from table results activity
 				ResultsProtocol rp = ResultsProtocol.readFromDatabase();
 				
 				OldGlobals.chipData.setAttempt(1);
@@ -42,13 +40,9 @@ public class EditAttemptActivity extends Activity {
 				startActivity(actIntent);
 			}
 		});
-		binding.actEditAttemptButtonYes.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent actIntent = new Intent(getApplicationContext(), TableIntermediateActivity.class);
-				startActivity(actIntent);
-			}
+		binding.actEditAttemptButtonYes.setOnClickListener(v -> {
+			Intent actIntent = new Intent(getApplicationContext(), TableIntermediateActivity.class);
+			startActivity(actIntent);
 		});
 	}
 }

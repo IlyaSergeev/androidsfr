@@ -14,12 +14,11 @@ import com.densvr.nfcreader.OldGlobals;
 @Deprecated //Old activity. Not use it in future
 public class AboutActivity extends Activity {
 
-	private ActivityAboutBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		binding = ActivityAboutBinding.inflate(getLayoutInflater());
+
+        ActivityAboutBinding binding = ActivityAboutBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
         //back

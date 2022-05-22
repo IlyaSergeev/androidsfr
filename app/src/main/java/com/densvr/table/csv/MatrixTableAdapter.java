@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -24,8 +25,6 @@ import com.densvr.table.BaseTableAdapter;
 import com.densvr.table.TableFixHeaders;
 
 public class MatrixTableAdapter extends BaseTableAdapter {
-
-
 
 	private Context context;
 	private TableFixHeaders pTableFixHeaders;
@@ -196,7 +195,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			if (!bEditableData) {
-				MainActivity.makeText("редактирование данных запрещено");
+				MainActivity.makeText("редактирование данных запрещено", context);
 				dialog.cancel();
 				return;
 			}
@@ -210,7 +209,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 				break;
 			case EDIT_TABLE_DELETE_ROW:
 				if (row == 0) {
-					MainActivity.makeText("нельзя удалить строку заголовков");
+					MainActivity.makeText("нельзя удалить строку заголовков", context);
 					dialog.cancel();
 					return;
 				} 
@@ -222,7 +221,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 							MatrixTableAdapter.this.setInformation(table);
 							MatrixTableAdapter.this.onDataSetObserver.onDataChanged(table);
 						} else {
-							MainActivity.makeText("удаление отменено");
+							MainActivity.makeText("удаление отменено", context);
 						}
 					}
 				});
@@ -247,7 +246,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 							MatrixTableAdapter.this.setInformation(table);
 							MatrixTableAdapter.this.onDataSetObserver.onDataChanged(table);
 						} else {
-							MainActivity.makeText("удаление отменено");
+							MainActivity.makeText("удаление отменено", context);
 						}
 					}
 				});
@@ -321,11 +320,11 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 			col = viewCoords[1];
 			
 			if (row == 0 && !bEditableHeader) {
-				MainActivity.makeText("редактирование заголовка запрещено");
+				MainActivity.makeText("редактирование заголовка запрещено", context);
 				return;
 			}
 			if (row != 0 && !bEditableData) {
-				MainActivity.makeText("редактирование данных запрещено");
+				MainActivity.makeText("редактирование данных запрещено", context);
 				return;
 			}
 			
@@ -388,14 +387,14 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 			col = viewCoords[1];
 			
 			if (!bEditableData) {
-				MainActivity.makeText("редактирование данных запрещено");
+				MainActivity.makeText("редактирование данных запрещено", context);
 				return false;
 			}
 			
 			//create alert dialog 
 			AlertDialog.Builder alert = editTableDialogBuilder.buildDialog(row, col);
 			if (alert == null) {
-				MainActivity.makeText("редактирование таблицы запрещено");
+				MainActivity.makeText("редактирование таблицы запрещено", context);
 			}
 			alert.show();
 			return true;
@@ -451,9 +450,8 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 
 	@Override
 	public View getView(int row, int column, View convertView, ViewGroup parent) {
-		convertView = new TextView(context);
-		convertView = MainActivity.pActivity.getLayoutInflater().inflate(R.layout.item_table, parent, false);
-		TextView pTextView = (TextView) convertView.findViewById(android.R.id.text1);
+		convertView =  LayoutInflater.from(context).inflate(R.layout.item_table, parent, false);
+		TextView pTextView = convertView.findViewById(android.R.id.text1);
 		pTextView.setGravity(Gravity.CENTER_VERTICAL);
 		
 		if (row == -1) {
