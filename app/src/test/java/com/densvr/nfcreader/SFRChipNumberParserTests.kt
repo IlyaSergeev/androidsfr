@@ -1,5 +1,6 @@
 package com.densvr.nfcreader
 
+import com.densvr.nfc.readChipNumber
 import com.densvr.util.hexAsByteArray
 import org.junit.Test
 import kotlin.test.assertEquals

@@ -1,5 +1,6 @@
 package com.densvr.nfcreader
 
+import com.densvr.nfc.readInt32Value
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails

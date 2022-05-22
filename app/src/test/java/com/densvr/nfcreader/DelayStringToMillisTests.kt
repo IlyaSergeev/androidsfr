@@ -1,5 +1,6 @@
 package com.densvr.nfcreader
 
+import com.densvr.nfc.tryParseDelayMillisOrZero
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
