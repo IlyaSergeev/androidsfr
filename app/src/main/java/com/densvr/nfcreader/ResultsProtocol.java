@@ -316,7 +316,7 @@ public class ResultsProtocol {
 	
 	/**
 	 * gets result, specified by number
-	 * @param row
+	 * @param num
 	 * @return
 	 */
 	public OldChipData get(int num) {
@@ -327,7 +327,6 @@ public class ResultsProtocol {
 	/**
 	 * return theoretical place in protocol (first - 1, second - 2, ...)
 	 * @param chipData
-	 * @param bDisqualified
 	 * @return
 	 */
 	public int getTheoreticalPlace(OldChipData chipData) {
@@ -348,7 +347,6 @@ public class ResultsProtocol {
 	/**
 	 * return theoretical place in current attempt (first - 1, second - 2, ...)
 	 * @param chipData
-	 * @param results
 	 * @return
 	 */
 	public int getTheoreticalAttemptPlace(OldChipData chipData) {
@@ -368,7 +366,8 @@ public class ResultsProtocol {
 	
 	/**
 	 * get number of specified user attempts (1 - first, 2 - second...)
-	 * @param name
+	 * @param userName
+	 * @param distName
 	 * @return
 	 */
 	public int getAttempt(String userName, String distName) {

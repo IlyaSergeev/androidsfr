@@ -46,7 +46,7 @@ internal fun ByteArray.readSFROperationInfo(position: Int): SfrOperationInfo {
     )
 }
 
-private fun Int.asSFRChipType(): SfrChipType? {
+private fun Number.asSFRChipType(): SfrChipType? {
     return when (this) {
         0 -> SfrChipType.COMPETITOR
         1 -> SfrChipType.SERVICE

@@ -1,6 +1,6 @@
 package com.densvr.model
 
-class Person(
+data class Person(
     var name: String,
     var chipId: String
 )

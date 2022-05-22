@@ -2,22 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TableNamesActivity" >
+    tools:context="com.densvr.activities.TableNamesActivity">
 
-    <com.densvr.table.TableFixHeaders xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:id="@+id/table"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerHorizontal ="true"
-	 	android:layout_marginBottom="50dp" />
-	   
-    
+    <com.densvr.table.TableFixHeaders
+        android:id="@+id/table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp" />
+
     <Button
         android:id="@+id/table_buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:gravity="center"
         android:text="Назад" />
 

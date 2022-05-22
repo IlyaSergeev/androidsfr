@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+@Deprecated //Old activity. Not use it in future
 public class TableIntermediateActivity extends Activity {
 
 	private ActivityIntermediateResultsBinding binding;
