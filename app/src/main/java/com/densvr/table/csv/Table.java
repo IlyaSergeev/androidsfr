@@ -9,11 +9,11 @@ public class Table extends LinkedList<LinkedList<String>> {
 	
 	public void setValue(int row, int col, String val) {
 		if (rows() == 0) {
-			add(new LinkedList<String>());
+			add(new LinkedList<>());
 		}
 		//add rows top 
 		for(int i = 0; i < -row; i++) {
-			add(0, new LinkedList<String>());
+			add(0, new LinkedList<>());
 		}
 		//add columns left
 		for(int i = 0; i < -col; i++) {
@@ -24,7 +24,7 @@ public class Table extends LinkedList<LinkedList<String>> {
 		//add rows bottom
 		int addRows = row - rows() + 1;
 		for(int i = 0; i < addRows; i++) {
-			LinkedList<String> newRow = new LinkedList<String>();
+			LinkedList<String> newRow = new LinkedList<>();
 			for(int j = 0; j < cols(); j++) {
 				newRow.add("");
 			}
@@ -88,8 +88,6 @@ public class Table extends LinkedList<LinkedList<String>> {
 	
 	/**
 	 * return full row data with spaces
-	 * @param row
-	 * @return
 	 */
 	public String rowToString(int row) {
 		if (row < 0 || row >= rows()) {
@@ -105,8 +103,6 @@ public class Table extends LinkedList<LinkedList<String>> {
 	
 	/**
 	 * return column header
-	 * @param col
-	 * @return
 	 */
 	public String columnToString(int col) {
 		if (col < 0 || col >= cols()) {

@@ -3,7 +3,6 @@ package com.densvr.table;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.densvr.activities.MainActivity;
 import com.densvr.androidsfr.R;
 
 import android.annotation.SuppressLint;
@@ -11,7 +10,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -23,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Scroller;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * This view shows a table which can scroll in both directions. Also still
@@ -45,9 +42,9 @@ public class TableFixHeaders extends ViewGroup {
 
 	@SuppressWarnings("unused")
 	private View headView;
-	private List<View> rowViewList;
-	private List<View> columnViewList;
-	private List<List<View>> bodyViewTable;
+	private final List<View> rowViewList;
+	private final List<View> columnViewList;
+	private final List<List<View>> bodyViewTable;
 
 	private int rowCount;
 	private int columnCount;
@@ -72,7 +69,7 @@ public class TableFixHeaders extends ViewGroup {
 
 	private VelocityTracker velocityTracker;
 
-	private int touchSlop;
+	private final int touchSlop;
 
 	/**
 	 * Simple constructor to use when creating a view from code.
@@ -107,9 +104,9 @@ public class TableFixHeaders extends ViewGroup {
 	
 		
 		this.headView = null;
-		this.rowViewList = new ArrayList<View>();
-		this.columnViewList = new ArrayList<View>();
-		this.bodyViewTable = new ArrayList<List<View>>();
+		this.rowViewList = new ArrayList<>();
+		this.columnViewList = new ArrayList<>();
+		this.bodyViewTable = new ArrayList<>();
 
 		this.setNeedRelayout(true);
 
@@ -402,7 +399,7 @@ public class TableFixHeaders extends ViewGroup {
 		View view = makeView(row, -1, widths[0], heights[row + 1]);
 		columnViewList.add(index, view);
 
-		List<View> list = new ArrayList<View>();
+		List<View> list = new ArrayList<>();
 		final int size = rowViewList.size() + firstColumn;
 		for (int i = firstColumn; i < size; i++) {
 			view = makeView(row, i, widths[i + 1], heights[row + 1]);
@@ -555,11 +552,11 @@ public class TableFixHeaders extends ViewGroup {
 		setMeasuredDimension(w, h);
 	}
 
-	private int sumArray(int array[]) {
+	private int sumArray(int[] array) {
 		return sumArray(array, 0, array.length);
 	}
 
-	private int sumArray(int array[], int firstIndex, int count) {
+	private int sumArray(int[] array, int firstIndex, int count) {
 		int sum = 0;
 		count += firstIndex;
 		for (int i = firstIndex; i < count; i++) {
@@ -613,7 +610,7 @@ public class TableFixHeaders extends ViewGroup {
 				for (int i = firstRow; i < rowCount && top < height; i++) {
 					bottom = top + heights[i + 1];
 					left = widths[0] - scrollX;
-					List<View> list = new ArrayList<View>();
+					List<View> list = new ArrayList<>();
 					for (int j = firstColumn; j < columnCount && left < width; j++) {
 						right = left + widths[j + 1];
 						final View view = makeAndSetup(i, j, left, top, right, bottom);
@@ -634,7 +631,7 @@ public class TableFixHeaders extends ViewGroup {
 		scrollY = scrollBounds(scrollY, firstRow, heights, height);
 	}
 
-	private int scrollBounds(int desiredScroll, int firstCell, int sizes[], int viewSize) {
+	private int scrollBounds(int desiredScroll, int firstCell, int[] sizes, int viewSize) {
 		if (desiredScroll == 0 || sizes == null) {
 			// no op
 		} else if (desiredScroll < 0) {
@@ -646,7 +643,7 @@ public class TableFixHeaders extends ViewGroup {
 	}
 
 	private void adjustFirstCellsAndScroll() {
-		int values[];
+		int[] values;
 
 		values = adjustFirstCellsAndScroll(scrollX, firstColumn, widths);
 		scrollX = values[0];
@@ -657,7 +654,7 @@ public class TableFixHeaders extends ViewGroup {
 		firstRow = values[1];
 	}
 
-	private int[] adjustFirstCellsAndScroll(int scroll, int firstCell, int sizes[]) {
+	private int[] adjustFirstCellsAndScroll(int scroll, int firstCell, int[] sizes) {
 		if (scroll == 0) {
 			// no op
 		} else if (scroll > 0) {
@@ -858,8 +855,7 @@ public class TableFixHeaders extends ViewGroup {
 	
 	/**
 	 * returns row, col
-	 * @param view
-	 * @return row, col 
+	 * @return row, col
 	 */
 	@SuppressLint("NewApi") 
 	public int[] getViewCoordinates(View view) {

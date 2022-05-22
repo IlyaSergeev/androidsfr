@@ -37,9 +37,9 @@ class NfcLogsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        nfcLogsViewModel.lastReadLogs.observe(viewLifecycleOwner, Observer { lastLogs ->
+        nfcLogsViewModel.lastReadLogs.observe(viewLifecycleOwner) { lastLogs ->
             bindings.nfcLogsTest.text = lastLogs
-        })
+        }
 
         bindings.nfcLogsTest.setOnClickListener {
             val readLogger = NfcReaderLogger()

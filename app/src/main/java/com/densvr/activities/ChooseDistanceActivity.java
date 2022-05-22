@@ -1,6 +1,5 @@
 package com.densvr.activities;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,11 +24,11 @@ public class ChooseDistanceActivity extends ListActivity {
 		ActivityChooseDistBinding binding = ActivityChooseDistBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 		Table dists = CSV.read(OldGlobals.CSV_DISTS);
-		B b[] = new B[dists.cols()];
+		B[] b = new B[dists.cols()];
 		for(int i = 0; i < dists.cols(); i++) {
 			b[i] = new B(dists.get(0).get(i));
 		}
-		setListAdapter(new ArrayAdapter<B>(this, android.R.layout.simple_list_item_1, android.R.id.text1, b));
+		setListAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, b));
 	}
 	
 	@Override

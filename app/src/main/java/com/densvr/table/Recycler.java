@@ -23,7 +23,7 @@ public class Recycler {
 	public Recycler(int size) {
 		views = new Stack[size];
 		for (int i = 0; i < size; i++) {
-			views[i] = new Stack<View>();
+			views[i] = new Stack<>();
 		}
 	}
 

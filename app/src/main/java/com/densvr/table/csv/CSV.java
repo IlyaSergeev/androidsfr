@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import com.densvr.nfcreader.OldGlobals;
@@ -14,7 +15,7 @@ public class CSV {
 	
 	//csv support
 	public static Table read(String name) {
-		LinkedList<LinkedList<String>> data1 = new LinkedList<LinkedList<String>>();
+		LinkedList<LinkedList<String>> data1 = new LinkedList<>();
 		int cols = 0;
 		try {
 			File myFile = new File(OldGlobals.CSV_ADDRESS + name);
@@ -33,10 +34,8 @@ public class CSV {
 			    }
 			    line = line.replace(',', ';');
 			    String[] vals = line.split(";");
-			    LinkedList<String> l = new LinkedList<String>();
-			    for(int i = 0; i < vals.length; i++) {
-			    	l.add(vals[i]);
-			    }
+			    LinkedList<String> l = new LinkedList<>();
+				Collections.addAll(l, vals);
 			    data1.add(l);
 			    if (vals.length > cols) {
 			    	cols = vals.length;
@@ -49,7 +48,7 @@ public class CSV {
 		}
 		Table data = new Table();
 		for(int i = 0; i < data1.size(); i++) {
-			data.add(new LinkedList<String>());
+			data.add(new LinkedList<>());
 			for(int j = 0; j < cols; j++) {
 				data.get(i).add("");
 			}
@@ -140,9 +139,9 @@ public class CSV {
 		Table data = new Table();
 		for(int i = 0; i < arr.length; i++) {
 			String[] v = arr[i].split(";");
-			data.add(new LinkedList<String>());
-			for(int j = 0; j < v.length; j++) {
-				data.get(i).add(v[j]);
+			data.add(new LinkedList<>());
+			for (String s : v) {
+				data.get(i).add(s);
 			}
 		}
 		CSV.write(data, name);

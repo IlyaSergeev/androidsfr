@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.densvr.androidsfr.R
 import com.densvr.androidsfr.databinding.FragmentSfrLogsBinding
 import com.densvr.mock.nextSfrRecord
@@ -41,9 +40,9 @@ class SfrLogsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sfrRecordViewModel.lastSfrRecord.observe(viewLifecycleOwner, Observer { sfrRecord ->
+        sfrRecordViewModel.lastSfrRecord.observe(viewLifecycleOwner) { sfrRecord ->
             updateRecords(sfrRecord, Date())
-        })
+        }
 
         binding.sfrLogsTest.setOnClickListener {
             sfrRecordViewModel.setRecord(Random.nextSfrRecord())

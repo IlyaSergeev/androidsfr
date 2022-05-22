@@ -11,13 +11,12 @@ public class OldConfirmDialog extends AlertDialog.Builder {
 	OnClickListener onClickListener;
 	
 	
-	public static interface OnClickListener {
+	public interface OnClickListener {
 		/**
 		 * true - yes clicked, false - no clicked
 		 * dialog will be finished automatically
-		 * @param bResult
 		 */
-		public void onClick(boolean bResult);
+		void onClick(boolean bResult);
 	}
 	
 	protected OldConfirmDialog(Context context, String title, String text, OnClickListener ocl) {

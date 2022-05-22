@@ -1,7 +1,6 @@
 package com.densvr.util
 
 import com.densvr.nfc.uint
-import java.util.*
 
 /**
  * Created by i-sergeev on 11.04.2020.

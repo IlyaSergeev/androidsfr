@@ -65,9 +65,6 @@ public class OldChipData {
     /**
      * parse user chip number (must be unique)
      *
-     * @param data
-     *
-     * @return
      */
     private static int parseUserId(byte[] data) {
         byte[] cell = getCell(data, 4);
@@ -100,9 +97,9 @@ public class OldChipData {
 
 
     public OldChipData() {
-        cps = new LinkedList<CP>();
-        distName = new String();
-        userName = new String();
+        cps = new LinkedList<>();
+        distName = "";
+        userName = "";
         bReestablished = false;
         place = -1;
         attemptPlace = -1;
@@ -113,9 +110,6 @@ public class OldChipData {
     /**
      * parse array data
      *
-     * @param bytes
-     *
-     * @return
      */
     public static OldChipData parseChipArray(byte[] bytes) {
         OldChipData chipData = new OldChipData();
@@ -140,7 +134,7 @@ public class OldChipData {
                 Long prevLapTime = chipData.cps.get(i - 1).lapTime;
                 cp.splitTime = cp.lapTime - prevLapTime;
             }
-            Log.i("android SFR", String.format("%d) ", i) + String.valueOf(cp.number) + " " +
+            Log.i("android SFR", String.format("%d) ", i) + cp.number + " " +
                     secondsFormatString(cp.lapTime) + " " + secondsFormatString(cp.splitTime));
             chipData.cps.add(cp);
         }
@@ -186,8 +180,6 @@ public class OldChipData {
     /**
      * initialize chip data from CSV_RESULTS (only cps and place)
      *
-     * @param line
-     *
      * @return can return null
      */
     public static OldChipData parseCSVResultsLine(List<String> line) {
@@ -219,7 +211,7 @@ public class OldChipData {
                 return null;
             }
             cnt /= 2;
-            chipData.cps = new LinkedList<CP>();
+            chipData.cps = new LinkedList<>();
             for (int i = 0; i < cnt; i++) {
                 String sNumber = line.get(iter++);
                 String sSplitTime = line.get(iter++);
@@ -247,9 +239,6 @@ public class OldChipData {
     /**
      * initialize chip data from CSV_DISTS (only cps numbers)
      *
-     * @param line
-     *
-     * @return
      */
     public static OldChipData parseDistsResultsLine(List<String> line) {
         OldChipData chipData = new OldChipData();
@@ -316,7 +305,6 @@ public class OldChipData {
     /**
      * returns sername, name in this order
      *
-     * @return
      */
     public String[] getSernameAndName() {
         String[] userNameArr = userName.split(" ");
@@ -381,7 +369,6 @@ public class OldChipData {
     /**
      * checks if disqualified and not reestablished
      *
-     * @return
      */
     public boolean isFinallyDisqualified() {
         return bDisqualified && !bReestablished;
@@ -391,7 +378,6 @@ public class OldChipData {
     /**
      * if disqualified get place with format: снят (результат)
      *
-     * @return
      */
     public String getPlaceStr() {
         String sPlace = "";
@@ -408,7 +394,6 @@ public class OldChipData {
     /**
      * if disqualified get place in current attempt with format: снят (результат)
      *
-     * @return
      */
     public String getAttemptPlaceStr() {
         String sAttemptPlace = "";
@@ -425,7 +410,6 @@ public class OldChipData {
     /**
      * inits place and bDisqualified, parsing this str
      *
-     * @param place
      */
     public void setPlaceStr(String place) {
         String sPlace = null;
@@ -446,7 +430,6 @@ public class OldChipData {
     /**
      * inits attempt place and bDisqualified, parsing this str
      *
-     * @param attemptPlace
      */
     public void setAttemptPlaceStr(String attemptPlace) {
         String sAttemptPlace = null;
@@ -468,10 +451,9 @@ public class OldChipData {
     /**
      * converts chip data to results protocol line
      *
-     * @return
      */
     public LinkedList<String> toResultsProtocolLine() {
-        LinkedList<String> line = new LinkedList<String>();
+        LinkedList<String> line = new LinkedList<>();
         line.add(userName); //name
         line.add(getPlaceStr()); //place
         line.add(getAttemptPlaceStr());//place in attempt
@@ -491,14 +473,9 @@ public class OldChipData {
         RESULT_EQUAL
     }
 
-    ;
-
     /**
      * real results comparison
      *
-     * @param cd
-     *
-     * @return
      */
     public ResultsComparison isBetterThen(OldChipData cd) {
         if (!this.isFinallyDisqualified() && cd.isFinallyDisqualified()) {
@@ -520,9 +497,6 @@ public class OldChipData {
     /**
      * theoretical results comparison (if not disqualified)
      *
-     * @param cd
-     *
-     * @return
      */
     public ResultsComparison isTheoreticalBetterThen(OldChipData cd) {
         if (cd.isFinallyDisqualified()) {
@@ -543,13 +517,7 @@ public class OldChipData {
 //dist prediction
 //=================
 
-    /**
-     * calculates dynamic time warping distance between s and t vectors
-     * @param s [1..n]
-     * @param t [1..m]
-     * @return
-     */
-	/*
+    /*
 	private static int dtwDist(int[] s, int[] t) {
 		int n = s.length - 1; 
 		int m = t.length - 1;
@@ -571,9 +539,9 @@ public class OldChipData {
 	}
 	*/
 
-    /**
-     * calculates correspondence with given distance using DTW
-     * @param dist
+    /*
+      calculates correspondence with given distance using DTW
+      @param dist
      * @return
      */
 	/*
@@ -618,7 +586,6 @@ public class OldChipData {
      * @param probability
      *     from 0 to 1
      *
-     * @return
      */
     public static boolean randBool(float probability) {
         return Math.random() < probability;
@@ -627,7 +594,6 @@ public class OldChipData {
     /**
      * gets int form 0 to end
      *
-     * @return
      */
     public static int randInt(int cnt) {
         if (cnt <= 0) {

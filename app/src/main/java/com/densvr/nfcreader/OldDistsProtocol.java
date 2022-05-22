@@ -14,7 +14,7 @@ public class OldDistsProtocol {
 	
 	
 	private OldDistsProtocol() {
-		dists = new LinkedList<OldChipData>();
+		dists = new LinkedList<>();
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class OldDistsProtocol {
 			if (distName.isEmpty()) {
 				continue;
 			}
-			LinkedList<String> distCps = new LinkedList<String>();
+			LinkedList<String> distCps = new LinkedList<>();
 			for(int row = 1; row < tDists.rows(); row++) {
 				String cur = tDists.getValue(row, col);
 				if (!cur.isEmpty()) {
@@ -110,7 +110,6 @@ public class OldDistsProtocol {
 	
 	/**
 	 * gets distance with given name
-	 * @param name
 	 * @return null if not found
 	 */
 	public OldChipData getDistByName(String name) {
@@ -125,7 +124,6 @@ public class OldDistsProtocol {
 
 	/**
 	 * add backward distance after selected one
-	 * @param distance
 	 * @return backward distance
 	 */
 	public OldChipData addBackwardDist(OldChipData distance, String backwardPostfixStr) {
@@ -160,8 +158,6 @@ public class OldDistsProtocol {
 	
 	/**
 	 * predicts distance nearest to given chip data by cps sequence
-	 * @param cd
-	 * @return 
 	 */
 	
 	public OldChipData predictDistance(OldChipData cd) {

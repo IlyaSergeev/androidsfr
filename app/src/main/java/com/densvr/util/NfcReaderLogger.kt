@@ -38,7 +38,7 @@ class NfcReaderLogger {
     }
 
     fun appendLn() {
-        stringBuilder.appendln()
+        stringBuilder.appendLine()
     }
 
 }

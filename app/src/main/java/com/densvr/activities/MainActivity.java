@@ -77,7 +77,7 @@ public class MainActivity extends ListActivity {
         }
 
 
-        checkBoxSimpleMode = (CheckBox) findViewById(R.id.checkBox_simple_mode);
+        checkBoxSimpleMode = findViewById(R.id.checkBox_simple_mode);
         SharedPreferences settings = this.getSharedPreferences("UserInfo", 0);
         checkBoxSimpleMode.setChecked(settings.getBoolean("SimpleMode", false));
         checkBoxSimpleMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -93,7 +93,7 @@ public class MainActivity extends ListActivity {
         //textView.setText("NFC is disabled.");
         //}
 
-        final B b[] = new B[]{
+        final B[] b = new B[]{
                 new B("дистанции", TableDistsActivity.class),
                 new B("имена", TableNamesActivity.class),
                 new B("результаты", TableResultsActivity.class),
@@ -160,7 +160,7 @@ public class MainActivity extends ListActivity {
     }
 
 
-    private class B {
+    private static class B {
         private final String string;
         private final Class<? extends Activity> class1;
 
@@ -228,7 +228,6 @@ public class MainActivity extends ListActivity {
     /**
      * called when new chip data appears
      *
-     * @return
      */
     private boolean onNewChipData() {
         if (OldGlobals.chipData.getCPs().size() == 0) {

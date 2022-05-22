@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 
 import com.densvr.androidsfr.databinding.ActivityEditUserNameBinding;
 import com.densvr.nfcreader.OldChipData;
@@ -26,34 +23,19 @@ public class EditUserNameActivity extends Activity {
 		setContentView(binding.getRoot());
 
 		binding.editText.setText(OldGlobals.chipData.getUserName());
-		binding.editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN) {
-					editName();//match this behavior to your 'Send' (or Confirm) button
-					return true;
-				}
-				return false;
-			}
-		});
+		binding.editText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN) {
+                editName();//match this behavior to your 'Send' (or Confirm) button
+                return true;
+            }
+            return false;
+        });
 
 		
 		startUserName = new String(OldGlobals.chipData.getUserName());
 
-		binding.buttonBack.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				EditUserNameActivity.this.finish();
-			}
-		});
-		binding.buttonOk.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				editName();
-			}
-		});
+		binding.buttonBack.setOnClickListener(v -> EditUserNameActivity.this.finish());
+		binding.buttonOk.setOnClickListener(v -> editName());
 		
 	}
 

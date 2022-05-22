@@ -26,16 +26,16 @@ import com.densvr.table.TableFixHeaders;
 
 public class MatrixTableAdapter extends BaseTableAdapter {
 
-	private Context context;
-	private TableFixHeaders pTableFixHeaders;
+	private final Context context;
+	private final TableFixHeaders pTableFixHeaders;
 
 	private Table table;
 
 	private OnCellSizeGetter onCellSizeGetter;
 	
 	
-	private OnClickTableViewListener onClickTableViewListener;
-	private OnLongClickTableViewListener onLongClickTableViewListener;
+	private final OnClickTableViewListener onClickTableViewListener;
+	private final OnLongClickTableViewListener onLongClickTableViewListener;
 	private OnDataSetObserver onDataSetObserver;
 	
 	private OnViewPostCreationWizard onViewPostCreationWizard;
@@ -53,7 +53,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 	 */
 	public static class OnCellSizeGetter {
 		
-		private Context context;
+		private final Context context;
 		
 		protected final static int WIDTH_DIP = 100;
 		protected final static int HEIGHT_DIP = 32;
@@ -64,8 +64,6 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 		
 		/**
 		 * specifies column cells width
-		 * @param column
-		 * @return
 		 */
 		protected int getWidth(int column) {
 			if (column == -1) {
@@ -76,8 +74,6 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 		
 		/**
 		 * specifies row cells height
-		 * @param row
-		 * @return
 		 */
 		protected int getHeight(int row) {
 			return HEIGHT_DIP;
@@ -86,8 +82,6 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 		
 		/**
 		 * returns raw display width
-		 * @param column
-		 * @return
 		 */
 		public final int getRawWidth(int column) {
 			int width = getWidth(column);
@@ -96,34 +90,29 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 		
 		/**
 		 * returns raw display height
-		 * @param row
-		 * @return
 		 */
 		public final int getRawHeight(int row) {
 			int height = getHeight(row);
 			return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, context.getResources().getDisplayMetrics()));
 		}
-		
-		
-	};
-	
-	public static interface OnDataSetObserver {
+	}
+
+	public interface OnDataSetObserver {
 		
 		/**
 		 * called when user finishes editing the data
 		 */
-		public void onDataChanged(Table data);
-	};
-	
-	public static interface OnViewPostCreationWizard {
+		void onDataChanged(Table data);
+	}
+
+	public interface OnViewPostCreationWizard {
 		
 		/**
 		 * called when creation of view is finished
-		 * @param view
 		 */
-		public void onViewCreationFinished(View view, int row, int col);
-	};
-	
+		void onViewCreationFinished(View view, int row, int col);
+	}
+
 	public enum EditTableOption {
 		
 		EDIT_TABLE_ADD_ROW,
@@ -139,8 +128,8 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 		EDIT_TABLE_DELETE_CELL_SHIFT_UP,
 		
 		EDIT_TABLE_BACK
-	};
-	
+	}
+
 	private final CharSequence[] allOptNames = new CharSequence[] {
 		"добавить строку",
 		"удалить строку",
@@ -156,7 +145,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 		
 		int row, col;
 		
-		private List<EditTableOption> editTableOptions = new LinkedList<EditTableOption>();
+		private final List<EditTableOption> editTableOptions = new LinkedList<>();
 		
 		
 		
@@ -171,9 +160,6 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 		/**
 		 * returns alert dialog with options for table editing,
 		 * if options not set, returns null
-		 * @param row
-		 * @param col
-		 * @return
 		 */
 		public AlertDialog.Builder buildDialog(int row, int col) {
 			if (editTableOptions.size() == 0) {
@@ -184,7 +170,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 			String title = "Редактировать таблицу\nячейка [" + table.getValue(row, col) + "]";
 			AlertDialog.Builder alert = new AlertDialog.Builder(context);
 			alert.setTitle(title);
-			CharSequence optNames[] = new CharSequence[editTableOptions.size()];
+			CharSequence[] optNames = new CharSequence[editTableOptions.size()];
 			for(int i = 0; i < editTableOptions.size(); i++) {
 				optNames[i] = allOptNames[editTableOptions.get(i).ordinal()];
 			}
@@ -202,7 +188,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 			EditTableOption editTableOpt = editTableOptions.get(which);
 			switch (editTableOpt) {
 			case EDIT_TABLE_ADD_ROW: //add row
-				table.add(row + 1, new LinkedList<String>());
+				table.add(row + 1, new LinkedList<>());
 				table.expand(); //expand new row to rectangle width
 				MatrixTableAdapter.this.setInformation(table);
 				MatrixTableAdapter.this.onDataSetObserver.onDataChanged(table);
@@ -252,7 +238,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 				});
 				break;
 			case EDIT_TABLE_ADD_CELL_SHIFT_DOWN:
-				table.add(new LinkedList<String>());
+				table.add(new LinkedList<>());
 				table.expand();
 				for(int i = table.rows() - 2; i >= row ; i--) {
 					String val = table.getValue(i, col);
@@ -301,7 +287,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 	 */
 	private class OnClickTableViewListener implements OnClickListener {
 
-		private Context context;
+		private final Context context;
 		
 		TextView textView;
 		EditText alertTextView;
@@ -314,7 +300,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 		
 		@Override
 		public void onClick(View v) {
-			textView = (TextView)v.findViewById(android.R.id.text1);
+			textView = v.findViewById(android.R.id.text1);
 			int[] viewCoords = pTableFixHeaders.getViewCoordinates(v);
 			row = viewCoords[0];
 			col = viewCoords[1];
@@ -362,8 +348,8 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 			return;
 		}
 		
-	};
-	
+	}
+
 	/**
 	 * opens edit table dialog (add or delete columns and rows)
 	 * @author densvr
@@ -400,17 +386,8 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 			return true;
 		}
 		
-	};
-	
-	
-	
-	
-	
+	}
 
-	
-
-	
-	
 
 	public MatrixTableAdapter(TableFixHeaders pTableFixHeaders, Context context) {
 		this(pTableFixHeaders, context, null);
@@ -467,7 +444,7 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 			pTextView.setText("");
 			//setOnClickListener(onViewClickListener);
 		} else {
-			pTextView.setText(table.get(row + 1).get(column).toString());
+			pTextView.setText(table.get(row + 1).get(column));
 		}
 		//set on click listener
 		convertView.setOnClickListener(onClickTableViewListener);
@@ -538,7 +515,6 @@ public class MatrixTableAdapter extends BaseTableAdapter {
 	
 	/**
 	 * add new option to edit table dialog
-	 * @param option
 	 */
 	public void addEditTableOption(EditTableOption option) {
 		this.editTableDialogBuilder.addOption(option);

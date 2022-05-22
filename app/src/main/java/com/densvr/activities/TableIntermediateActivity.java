@@ -37,7 +37,7 @@ public class TableIntermediateActivity extends Activity {
 
     private ActivityIntermediateResultsBinding binding;
 
-    private Table table = new Table();
+    private final Table table = new Table();
 
     private TableFixHeaders tableFixHeaders;
 
@@ -68,7 +68,7 @@ public class TableIntermediateActivity extends Activity {
         disqCPNum = -1;
         createIntermediateResultsTable();
 
-        TableFixHeaders tableFixHeaders = (TableFixHeaders) findViewById(R.id.inter_results_table);
+        TableFixHeaders tableFixHeaders = findViewById(R.id.inter_results_table);
         MatrixTableAdapter matrixTableAdapter = new MatrixTableAdapter(tableFixHeaders, this, table);
         tableFixHeaders.setAdapter(matrixTableAdapter);
 
@@ -146,7 +146,6 @@ public class TableIntermediateActivity extends Activity {
      * checks results, find place
      * CSV_DISTS must be filled
      *
-     * @return
      */
     @SuppressLint("DefaultLocale")
     private boolean createIntermediateResultsTable() {
@@ -176,26 +175,26 @@ public class TableIntermediateActivity extends Activity {
 
         LinkedList<String> line = null;
 
-        line = new LinkedList<String>();
+        line = new LinkedList<>();
         line.add("Сплит");
         String[] userSernameAndName = chipData.getSernameAndName();
         line.add(userSernameAndName[0]);
         line.add(userSernameAndName[1]);
         table.add(line);
         //line 2
-        line = new LinkedList<String>();
+        line = new LinkedList<>();
         line.add("Дистанция");
         line.add(chipData.getDistName());
         line.add(String.format("попытка %d", chipData.getAttempt()));
         table.add(line);
         //line 3
-        line = new LinkedList<String>();
+        line = new LinkedList<>();
         line.add("Результат");
         line.add(""); //after cp lines
         line.add("");
         table.add(line);
         //line 4
-        line = new LinkedList<String>();
+        line = new LinkedList<>();
         line.add("Должно быть");
         line.add("Отметил");
         line.add("");
@@ -215,7 +214,7 @@ public class TableIntermediateActivity extends Activity {
         Set<Integer> choiceCPs = new HashSet<>();
         for (int chipCPIter = 0; chipCPIter < chipData.getCPs().size(); chipCPIter++) {
             CP chipCP = chipData.getCPs().get(chipCPIter);
-            line = new LinkedList<String>();
+            line = new LinkedList<>();
             if (distCPIter < distData.getCPs().size()) {
                 CP distCP = distData.getCPs().get(distCPIter);
                 if (distCP.number == chipCP.number) {
@@ -287,7 +286,7 @@ public class TableIntermediateActivity extends Activity {
         chipData.setDisqualified(disqCPNum != -1);
 
         //add time
-        line = new LinkedList<String>();
+        line = new LinkedList<>();
         line.add("");
         line.add("Время");
         line.add(secondsFormatString(chipData.getFullTime()));
@@ -335,7 +334,7 @@ public class TableIntermediateActivity extends Activity {
         String title = "Редактировать";
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(title);
-        CharSequence optNames[] = new CharSequence[]{
+        CharSequence[] optNames = new CharSequence[]{
                 "имя", "дистанцию", "в обратную сторону", "отменить"
         };
         Context context = this;
@@ -387,7 +386,6 @@ public class TableIntermediateActivity extends Activity {
     /**
      * switches chip data to backward order
      *
-     * @return
      */
     private boolean switchToBackwardDistance() {
         OldDistsProtocol distsProtocol = OldDistsProtocol.readFromDatabase();

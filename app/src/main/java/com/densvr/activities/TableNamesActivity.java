@@ -74,10 +74,7 @@ public class TableNamesActivity extends TableActivity {
 	
 	/**
 	 * gets user F_I_O by its id (chip number)
-	 * @param data
-	 * @param userId
-	 * @return
-	 */
+     */
 	public static String getUserById(Table data, int userId) {
 		if (data == null) {
 			return "Новый участник";
@@ -105,8 +102,7 @@ public class TableNamesActivity extends TableActivity {
 	 * adds user to table or overwrite it if already exists   
 	 * @param userId - chip number
 	 * @param userName - F_I_O
-	 * @return
-	 */
+     */
 	public static void writeUserToCSV(int userId, String userName) {
 		Table tUsers = CSV.read(OldGlobals.CSV_NAMES);
 		if (tUsers == null) {

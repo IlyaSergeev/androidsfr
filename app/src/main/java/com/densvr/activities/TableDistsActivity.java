@@ -50,7 +50,7 @@ public class TableDistsActivity extends TableActivity {
 	public static OldChipData getDistByName(Table data, String name) {
 		for(int i = 0; i < data.get(0).size(); i++) {
 			if (data.get(0).get(i).equals(name)) {
-				LinkedList<String> distCps = new LinkedList<String>();
+				LinkedList<String> distCps = new LinkedList<>();
 				for(int j = 1; j < data.size(); j++) {
 					String cur = data.get(j).get(i);
 					if (!cur.isEmpty()) {

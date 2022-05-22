@@ -15,7 +15,7 @@ public class ResultsProtocol {
 	
 	
 	public ResultsProtocol() {
-		results = new LinkedList<OldChipData>();
+		results = new LinkedList<>();
 	}
 	
 	/**
@@ -73,8 +73,8 @@ public class ResultsProtocol {
 			int curAttempt = cd.getAttempt();
 			if (!curDistName.equals(distName)) {
 				//new distance
-				tResults.add(new LinkedList<String>());
-				line = new LinkedList<String>();
+				tResults.add(new LinkedList<>());
+				line = new LinkedList<>();
 				line.add("дистанция");
 				line.add(curDistName);
 				tResults.add(line);
@@ -83,7 +83,7 @@ public class ResultsProtocol {
 			} 
 			if (curAttempt != attempt) {
 				//new attempt
-				line = new LinkedList<String>();
+				line = new LinkedList<>();
 				line.add("попытка");
 				line.add(String.valueOf(curAttempt));
 				tResults.add(line);
@@ -95,9 +95,9 @@ public class ResultsProtocol {
 		CSV.write(tResults, OldGlobals.CSV_RESULTS);
 	}
 	
-	/**
-	 * answers which result is better: if cd1 - true, cd2 - false
-	 * @param cd1
+	/*
+	  answers which result is better: if cd1 - true, cd2 - false
+	  @param cd1
 	 * @param cd2
 	 * @return
 	 */
@@ -114,7 +114,6 @@ public class ResultsProtocol {
 	/**
 	 * inserts chip data to results protocol in correct place (in order by full time)
 	 * and updates place and attemptPlace of each user
-	 * @param cd
 	 */
 	public void addChipData(OldChipData cd) {
 		int resultNum = 0;
@@ -203,7 +202,6 @@ public class ResultsProtocol {
 	/**
 	 * deletes last attempt and inserts this chip data instead it
 	 * updates all places of current distance
-	 * @param cd
 	 */
 	public void overwriteChipData(OldChipData cd) {
 		
@@ -249,9 +247,9 @@ public class ResultsProtocol {
 	
 	
 	
-	/**
-	 * deletes all user attempts and updates others
-	 * @param cd
+	/*
+	  deletes all user attempts and updates others
+	  @param cd
 	 */
 	//TODO
 	/*
@@ -268,7 +266,6 @@ public class ResultsProtocol {
 	
 	/**
 	 * return start and end indexes of given distance
-	 * @param distName
 	 * @return [0] - startIdx, [1] - endIdx + 1
 	 */
 	private int[] getDistBorderNums(String distName) {
@@ -293,7 +290,6 @@ public class ResultsProtocol {
 	
 	/**
 	 * updates places, attempts places and positions of all results of given distance
-	 * @param distName
 	 */
 	private void updateDistResults(String distName) {
 		ResultsProtocol rp = new ResultsProtocol();
@@ -318,8 +314,6 @@ public class ResultsProtocol {
 	
 	/**
 	 * gets result, specified by number
-	 * @param num
-	 * @return
 	 */
 	public OldChipData get(int num) {
 		return results.get(num);
@@ -328,8 +322,6 @@ public class ResultsProtocol {
 	
 	/**
 	 * return theoretical place in protocol (first - 1, second - 2, ...)
-	 * @param chipData
-	 * @return
 	 */
 	public int getTheoreticalPlace(OldChipData chipData) {
 		int cnt = 0;
@@ -348,8 +340,6 @@ public class ResultsProtocol {
 	
 	/**
 	 * return theoretical place in current attempt (first - 1, second - 2, ...)
-	 * @param chipData
-	 * @return
 	 */
 	public int getTheoreticalAttemptPlace(OldChipData chipData) {
 		int cnt = 0;
@@ -368,9 +358,6 @@ public class ResultsProtocol {
 	
 	/**
 	 * get number of specified user attempts (1 - first, 2 - second...)
-	 * @param userName
-	 * @param distName
-	 * @return
 	 */
 	public int getAttempt(String userName, String distName) {
 		/*Table tableResults = CSV.read(Globals.CSV_RESULTS);
